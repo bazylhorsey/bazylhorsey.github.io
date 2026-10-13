@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Bazyl Horsey: applied AI, edge inference, computer vision</title>
+    <meta
+      name="description"
+      content="Bazyl Horsey. Serial co-founder and startup CTO. Applied AI: agentic systems, edge inference, computer vision. Chicago, IL."
+    />
+    <meta name="author" content="Bazyl Horsey" />
+    <meta name="color-scheme" content="light dark" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Bazyl Horsey: applied AI, edge inference, computer vision" />
+    <meta
+      property="og:description"
+      content="0-&gt;1 type. Upkeep is hard. Hate having nothing worth breaking. Chicago, IL."
+    />
+    <meta property="og:url" content="https://bazylhorsey.github.io/" />
+    <link rel="canonical" href="https://bazylhorsey.github.io/" />
+    <meta property="og:image" content="https://bazylhorsey.github.io/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Bazyl Horsey. Serial co-founder and startup CTO. Applied AI, edge inference, computer vision." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#ebe8df" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Bazyl Horsey",
+        "url": "https://bazylhorsey.github.io/",
+        "image": "https://bazylhorsey.github.io/og.png",
+        "jobTitle": "Startup CTO",
+        "description": "Serial co-founder and startup CTO. Applied AI: agentic systems, edge inference, and computer vision.",
+        "email": "mailto:bhorsey16@gmail.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Chicago",
+          "addressRegion": "IL",
+          "addressCountry": "US"
+        },
+        "alumniOf": {
+          "@type": "CollegeOrUniversity",
+          "name": "Buena Vista University"
+        },
+        "knowsAbout": [
+          "Applied AI",
+          "Computer vision",
+          "Edge inference",
+          "Agentic systems",
+          "Warehouse quality control",
+          "Elm",
+          "Gleam",
+          "Rust",
+          "ISO 27001"
+        ],
+        "sameAs": [
+          "https://github.com/bazylhorsey",
+          "https://www.linkedin.com/in/bazyl-horsey-075506139",
+          "https://orcid.org/0009-0000-4566-0406",
+          "https://bazyl-25260.medium.com/"
+        ]
+      }
+    </script>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="stylesheet" href="portfolio.css" />
+    <script>
+      // Pick the theme before anything paints, so a dark-mode visitor never
+      // sees a flash of paper. A stored choice wins; otherwise follow the OS.
+      (function () {
+        var stored = null;
+        try {
+          stored = localStorage.getItem("theme");
+        } catch (e) {}
+        var dark =
+          stored === "night" ||
+          (stored === null &&
+            window.matchMedia &&
+            matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.dataset.theme = dark ? "night" : "paper";
+      })();
+    </script>
+  </head>
+  <body>
+    <!--
+      That div is the whole page shell.
+
+      Every other element on this site is an Elm value in src/Main.elm, rendered
+      by JORN (github.com/bazylhorsey/jorn). Jorn sends the tree once to mount,
+      then sends only the diff whenever state changes. There is no markup here
+      to keep in sync with anything.
+    -->
+    <div id="app"></div>
+
+    <script src="build/main.js"></script>
+    <script type="module">
+      // Client mode: the Elm program runs right here in the page, and the same
+      // patcher a server component would use applies the diffs to the DOM.
+      import { connect } from "./vendor/jorn.js";
+
+      const root = document.documentElement;
+      const app = Elm.Main.init({
+        flags: { dark: root.dataset.theme === "night" },
+      });
+
+      // The theme lives in Elm. Mirror it onto <html> so the body background,
+      // overscroll and browser chrome match, and remember an explicit toggle.
+      const themeColor = document.querySelector('meta[name="theme-color"]');
+      let mountedTheme = null;
+      const syncTheme = () => {
+        const page = document.querySelector("#app > .page");
+        if (!page) return;
+        const theme = page.classList.contains("page--night") ? "night" : "paper";
+        root.dataset.theme = theme;
+        themeColor.content = theme === "night" ? "#141210" : "#ebe8df";
+        if (mountedTheme === null) mountedTheme = theme;
+        else if (theme !== mountedTheme) {
+          mountedTheme = theme;
+          try {
+            localStorage.setItem("theme", theme);
+          } catch (e) {}
+        }
+      };
+
+      const jorn = connect(document.getElementById("app"), {
+        send: (event) => app.ports.fromClient.send(event),
+        raw: true,
+      });
+
+      app.ports.toClient.subscribe((message) => {
+        if (message.mount) jorn.mount(message.mount);
+        else if (message.patches) jorn.patch(message.patches);
+        else if (message.error) console.warn(message.error);
+        syncTheme();
+      });
+    </script>
+  </body>
+</html>
