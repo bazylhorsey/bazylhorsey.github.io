@@ -4440,7 +4440,7 @@ var $author$project$Main$track = function (title) {
 			]));
 };
 var $author$project$Main$tracks = _List_fromArray(
-	['Pavement', '916', 'Take the Wheel', '360 No Scope', 'Statistically']);
+	['Pavement', '916', 'Take the Wheel', '360 No Scope', 'Statistically', 'Way You Aren\'t']);
 var $author$project$Main$band = A2(
 	$author$project$Jorn$Element$Html$section,
 	_List_fromArray(
