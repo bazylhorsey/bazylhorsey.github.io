@@ -533,19 +533,19 @@ diagram =
         ([ svg "title"
             [ Attr.id "dg-title" ]
             [ Element.text
-                ("The napkin sketch: the customer's site feeds edge inference, "
+                ("An example day-0 napkin: the customer's site feeds edge inference, "
                     ++ "which feeds the platform, which feeds agents and the people "
                     ++ "who approve their work. Misses loop back into retraining."
                 )
             ]
-         , svgText "dg-cap" 1 14 "FIG. 1 / THE NAPKIN, WRAPPED IN CSS"
+         , svgText "dg-cap" 1 14 "FIG. 1 / A DAY-0 NAPKIN, WRAPPED IN CSS"
          ]
-            ++ dgNode 40 "THEIR SITE" [ plain "their cameras, network and IT" ]
-            ++ dgEdge 112 "video, sensors"
+            ++ dgNode 40 "THEIR SITE" [ plain "their systems, data and IT" ]
+            ++ dgEdge 112 "raw data"
             ++ dgNode 160 "EDGE INFERENCE" [ plain "x86 · ARM · TensorRT · ", hot "26 ms" ]
-            ++ dgEdge 232 "events, evidence"
+            ++ dgEdge 232 "events, results"
             ++ dgNode 280 "PLATFORM" [ plain "model registry, pinned per customer" ]
-            ++ dgEdge 352 "claims, alerts"
+            ++ dgEdge 352 "tasks, alerts"
             ++ dgNode 400 "AGENTS + PEOPLE" [ plain "agents draft, a human approves" ]
             ++ dgLoop
         )

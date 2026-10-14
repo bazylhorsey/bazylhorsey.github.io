@@ -4984,9 +4984,9 @@ var $author$project$Main$diagram = A3(
 					]),
 				_List_fromArray(
 					[
-						$author$project$Jorn$Element$text('The napkin sketch: the customer\'s site feeds edge inference, ' + ('which feeds the platform, which feeds agents and the people ' + 'who approve their work. Misses loop back into retraining.'))
+						$author$project$Jorn$Element$text('An example day-0 napkin: the customer\'s site feeds edge inference, ' + ('which feeds the platform, which feeds agents and the people ' + 'who approve their work. Misses loop back into retraining.'))
 					])),
-				A4($author$project$Main$svgText, 'dg-cap', 1, 14, 'FIG. 1 / THE NAPKIN, WRAPPED IN CSS')
+				A4($author$project$Main$svgText, 'dg-cap', 1, 14, 'FIG. 1 / A DAY-0 NAPKIN, WRAPPED IN CSS')
 			]),
 		_Utils_ap(
 			A3(
@@ -4995,10 +4995,10 @@ var $author$project$Main$diagram = A3(
 				'THEIR SITE',
 				_List_fromArray(
 					[
-						$author$project$Main$plain('their cameras, network and IT')
+						$author$project$Main$plain('their systems, data and IT')
 					])),
 			_Utils_ap(
-				A2($author$project$Main$dgEdge, 112, 'video, sensors'),
+				A2($author$project$Main$dgEdge, 112, 'raw data'),
 				_Utils_ap(
 					A3(
 						$author$project$Main$dgNode,
@@ -5010,7 +5010,7 @@ var $author$project$Main$diagram = A3(
 								$author$project$Main$hot('26 ms')
 							])),
 					_Utils_ap(
-						A2($author$project$Main$dgEdge, 232, 'events, evidence'),
+						A2($author$project$Main$dgEdge, 232, 'events, results'),
 						_Utils_ap(
 							A3(
 								$author$project$Main$dgNode,
@@ -5021,7 +5021,7 @@ var $author$project$Main$diagram = A3(
 										$author$project$Main$plain('model registry, pinned per customer')
 									])),
 							_Utils_ap(
-								A2($author$project$Main$dgEdge, 352, 'claims, alerts'),
+								A2($author$project$Main$dgEdge, 352, 'tasks, alerts'),
 								_Utils_ap(
 									A3(
 										$author$project$Main$dgNode,
