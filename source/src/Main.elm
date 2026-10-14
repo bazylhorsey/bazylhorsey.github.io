@@ -167,14 +167,14 @@ jornStages =
 
 metrics : List Metric
 metrics =
-    [ { figure = "20", caption = "customer deployments, start to finish" }
-    , { figure = "400→26", caption = "ms, segmentation inference per item" }
-    , { figure = "6×", caption = "less GPT spend on one module, same output" }
-    , { figure = "100→30%", caption = "GPU load across five stations" }
+    [ { figure = "90%+", caption = "of customer incidents traced to site power, network or hardware, not our code" }
+    , { figure = "10.9→3", caption = "days, median time to close a bug" }
+    , { figure = "400→26", caption = "ms per segmentation inference, new model" }
+    , { figure = "100→30%", caption = "GPU load across five edge stations" }
+    , { figure = "6×", caption = "less GPT spend on one feature, same output" }
+    , { figure = "131", caption = "versioned releases in a single quarter" }
+    , { figure = "3 min", caption = "median first response to a customer" }
     , { figure = "9", caption = "engineers on a global team, from solo" }
-    , { figure = "131", caption = "releases shipped in a single quarter" }
-    , { figure = "96%", caption = "detection at roughly one second per item" }
-    , { figure = "$1M+", caption = "DoD-funded MxD program, principal investigator" }
     ]
 
 
@@ -541,16 +541,16 @@ claim =
                         ++ "different job than the one people pitch."
                   )
                 , ( "Replace the API call when the API call is the bottleneck."
-                  , "GPT-dependent detections became in-house models. One "
-                        ++ "module's spend dropped 6×, segmentation went from 400 "
-                        ++ "ms to 26 ms, and GPU load at five stations fell from "
-                        ++ "100% to about 30%. Same accuracy requirement, "
-                        ++ "different bill."
+                  , "GPT-dependent detections moved to in-house models, and "
+                        ++ "one feature's spend dropped 6×. A new segmentation model "
+                        ++ "took inference from 400 ms to 26 ms and GPU load at five "
+                        ++ "stations from 100% to about 30%. Same accuracy "
+                        ++ "requirement, different bill."
                   )
                 , ( "Own the boring parts."
                   , "ISO 27001:2022 from a standing start. SOC 2 Type I "
                         ++ "readiness. RLS multi-tenant Postgres. Hardened Linux on "
-                        ++ "Beelink mini PCs and Jetson. Three-minute median first "
+                        ++ "x86, micro-x86 and ARM. Three-minute median first "
                         ++ "response. Upkeep is hard, and it is also most of the "
                         ++ "job."
                   )

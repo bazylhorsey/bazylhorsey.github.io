@@ -4585,8 +4585,8 @@ var $author$project$Main$claim = A4(
 				_List_fromArray(
 					[
 						_Utils_Tuple2('Ship the 0→1, then make it survive.', 'A platform is a demo on day one and an uptime problem ' + ('on day ninety. I have taken one from the first commit ' + ('to about twenty customer deployments, which is a ' + 'different job than the one people pitch.'))),
-						_Utils_Tuple2('Replace the API call when the API call is the bottleneck.', 'GPT-dependent detections became in-house models. One ' + ('module\'s spend dropped 6×, segmentation went from 400 ' + ('ms to 26 ms, and GPU load at five stations fell from ' + ('100% to about 30%. Same accuracy requirement, ' + 'different bill.')))),
-						_Utils_Tuple2('Own the boring parts.', 'ISO 27001:2022 from a standing start. SOC 2 Type I ' + ('readiness. RLS multi-tenant Postgres. Hardened Linux on ' + ('Beelink mini PCs and Jetson. Three-minute median first ' + ('response. Upkeep is hard, and it is also most of the ' + 'job.'))))
+						_Utils_Tuple2('Replace the API call when the API call is the bottleneck.', 'GPT-dependent detections moved to in-house models, and ' + ('one feature\'s spend dropped 6×. A new segmentation model ' + ('took inference from 400 ms to 26 ms and GPU load at five ' + ('stations from 100% to about 30%. Same accuracy ' + 'requirement, different bill.')))),
+						_Utils_Tuple2('Own the boring parts.', 'ISO 27001:2022 from a standing start. SOC 2 Type I ' + ('readiness. RLS multi-tenant Postgres. Hardened Linux on ' + ('x86, micro-x86 and ARM. Three-minute median first ' + ('response. Upkeep is hard, and it is also most of the ' + 'job.'))))
 					])))
 		]));
 var $author$project$Jorn$Element$Html$a = $author$project$Jorn$Element$element('a');
@@ -4941,14 +4941,14 @@ var $author$project$Main$roleItem = function (role) {
 };
 var $author$project$Main$metrics = _List_fromArray(
 	[
-		{i: 'customer deployments, start to finish', j: '20'},
-		{i: 'ms, segmentation inference per item', j: '400→26'},
-		{i: 'less GPT spend on one module, same output', j: '6×'},
-		{i: 'GPU load across five stations', j: '100→30%'},
-		{i: 'engineers on a global team, from solo', j: '9'},
-		{i: 'releases shipped in a single quarter', j: '131'},
-		{i: 'detection at roughly one second per item', j: '96%'},
-		{i: 'DoD-funded MxD program, principal investigator', j: '$1M+'}
+		{i: 'of customer incidents traced to site power, network or hardware, not our code', j: '90%+'},
+		{i: 'days, median time to close a bug', j: '10.9→3'},
+		{i: 'ms per segmentation inference, new model', j: '400→26'},
+		{i: 'GPU load across five edge stations', j: '100→30%'},
+		{i: 'less GPT spend on one feature, same output', j: '6×'},
+		{i: 'versioned releases in a single quarter', j: '131'},
+		{i: 'median first response to a customer', j: '3 min'},
+		{i: 'engineers on a global team, from solo', j: '9'}
 	]);
 var $author$project$Main$roles = _List_fromArray(
 	[
