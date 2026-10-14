@@ -4502,7 +4502,7 @@ var $author$project$Main$band = A2(
 						]),
 					_List_fromArray(
 						[
-							$author$project$Jorn$Element$text('06 / other thing')
+							$author$project$Jorn$Element$text('05 / off the clock')
 						])),
 					A2(
 					$author$project$Jorn$Element$Html$h2,
@@ -4543,7 +4543,7 @@ var $author$project$Main$band = A2(
 						]),
 					_List_fromArray(
 						[
-							$author$project$Jorn$Element$text('The rest of this site is the day job. This is the night one.')
+							$author$project$Jorn$Element$text('The rest of this site is the day job. This is the night one. ' + ('The other off-hours constant: four years as a Big with ' + 'Big Brothers Big Sisters.'))
 						]))
 				]))
 		]));
@@ -4623,7 +4623,8 @@ var $author$project$Main$claim = A2(
 					[
 						_Utils_Tuple2('Ship the 0→1, then make it survive.', 'A platform is a demo on day one and an uptime problem ' + ('on day ninety. I have taken one from the first commit ' + ('to about twenty customer deployments, which is a ' + 'different job than the one people pitch.'))),
 						_Utils_Tuple2('Replace the API call when the API call is the bottleneck.', 'GPT-dependent detections moved to in-house models, and ' + ('one feature\'s spend dropped 6×. A new segmentation model ' + ('took inference from 400 ms to 26 ms and GPU load at five ' + ('stations from 100% to about 30%. Same accuracy ' + 'requirement, different bill.')))),
-						_Utils_Tuple2('Own the boring parts.', 'ISO 27001:2022 from a standing start. SOC 2 Type I ' + ('readiness. RLS multi-tenant Postgres. Hardened Linux on ' + ('x86, micro-x86 and ARM. Three-minute median first ' + ('response. Upkeep is hard, and it is also most of the ' + 'job.'))))
+						_Utils_Tuple2('Own the boring parts.', 'ISO 27001:2022 from a standing start. SOC 2 Type I ' + ('readiness. RLS multi-tenant Postgres. Hardened Linux on ' + ('x86, micro-x86 and ARM. Three-minute median first ' + ('response. Upkeep is hard, and it is also most of the ' + 'job.')))),
+						_Utils_Tuple2('Grow the people, then get out of the way.', 'As the team went from solo to nine across time zones, my ' + ('week went from 80% code to 20%. The job became getting ' + ('other people to their best work, and owning my mistakes ' + 'out loud so they could own theirs.')))
 					])))
 		]));
 var $author$project$Jorn$Element$Html$a = $author$project$Jorn$Element$element('a');
@@ -4676,7 +4677,7 @@ var $author$project$Main$contact = A2(
 				]),
 			_List_fromArray(
 				[
-					$author$project$Jorn$Element$text('07 / contact')
+					$author$project$Jorn$Element$text('06 / contact')
 				])),
 			A2(
 			$author$project$Jorn$Element$Html$h2,
@@ -4696,7 +4697,7 @@ var $author$project$Main$contact = A2(
 				]),
 			_List_fromArray(
 				[
-					$author$project$Jorn$Element$text('Roles, technical leadership, or a hard edge-inference problem. ' + 'I read all of it and I answer.')
+					$author$project$Jorn$Element$text('Forward deployed and applied AI roles, technical leadership, or a ' + ('deployment that will not stay up. Chicago-based, happy to be on ' + 'site with customers. I read all of it and I answer.'))
 				])),
 			A2(
 			$author$project$Jorn$Element$Html$ul,
@@ -5333,7 +5334,7 @@ var $author$project$Main$section = F4(
 var $author$project$Main$path = A4(
 	$author$project$Main$section,
 	'path',
-	'04 / path',
+	'03 / path',
 	'Where the scar tissue came from.',
 	_List_fromArray(
 		[
@@ -5381,7 +5382,7 @@ var $author$project$Main$receipts = A2(
 						]),
 					_List_fromArray(
 						[
-							$author$project$Jorn$Element$text('02 / receipts')
+							$author$project$Jorn$Element$text('01 / the receipts')
 						])),
 					A2(
 					$author$project$Jorn$Element$Html$h2,
@@ -5758,7 +5759,7 @@ var $author$project$Main$shipped = function (model) {
 					]),
 				_List_fromArray(
 					[
-						$author$project$Jorn$Element$text('03 / work')
+						$author$project$Jorn$Element$text('02 / work')
 					])),
 				A2(
 				$author$project$Jorn$Element$Html$h2,
@@ -5858,7 +5859,7 @@ var $author$project$Main$topbar = function (model) {
 									_Utils_Tuple2('#work', 'work'),
 									_Utils_Tuple2('#path', 'path'),
 									_Utils_Tuple2('#writing', 'writing'),
-									_Utils_Tuple2('#band', 'band'),
+									_Utils_Tuple2('#band', 'off hours'),
 									_Utils_Tuple2('#contact', 'contact')
 								]))),
 						A2(
@@ -6004,7 +6005,7 @@ var $author$project$Main$piece = function (item) {
 };
 var $author$project$Main$podcasts = _List_fromArray(
 	[
-		{e: 'Academic burnout through to running engineering at Arvist. Why ' + ('scrappy beats flashy when you are building a team, why ' + ('bootstrapped pragmatism beats bloated VC hype, and what most ' + ('CTOs get wrong about leadership. The episode title is the ' + 'whole review.'))), t: 'Doesn\'t sugarcoat it', a: 'https://youtu.be/mk7CKtatU8U', u: 'software leaders uncensored / with steve taplin', v: 'youtu.be/mk7CKtatU8U'},
+		{e: 'Academic burnout through to running engineering at Arvist. Why ' + ('scrappy beats flashy when you are building a team, and what ' + ('most CTOs get wrong about leadership. The episode title is the ' + 'whole review.')), t: 'Doesn\'t sugarcoat it', a: 'https://youtu.be/mk7CKtatU8U', u: 'software leaders uncensored / with steve taplin', v: 'youtu.be/mk7CKtatU8U'},
 		{e: 'Encord\'s show, hosted by their co-founder. Going deep on AI in ' + ('logistics: what it takes to get a model out of a notebook and ' + ('onto a dock, why the old boring methods still win more often ' + ('than the shiny new thing, and where quality assurance in ' + 'warehousing is heading.'))), t: 'Building Arvist, and what AI actually needs in a warehouse', a: 'https://encord.com/deep-learning-leaders/', u: 'deep learning leaders / with eric landau', v: 'deep learning leaders'}
 	]);
 var $author$project$Main$postRow = function (post) {
@@ -6099,7 +6100,7 @@ var $author$project$Main$posts = _List_fromArray(
 var $author$project$Main$writing = A4(
 	$author$project$Main$section,
 	'writing',
-	'05 / writing & talking',
+	'04 / writing & talking',
 	'Said out loud, on the record.',
 	_List_fromArray(
 		[

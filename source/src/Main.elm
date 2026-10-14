@@ -338,9 +338,8 @@ podcasts =
       , heading = "Doesn't sugarcoat it"
       , body =
             "Academic burnout through to running engineering at Arvist. Why "
-                ++ "scrappy beats flashy when you are building a team, why "
-                ++ "bootstrapped pragmatism beats bloated VC hype, and what most "
-                ++ "CTOs get wrong about leadership. The episode title is the "
+                ++ "scrappy beats flashy when you are building a team, and what "
+                ++ "most CTOs get wrong about leadership. The episode title is the "
                 ++ "whole review."
       , href = "https://youtu.be/mk7CKtatU8U"
       , label = "youtu.be/mk7CKtatU8U"
@@ -450,7 +449,7 @@ topbar model =
                     , ( "#work", "work" )
                     , ( "#path", "path" )
                     , ( "#writing", "writing" )
-                    , ( "#band", "band" )
+                    , ( "#band", "off hours" )
                     , ( "#contact", "contact" )
                     ]
                 )
@@ -706,6 +705,12 @@ claim =
                         ++ "response. Upkeep is hard, and it is also most of the "
                         ++ "job."
                   )
+                , ( "Grow the people, then get out of the way."
+                  , "As the team went from solo to nine across time zones, my "
+                        ++ "week went from 80% code to 20%. The job became getting "
+                        ++ "other people to their best work, and owning my mistakes "
+                        ++ "out loud so they could own theirs."
+                  )
                 ]
             )
         ]
@@ -718,7 +723,7 @@ receipts : Element msg
 receipts =
     Html.section [ Attr.class "receipts", Attr.id "receipts" ]
         [ Html.div [ Attr.class "wrap" ]
-            [ Html.p [ Attr.class "eyebrow" ] [ Element.text "02 / receipts" ]
+            [ Html.p [ Attr.class "eyebrow" ] [ Element.text "01 / the receipts" ]
             , Html.h2 [ Attr.class "h2" ] [ Element.text "Numbers, not adjectives." ]
             , Html.div [ Attr.class "nums" ] (List.map metric metrics)
             ]
@@ -744,7 +749,7 @@ metric item =
 shipped : Model -> Element Msg
 shipped model =
     Html.section [ Attr.class "section wrap", Attr.id "work" ]
-        [ Html.p [ Attr.class "eyebrow" ] [ Element.text "03 / work" ]
+        [ Html.p [ Attr.class "eyebrow" ] [ Element.text "02 / work" ]
         , Html.h2 [ Attr.class "h2" ] [ Element.text "Things that exist and run." ]
         , Html.div [ Attr.class "filters" ]
             (List.map (filterButton model.filter) filters)
@@ -892,7 +897,7 @@ statusLabel status =
 path : Element msg
 path =
     section "path"
-        "04 / path"
+        "03 / path"
         "Where the scar tissue came from."
         [ Html.ol [ Attr.class "path" ] (List.map roleItem roles) ]
 
@@ -933,7 +938,7 @@ figures items =
 writing : Element msg
 writing =
     section "writing"
-        "05 / writing & talking"
+        "04 / writing & talking"
         "Said out loud, on the record."
         [ groupLabel "Research"
         , paperCard
@@ -1000,7 +1005,7 @@ band : Element msg
 band =
     Html.section [ Attr.class "band", Attr.id "band" ]
         [ Html.div [ Attr.class "wrap band-in" ]
-            [ Html.p [ Attr.class "eyebrow" ] [ Element.text "06 / other thing" ]
+            [ Html.p [ Attr.class "eyebrow" ] [ Element.text "05 / off the clock" ]
             , Html.h2 [ Attr.class "band-name" ] [ Element.text "The Comedowns" ]
             , Html.p [ Attr.class "band-sub" ]
                 [ Element.text
@@ -1017,7 +1022,10 @@ band =
                 (List.indexedMap track tracks)
             , Html.p [ Attr.class "band-note" ]
                 [ Element.text
-                    "The rest of this site is the day job. This is the night one."
+                    ("The rest of this site is the day job. This is the night one. "
+                        ++ "The other off-hours constant: four years as a Big with "
+                        ++ "Big Brothers Big Sisters."
+                    )
                 ]
             ]
         ]
@@ -1041,12 +1049,13 @@ track index title =
 contact : Element msg
 contact =
     Html.section [ Attr.class "section wrap", Attr.id "contact" ]
-        [ Html.p [ Attr.class "eyebrow" ] [ Element.text "07 / contact" ]
+        [ Html.p [ Attr.class "eyebrow" ] [ Element.text "06 / contact" ]
         , Html.h2 [ Attr.class "h2" ] [ Element.text "Got something worth breaking?" ]
         , Html.p [ Attr.class "contact-lede" ]
             [ Element.text
-                ("Roles, technical leadership, or a hard edge-inference problem. "
-                    ++ "I read all of it and I answer."
+                ("Forward deployed and applied AI roles, technical leadership, or a "
+                    ++ "deployment that will not stay up. Chicago-based, happy to be on "
+                    ++ "site with customers. I read all of it and I answer."
                 )
             ]
         , Html.ul [ Attr.class "links" ]

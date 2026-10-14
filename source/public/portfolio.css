@@ -377,7 +377,7 @@ html[data-theme="night"] .diagram .dg-shadow {
 .name {
   margin: 0 0 0.12em;
   font-family: var(--display);
-  font-size: clamp(4.6rem, 19vw, 12rem);
+  font-size: clamp(4.2rem, 16vw, 9.5rem);
   font-weight: 900;
   line-height: 0.9;
   letter-spacing: -0.01em;
@@ -1096,21 +1096,20 @@ html[data-theme="night"] .receipts {
 
 /* band -------------------------------------------------------------- */
 
-/* The band is the one loud section: black ink on the accent orange, like a
-   flyer stapled to a pole. It sits on the accent in both themes, so it reads
-   the same at noon and at 2am, and everything on it is ink, which clears
-   5:1 on either orange. */
+/* Off the clock: a quiet panel on the second paper tone. The receipts band is
+   the page's one loud moment; this one keeps the flyer DNA in the label strip,
+   the tilted name and the numbered tracks, and stays out of the way. */
 .band {
-  --band-bg: var(--accent);
-  --band-ink: #121110;
-  --band-dim: #121110;
-  --band-rule: #121110;
+  --band-bg: var(--paper-2);
+  --band-ink: var(--ink);
+  --band-dim: var(--ink-2);
+  --band-rule: var(--line);
 
   position: relative;
   overflow: hidden;
   background: var(--band-bg);
   color: var(--band-ink);
-  border-block: 2px solid #121110;
+  border-block: var(--gap) solid var(--line);
   padding-block: clamp(3.4rem, 9vw, 6rem);
 }
 
@@ -1120,7 +1119,7 @@ html[data-theme="night"] .receipts {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.38;
+  opacity: 0;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 1.6 -0.55'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
 }
@@ -1130,12 +1129,7 @@ html[data-theme="night"] .receipts {
 }
 
 .band .eyebrow {
-  color: var(--band-ink);
-}
-
-.band ::selection {
-  background: var(--band-ink);
-  color: var(--band-bg);
+  color: var(--accent-text);
 }
 
 .band-name {
@@ -1143,7 +1137,7 @@ html[data-theme="night"] .receipts {
   font-family: var(--display);
   transform: rotate(-1.4deg);
   transform-origin: left bottom;
-  font-size: clamp(3.4rem, 13vw, 8.4rem);
+  font-size: clamp(2.8rem, 9vw, 5.6rem);
   font-weight: 900;
   line-height: 0.85;
   letter-spacing: -0.01em;
