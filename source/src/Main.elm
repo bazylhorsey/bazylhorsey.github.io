@@ -507,7 +507,7 @@ hero =
             ]
         , Html.p [ Attr.class "lede" ]
             [ Element.text
-                ("Serial co-founder and former startup CTO. Applied AI: agentic "
+                ("Serial co-founder and two-time startup CTO. Applied AI: agentic "
                     ++ "systems and edge inference."
                 )
             ]
