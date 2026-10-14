@@ -167,14 +167,14 @@ jornStages =
 
 metrics : List Metric
 metrics =
-    [ { figure = "2", caption = "VC-backed startups as CTO" }
-    , { figure = "7 yrs", caption = "shipping production software, from part-time in college to CTO" }
-    , { figure = "20", caption = "customer deployments, first commit to running on their hardware" }
-    , { figure = "9", caption = "engineers grown from solo, across time zones" }
-    , { figure = "6×", caption = "less LLM spend on one feature, same output" }
-    , { figure = "15×", caption = "faster inference after a model swap, 400 ms to 26 ms" }
+    [ { figure = "20", caption = "customer deployments, first commit to running on site" }
+    , { figure = "9", caption = "engineers on the team, grown from solo" }
     , { figure = "131", caption = "versioned releases in a single quarter" }
-    , { figure = "$1M+", caption = "DoD-funded AI program, principal investigator" }
+    , { figure = "10.9→3", caption = "days, median time to close a bug" }
+    , { figure = "90%+", caption = "of customer incidents traced to site power, network or hardware, not our code" }
+    , { figure = "3 min", caption = "median first response to a customer" }
+    , { figure = "400→26", caption = "ms per inference after a model swap" }
+    , { figure = "6×", caption = "less GPT spend on one feature, same output" }
     ]
 
 
@@ -273,7 +273,7 @@ roles =
                 ++ "readiness. Principal investigator on a $1M+ DoD-funded MxD "
                 ++ "safety AI project."
             ]
-      , figures = []
+      , figures = metrics
       }
     , { span = "2019→2022"
       , place = "Chicago, IL"
@@ -417,7 +417,6 @@ view model =
         , Html.main_ []
             [ hero
             , claim
-            , receipts
             , shipped model
             , path
             , writing
@@ -713,20 +712,6 @@ claim =
                   )
                 ]
             )
-        ]
-
-
-{-| The numbers get their own full-bleed band between the argument and the
-work, so the page changes pace instead of repeating label, heading, list.
--}
-receipts : Element msg
-receipts =
-    Html.section [ Attr.class "receipts", Attr.id "receipts" ]
-        [ Html.div [ Attr.class "wrap" ]
-            [ Html.p [ Attr.class "eyebrow" ] [ Element.text "01 / the receipts" ]
-            , Html.h2 [ Attr.class "h2" ] [ Element.text "Numbers, not adjectives." ]
-            , Html.div [ Attr.class "nums" ] (List.map metric metrics)
-            ]
         ]
 
 

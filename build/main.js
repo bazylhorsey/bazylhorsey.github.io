@@ -5258,12 +5258,23 @@ var $author$project$Main$roleItem = function (role) {
 						$author$project$Main$figures(role.q))))
 			]));
 };
+var $author$project$Main$metrics = _List_fromArray(
+	[
+		{i: 'customer deployments, first commit to running on site', j: '20'},
+		{i: 'engineers on the team, grown from solo', j: '9'},
+		{i: 'versioned releases in a single quarter', j: '131'},
+		{i: 'days, median time to close a bug', j: '10.9→3'},
+		{i: 'of customer incidents traced to site power, network or hardware, not our code', j: '90%+'},
+		{i: 'median first response to a customer', j: '3 min'},
+		{i: 'ms per inference after a model swap', j: '400→26'},
+		{i: 'less GPT spend on one feature, same output', j: '6×'}
+	]);
 var $author$project$Main$roles = _List_fromArray(
 	[
 		{
 		e: _List_fromArray(
 			['Techstars \'22, then a $4M seed led by Rackhouse. Took the ' + ('platform from first commit to about twenty customer ' + ('deployments across five product lines, then built the ' + ('plug-and-play inspection product behind the pivot: installs ' + ('in a day, works with the cameras and systems a site already ' + 'has.')))), 'Grew engineering from solo to nine across time zones. As CISO, ' + ('built the ISMS from nothing to ISO 27001:2022 and SOC 2 Type I ' + ('readiness. Principal investigator on a $1M+ DoD-funded MxD ' + 'safety AI project.'))]),
-		q: _List_Nil,
+		q: $author$project$Main$metrics,
 		w: 'Arvist',
 		y: 'Chicago, IL',
 		z: '2023→now',
@@ -5345,63 +5356,6 @@ var $author$project$Main$path = A4(
 					$author$project$Jorn$Attribute$class('path')
 				]),
 			A2($elm$core$List$map, $author$project$Main$roleItem, $author$project$Main$roles))
-		]));
-var $author$project$Main$metrics = _List_fromArray(
-	[
-		{i: 'VC-backed startups as CTO', j: '2'},
-		{i: 'shipping production software, from part-time in college to CTO', j: '7 yrs'},
-		{i: 'customer deployments, first commit to running on their hardware', j: '20'},
-		{i: 'engineers grown from solo, across time zones', j: '9'},
-		{i: 'less LLM spend on one feature, same output', j: '6×'},
-		{i: 'faster inference after a model swap, 400 ms to 26 ms', j: '15×'},
-		{i: 'versioned releases in a single quarter', j: '131'},
-		{i: 'DoD-funded AI program, principal investigator', j: '$1M+'}
-	]);
-var $author$project$Main$receipts = A2(
-	$author$project$Jorn$Element$Html$section,
-	_List_fromArray(
-		[
-			$author$project$Jorn$Attribute$class('receipts'),
-			$author$project$Jorn$Attribute$id('receipts')
-		]),
-	_List_fromArray(
-		[
-			A2(
-			$author$project$Jorn$Element$Html$div,
-			_List_fromArray(
-				[
-					$author$project$Jorn$Attribute$class('wrap')
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$author$project$Jorn$Element$Html$p,
-					_List_fromArray(
-						[
-							$author$project$Jorn$Attribute$class('eyebrow')
-						]),
-					_List_fromArray(
-						[
-							$author$project$Jorn$Element$text('01 / the receipts')
-						])),
-					A2(
-					$author$project$Jorn$Element$Html$h2,
-					_List_fromArray(
-						[
-							$author$project$Jorn$Attribute$class('h2')
-						]),
-					_List_fromArray(
-						[
-							$author$project$Jorn$Element$text('Numbers, not adjectives.')
-						])),
-					A2(
-					$author$project$Jorn$Element$Html$div,
-					_List_fromArray(
-						[
-							$author$project$Jorn$Attribute$class('nums')
-						]),
-					A2($elm$core$List$map, $author$project$Main$metric, $author$project$Main$metrics))
-				]))
 		]));
 var $author$project$Main$PickFilter = function (a) {
 	return {$: 1, a: a};
@@ -6142,7 +6096,6 @@ var $author$project$Main$view = function (model) {
 					[
 						$author$project$Main$hero,
 						$author$project$Main$claim,
-						$author$project$Main$receipts,
 						$author$project$Main$shipped(model),
 						$author$project$Main$path,
 						$author$project$Main$writing,

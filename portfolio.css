@@ -555,83 +555,6 @@ html[data-theme="night"] .diagram .dg-shadow {
 
 /* receipts ---------------------------------------------------------- */
 
-/* A full-bleed ink band: the page changes pace here. Fixed dark palette in
-   both themes, like the band section, so it reads as one object. */
-.receipts {
-  --r-bg: #121110;
-  --r-ink: #ece8df;
-  --r-dim: #a9a499;
-  --r-line: rgba(236, 232, 223, 0.22);
-  --r-accent: #ff5a1f;
-
-  background: var(--r-bg);
-  color: var(--r-ink);
-  padding-block: clamp(3.4rem, 9vw, 6rem);
-  border-block: var(--gap) solid var(--line);
-}
-
-.page--night .receipts,
-html[data-theme="night"] .receipts {
-  --r-bg: #1e1b18;
-}
-
-.receipts .eyebrow {
-  color: var(--r-accent);
-}
-
-.receipts .h2 {
-  color: var(--r-ink);
-}
-
-.receipts .nums {
-  border-color: var(--r-line);
-  background: var(--r-line);
-}
-
-.receipts .num {
-  background: var(--r-bg);
-  min-height: 10rem;
-}
-
-.receipts .num:hover {
-  background: #1b1916;
-}
-
-.receipts .nums {
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-@media (max-width: 1000px) {
-  .receipts .nums {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-/* Size each figure to its own cell, not the window, so "100→30%" fits at
-   every width without shrinking the short ones. */
-.receipts .num {
-  container-type: inline-size;
-}
-
-.receipts .num b {
-  font-family: var(--display);
-  font-size: clamp(1.4rem, 19cqi, 4rem);
-  white-space: nowrap;
-  font-weight: 800;
-  letter-spacing: 0;
-  color: var(--r-accent);
-}
-
-.receipts .num span {
-  color: var(--r-dim);
-  font-size: 0.86rem;
-}
-
-.receipts ::selection {
-  background: var(--r-accent);
-  color: var(--r-bg);
-}
-
 .nums {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -683,8 +606,18 @@ html[data-theme="night"] .receipts {
   padding: 1.05rem 1rem 0.95rem;
 }
 
+/* Figures in the display face, sized to their own cell so "10.9→3" and
+   "400→26" fit at every width. */
+.nums--inline .num {
+  container-type: inline-size;
+}
+
 .nums--inline .num b {
-  font-size: clamp(1.45rem, 2.2vw, 1.9rem);
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 17cqi, 2.6rem);
+  font-weight: 800;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .nums--inline .num span {
@@ -1096,9 +1029,9 @@ html[data-theme="night"] .receipts {
 
 /* band -------------------------------------------------------------- */
 
-/* Off the clock: a quiet panel on the second paper tone. The receipts band is
-   the page's one loud moment; this one keeps the flyer DNA in the label strip,
-   the tilted name and the numbered tracks, and stays out of the way. */
+/* Off the clock: a quiet panel on the second paper tone. It keeps the flyer
+   DNA in the label strip, the tilted name and the numbered tracks, and stays
+   out of the way of the work. */
 .band {
   --band-bg: var(--paper-2);
   --band-ink: var(--ink);
