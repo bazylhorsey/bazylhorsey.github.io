@@ -282,10 +282,9 @@ roles =
       , body =
             [ "Smart-locker and mobility IoT, now Accessa, backed by Jason "
                 ++ "Calacanis with a $1M pre-seed. Part-time through college, CTO "
-                ++ "from 2021. Led a team of five, rebuilt a legacy PHP app as "
-                ++ "FastAPI and React services on AWS, and built the BLE SDKs and "
-                ++ "mobile integrations behind the 2020 Smart Locker launch, which "
-                ++ "became the core business."
+                ++ "from 2021, leading a team of five. Built the BLE SDKs and mobile "
+                ++ "integrations behind the 2020 Smart Locker launch, which became "
+                ++ "the core business."
             , "Led the hardware too: our own System on Module with BLE and LTE "
                 ++ "for the lockers, and the APIs that wrapped it. The software "
                 ++ "was the easy half."
