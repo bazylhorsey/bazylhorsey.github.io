@@ -54,6 +54,7 @@ lives in `src/Main.elm`, and the log at the bottom records each change.
 ## Oshoke Oyati
 
 - Role and relationship: Web Development Lead
+- LinkedIn: https://www.linkedin.com/in/oshoke-oyati/
 - Date: 2026-10-14
 - OK to quote by name: yes
 

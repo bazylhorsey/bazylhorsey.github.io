@@ -763,7 +763,7 @@ testimonials =
                 ++ "always count on."
       , name = "Oshoke Oyati"
       , role = "Web Development Lead"
-      , href = Nothing
+      , href = Just "https://www.linkedin.com/in/oshoke-oyati/"
       }
     ]
 

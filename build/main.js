@@ -5486,7 +5486,12 @@ var $author$project$Main$testimonials = _List_fromArray(
 		z: 'A natural mentor who empowers engineers. I started exploring ' + ('systems programming and Rust because of an impressive project ' + 'I saw on his GitHub.'),
 		A: 'Web Developer'
 	},
-		{a: $elm$core$Maybe$Nothing, E: 'Oshoke Oyati', z: 'His depth of knowledge, resourcefulness, and unwavering ' + ('commitment to excellence make him \u2026 someone you can ' + 'always count on.'), A: 'Web Development Lead'}
+		{
+		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/oshoke-oyati/'),
+		E: 'Oshoke Oyati',
+		z: 'His depth of knowledge, resourcefulness, and unwavering ' + ('commitment to excellence make him \u2026 someone you can ' + 'always count on.'),
+		A: 'Web Development Lead'
+	}
 	]);
 var $author$project$Main$said = A2(
 	$author$project$Jorn$Element$Html$div,
