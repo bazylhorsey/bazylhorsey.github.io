@@ -4422,25 +4422,61 @@ var $author$project$Jorn$Internal$Vdom$Text = function (a) {
 	return {$: 1, a: a};
 };
 var $author$project$Jorn$Element$text = $author$project$Jorn$Internal$Vdom$Text;
-var $author$project$Jorn$Element$Html$li = $author$project$Jorn$Element$element('li');
-var $author$project$Main$track = function (title) {
-	return A2(
-		$author$project$Jorn$Element$Html$li,
-		_List_Nil,
-		_List_fromArray(
-			[
-				A3(
-				$author$project$Jorn$Element$element,
-				'b',
-				_List_Nil,
-				_List_fromArray(
-					[
-						$author$project$Jorn$Element$text(title)
-					]))
-			]));
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var $elm$core$Tuple$second = function (_v0) {
+	var y = _v0.b;
+	return y;
 };
+var $author$project$Jorn$Attribute$classes = function (classList) {
+	return $author$project$Jorn$Attribute$class(
+		A2(
+			$elm$core$String$join,
+			' ',
+			A2(
+				$elm$core$List$map,
+				$elm$core$Tuple$first,
+				A2($elm$core$List$filter, $elm$core$Tuple$second, classList))));
+};
+var $author$project$Jorn$Element$Html$li = $author$project$Jorn$Element$element('li');
 var $author$project$Main$tracks = _List_fromArray(
 	['Pavement', '916', 'Take the Wheel', '360 No Scope', 'Statistically', 'Way You Aren\'t']);
+var $author$project$Main$trackRows = (($elm$core$List$length($author$project$Main$tracks) + 1) / 2) | 0;
+var $author$project$Main$track = F2(
+	function (index, title) {
+		return A2(
+			$author$project$Jorn$Element$Html$li,
+			_List_fromArray(
+				[
+					$author$project$Jorn$Attribute$classes(
+					_List_fromArray(
+						[
+							_Utils_Tuple2(
+							'col-top',
+							(!index) || _Utils_eq(index, $author$project$Main$trackRows))
+						]))
+				]),
+			_List_fromArray(
+				[
+					A3(
+					$author$project$Jorn$Element$element,
+					'b',
+					_List_Nil,
+					_List_fromArray(
+						[
+							$author$project$Jorn$Element$text(title)
+						]))
+				]));
+	});
 var $author$project$Main$band = A2(
 	$author$project$Jorn$Element$Html$section,
 	_List_fromArray(
@@ -4492,9 +4528,13 @@ var $author$project$Main$band = A2(
 					$author$project$Jorn$Element$Html$ol,
 					_List_fromArray(
 						[
-							$author$project$Jorn$Attribute$class('tracks')
+							$author$project$Jorn$Attribute$class('tracks'),
+							A2(
+							$author$project$Jorn$Attribute$attribute,
+							'style',
+							'--track-rows: ' + $elm$core$String$fromInt($author$project$Main$trackRows))
 						]),
-					A2($elm$core$List$map, $author$project$Main$track, $author$project$Main$tracks)),
+					A2($elm$core$List$indexedMap, $author$project$Main$track, $author$project$Main$tracks)),
 					A2(
 					$author$project$Jorn$Element$Html$p,
 					_List_fromArray(
@@ -5066,31 +5106,6 @@ var $author$project$Main$filters = _List_fromArray(
 		$author$project$Main$Only(3),
 		'experiments')
 	]);
-var $elm$core$List$filter = F2(
-	function (isGood, list) {
-		return A3(
-			$elm$core$List$foldr,
-			F2(
-				function (x, xs) {
-					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
-				}),
-			_List_Nil,
-			list);
-	});
-var $elm$core$Tuple$second = function (_v0) {
-	var y = _v0.b;
-	return y;
-};
-var $author$project$Jorn$Attribute$classes = function (classList) {
-	return $author$project$Jorn$Attribute$class(
-		A2(
-			$elm$core$String$join,
-			' ',
-			A2(
-				$elm$core$List$map,
-				$elm$core$Tuple$first,
-				A2($elm$core$List$filter, $elm$core$Tuple$second, classList))));
-};
 var $author$project$Main$statusLabel = function (status) {
 	switch (status) {
 		case 0:

@@ -842,7 +842,15 @@ band =
                 [ Element.text
                     "Chicago punk / midwest emo. Somewhere between loud and sincere."
                 ]
-            , Html.ol [ Attr.class "tracks" ] (List.map track tracks)
+            , Html.ol
+                [ Attr.class "tracks"
+
+                -- Rows for the two-column layout, so the list fills down
+                -- the first column before the second, like a record sleeve.
+                , Attr.attribute "style"
+                    ("--track-rows: " ++ String.fromInt trackRows)
+                ]
+                (List.indexedMap track tracks)
             , Html.p [ Attr.class "band-note" ]
                 [ Element.text
                     "The rest of this site is the day job. This is the night one."
@@ -851,9 +859,19 @@ band =
         ]
 
 
-track : String -> Element msg
-track title =
-    Html.li [] [ Element.element "b" [] [ Element.text title ] ]
+trackRows : Int
+trackRows =
+    (List.length tracks + 1) // 2
+
+
+{-| The first track in each column gets the top rule, so in the two-column
+layout the line breaks at the gap instead of running across it.
+-}
+track : Int -> String -> Element msg
+track index title =
+    Html.li
+        [ Attr.classes [ ( "col-top", index == 0 || index == trackRows ) ] ]
+        [ Element.element "b" [] [ Element.text title ] ]
 
 
 contact : Element msg
