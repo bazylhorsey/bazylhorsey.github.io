@@ -1,7 +1,19 @@
 /* Bazyl Horsey portfolio
    Styles only. Structure lives in src/Main.elm and is rendered by Jorn.
    Theme is a class on the root element, which Jorn patches like any other
-   attribute. No web fonts, no reset from anywhere, no build tooling. */
+   attribute. One self-hosted display face for headlines, system fonts for
+   everything else, no reset from anywhere, no build tooling. */
+
+/* Big Shoulders Display (SIL OFL 1.1, fonts/BigShoulders-OFL.txt). A condensed
+   grotesk drawn for Chicago, named for Sandburg's "City of the Big Shoulders":
+   signage and gig-poster DNA. Latin subset, variable weight, 29 KB. */
+@font-face {
+  font-family: "Big Shoulders Display";
+  src: url("fonts/bigshoulders.woff2") format("woff2");
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
 
 *,
 *::before,
@@ -43,6 +55,7 @@ html[data-theme="paper"] {
   --sans: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
     "Liberation Mono", monospace;
+  --display: "Big Shoulders Display", "Arial Narrow", var(--sans);
   --gap: 1px;
   /* In rem, not px: this tracks the root font scale below, so the whole layout
      grows on a large display instead of stranding a narrow column in the
@@ -227,6 +240,110 @@ a {
   padding-block: clamp(3.2rem, 11vw, 7rem) clamp(2.6rem, 7vw, 4.5rem);
 }
 
+.hero {
+  display: grid;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (min-width: 1000px) {
+  .hero {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    column-gap: 3.5rem;
+  }
+}
+
+/* fig. 1 ---------------------------------------------------------------- */
+
+.diagram {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  justify-self: center;
+  overflow: visible;
+}
+
+@media (min-width: 1000px) {
+  .diagram {
+    justify-self: end;
+  }
+}
+
+.diagram .dg-box {
+  fill: var(--paper);
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+
+.diagram .dg-shadow {
+  fill: var(--ink);
+}
+
+.page--night .diagram .dg-shadow,
+html[data-theme="night"] .diagram .dg-shadow {
+  fill: #000;
+}
+
+.diagram .dg-tick,
+.diagram .dg-head {
+  fill: var(--ink);
+}
+
+.diagram .dg-tick {
+  fill: var(--accent);
+}
+
+.diagram .dg-edge {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+
+.diagram .dg-title {
+  font: 700 14px var(--mono);
+  letter-spacing: 0.12em;
+  fill: var(--ink);
+}
+
+.diagram .dg-sub {
+  font: 400 13px var(--sans);
+  fill: var(--ink-2);
+}
+
+.diagram .dg-hot {
+  font-weight: 700;
+  fill: var(--accent-text);
+}
+
+.diagram .dg-label,
+.diagram .dg-cap,
+.diagram .dg-foot {
+  font: 500 11px var(--mono);
+  letter-spacing: 0.06em;
+  fill: var(--muted);
+}
+
+.diagram .dg-cap {
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.diagram .dg-loop {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+}
+
+.diagram .dg-loop-head {
+  fill: var(--accent);
+}
+
+.diagram .dg-loop-label {
+  font: 700 11px var(--mono);
+  letter-spacing: 0.1em;
+  fill: var(--accent-text);
+}
+
 .status {
   display: inline-flex;
   align-items: center;
@@ -258,11 +375,12 @@ a {
 }
 
 .name {
-  margin: 0 0 0.08em;
-  font-size: clamp(3.4rem, 15vw, 9.5rem);
-  font-weight: 800;
-  line-height: 0.84;
-  letter-spacing: -0.045em;
+  margin: 0 0 0.12em;
+  font-family: var(--display);
+  font-size: clamp(4.6rem, 19vw, 12rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
 }
 
@@ -359,11 +477,30 @@ a {
 
 .h2 {
   margin: 0 0 2.4rem;
-  max-width: 20ch;
-  font-size: clamp(1.85rem, 4.6vw, 3.05rem);
+  max-width: 18ch;
+  font-family: var(--display);
+  font-size: clamp(2.5rem, 6vw, 4.2rem);
   font-weight: 800;
-  line-height: 1.04;
-  letter-spacing: -0.032em;
+  line-height: 0.95;
+  letter-spacing: -0.005em;
+}
+
+/* split: heading on the left, argument on the right ------------------- */
+
+@media (min-width: 1000px) {
+  .split {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    column-gap: 4rem;
+    align-items: start;
+  }
+  .split-head {
+    position: sticky;
+    top: 5.5rem;
+  }
+  .split-head .h2 {
+    margin-bottom: 0;
+  }
 }
 
 /* claims ------------------------------------------------------------ */
@@ -417,6 +554,83 @@ a {
 }
 
 /* receipts ---------------------------------------------------------- */
+
+/* A full-bleed ink band: the page changes pace here. Fixed dark palette in
+   both themes, like the band section, so it reads as one object. */
+.receipts {
+  --r-bg: #121110;
+  --r-ink: #ece8df;
+  --r-dim: #a9a499;
+  --r-line: rgba(236, 232, 223, 0.22);
+  --r-accent: #ff5a1f;
+
+  background: var(--r-bg);
+  color: var(--r-ink);
+  padding-block: clamp(3.4rem, 9vw, 6rem);
+  border-block: var(--gap) solid var(--line);
+}
+
+.page--night .receipts,
+html[data-theme="night"] .receipts {
+  --r-bg: #1e1b18;
+}
+
+.receipts .eyebrow {
+  color: var(--r-accent);
+}
+
+.receipts .h2 {
+  color: var(--r-ink);
+}
+
+.receipts .nums {
+  border-color: var(--r-line);
+  background: var(--r-line);
+}
+
+.receipts .num {
+  background: var(--r-bg);
+  min-height: 10rem;
+}
+
+.receipts .num:hover {
+  background: #1b1916;
+}
+
+.receipts .nums {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+@media (max-width: 1000px) {
+  .receipts .nums {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Size each figure to its own cell, not the window, so "100→30%" fits at
+   every width without shrinking the short ones. */
+.receipts .num {
+  container-type: inline-size;
+}
+
+.receipts .num b {
+  font-family: var(--display);
+  font-size: clamp(1.4rem, 19cqi, 4rem);
+  white-space: nowrap;
+  font-weight: 800;
+  letter-spacing: 0;
+  color: var(--r-accent);
+}
+
+.receipts .num span {
+  color: var(--r-dim);
+  font-size: 0.86rem;
+}
+
+.receipts ::selection {
+  background: var(--r-accent);
+  color: var(--r-bg);
+}
 
 .nums {
   display: grid;
@@ -926,12 +1140,13 @@ a {
 
 .band-name {
   margin: 0 0 1.1rem;
+  font-family: var(--display);
   transform: rotate(-1.4deg);
   transform-origin: left bottom;
-  font-size: clamp(2.6rem, 10vw, 6.4rem);
-  font-weight: 800;
-  line-height: 0.88;
-  letter-spacing: -0.045em;
+  font-size: clamp(3.4rem, 13vw, 8.4rem);
+  font-weight: 900;
+  line-height: 0.85;
+  letter-spacing: -0.01em;
   text-transform: uppercase;
   color: var(--band-ink);
 }

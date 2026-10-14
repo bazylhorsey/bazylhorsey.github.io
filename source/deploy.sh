@@ -22,7 +22,8 @@ find "$SITE" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
 cp -R build/. "$SITE/"
 rm -f "$SITE/portfolio.html"           # the bundle.sh single-file copy, not for Pages
 touch "$SITE/.nojekyll"                # serve files as-is, no Jekyll pass
-mkdir -p "$SITE/source/public" "$SITE/source/src"
+mkdir -p "$SITE/source/public/fonts" "$SITE/source/src"
+cp public/fonts/bigshoulders.woff2 public/fonts/BigShoulders-OFL.txt "$SITE/source/public/fonts/"
 cp src/Main.elm "$SITE/source/src/"
 cp public/index.html public/portfolio.css public/favicon.svg public/og.png \
    public/apple-touch-icon.png public/robots.txt public/sitemap.xml \

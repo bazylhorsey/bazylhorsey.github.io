@@ -38,6 +38,10 @@ cp public/apple-touch-icon.png "$OUT/apple-touch-icon-precomposed.png"
 # 4. the layout audit, so a deployed copy can still be checked
 cp audit.html "$OUT/audit.html"
 
+# 4b. the one self-hosted font and its license
+mkdir -p "$OUT/fonts"
+cp public/fonts/bigshoulders.woff2 public/fonts/BigShoulders-OFL.txt "$OUT/fonts/"
+
 # 5. crawler files
 cp public/robots.txt public/sitemap.xml "$OUT/"
 

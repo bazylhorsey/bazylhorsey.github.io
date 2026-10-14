@@ -94,8 +94,9 @@ browser.
 1. **Content lives in `src/Main.elm`, not in markup.** The lists at the top of
    the file (`metrics`, `work`, `roles`, `pieces`, `tracks`) are plain data.
    Add a project, a role, a song there rather than building nodes by hand.
-2. **System fonts only.** `system-ui` for prose, `ui-monospace` for anything
-   that is metadata, a date, a status, or a number. No font files.
+2. **One font file, the rest system.** Big Shoulders Display (OFL, self-hosted,
+   29 KB) for headlines and big figures only. `system-ui` for prose,
+   `ui-monospace` for metadata, dates, statuses and labels.
 3. **No dependencies.** No npm packages, no CDN, no analytics. The only
    requests the deployed page makes are its own four files.
 4. **No em dashes.** Sentence breaks, colons, commas, or parentheses. This

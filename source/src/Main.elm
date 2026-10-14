@@ -183,13 +183,11 @@ work =
     [ { name = "Jorn"
       , tags = [ "elm", "v0.0" ]
       , blurb =
-            "Write your UI once in Elm. Run each piece in the browser, on the "
-                ++ "server, or both, and decide at deploy time. An attempt at the "
-                ++ "web framework that does not make you choose where your UI "
-                ++ "runs: pure Elm virtual DOM, a diff that runs anywhere, a JSON "
-                ++ "wire protocol, event routing, and a dependency-free browser "
-                ++ "patcher. No kernel code, no fork. This page is one of its "
-                ++ "consumers."
+            "Write your UI once in Elm and decide at deploy time where each "
+                ++ "piece runs: browser, server, or both. Pure Elm virtual DOM, a "
+                ++ "diff that runs anywhere, a JSON wire protocol and a "
+                ++ "dependency-free browser patcher. No kernel code, no fork. This "
+                ++ "page runs on it."
       , href = Just "https://github.com/bazylhorsey/jorn"
       , category = Framework
       , stages = jornStages
@@ -198,9 +196,8 @@ work =
       , tags = [ "typescript", "22 stars" ]
       , blurb =
             "An MCP server that connects local and remote Obsidian vaults to "
-                ++ "desktop AI tools. Multi-vault switching, knowledge graph "
-                ++ "analysis with hubs and orphans, hybrid full-text search, "
-                ++ "backlink analysis, and vault analytics."
+                ++ "desktop AI tools: multi-vault switching, graph analysis, hybrid "
+                ++ "search and backlinks."
       , href = Just "https://github.com/bazylhorsey/obsidian-mcp-server"
       , category = Tool
       , stages = []
@@ -208,9 +205,8 @@ work =
     , { name = "prompt-rust"
       , tags = [ "rust" ]
       , blurb =
-            "A proposal to add user auto-stdin decoding to the Rust standard "
-                ++ "library, filed as rust-lang/rust#117852 and prototyped in "
-                ++ "RFC 3196. The most direct answer I have for what upstream "
+            "A proposal to add typed stdin prompts to the Rust standard "
+                ++ "library (rust-lang/rust#117852, RFC 3196). What upstream "
                 ++ "actually feels like from the outside."
       , href = Just "https://github.com/bazylhorsey/prompt-rust"
       , category = Upstream
@@ -219,10 +215,9 @@ work =
     , { name = "Aethos"
       , tags = [ "rust" ]
       , blurb =
-            "A Rust take on Phoenix LiveView. Mostly valuable for what it taught "
-                ++ "me: I know the browser-versus-server component trade-off from "
-                ++ "the implementer side, which is the only way to have an "
-                ++ "opinion about it."
+            "A Rust take on Phoenix LiveView, built to learn the "
+                ++ "browser-versus-server trade-off from the implementer's side. "
+                ++ "The only way to have an opinion about it."
       , href = Nothing
       , category = Tool
       , stages = []
@@ -230,12 +225,10 @@ work =
     , { name = "Lustre"
       , tags = [ "gleam" ]
       , blurb =
-            "Not my project: Hayleigh Thompson's Gleam web framework. Four open "
-                ++ "PRs against it, including a 337-line fix for server component "
-                ++ "context subscriptions, a replaced list.range in the diff "
-                ++ "benchmark, a re-measured effects example, and a CI workflow "
-                ++ "that runs the test suite on pushes to main. My bio says "
-                ++ "upkeep is hard. Apparently I do it anyway."
+            "Hayleigh Thompson's Gleam web framework. Four open PRs, including "
+                ++ "a 337-line fix for server component context subscriptions and "
+                ++ "a CI workflow for main. Upkeep is hard. Apparently I do it "
+                ++ "anyway."
       , href = Just "https://github.com/lustre-labs/lustre/pulls?q=is%3Apr+author%3Abazylhorsey"
       , category = Upstream
       , stages = []
@@ -243,11 +236,9 @@ work =
     , { name = "Frigate"
       , tags = [ "python" ]
       , blurb =
-            "Not mine either: the open-source NVR that runs object detection "
-                ++ "on camera feeds at the edge. A merged fix to its auth cookie "
-                ++ "name pattern, and an open one for a shared-memory handle that "
-                ++ "leaked whenever a captured frame was skipped. Same class of "
-                ++ "bug as the day job, in someone else's codebase."
+            "The open-source NVR. A merged fix to its auth cookie pattern and "
+                ++ "an open one for a shared-memory leak on skipped frames. Same "
+                ++ "class of bug as the day job, in someone else's codebase."
       , href = Just "https://github.com/blakeblackshear/frigate/pulls?q=is%3Apr+author%3Abazylhorsey"
       , category = Upstream
       , stages = []
@@ -255,9 +246,8 @@ work =
     , { name = "astonish"
       , tags = [ "python" ]
       , blurb =
-            "A ChatGPT 3.0-era Lovable. Presented at the OpenAI Hackathon in "
-                ++ "Chicago, 2022. Kept because it is funny and because it was "
-                ++ "early."
+            "A ChatGPT 3.0-era Lovable, presented at the OpenAI Hackathon in "
+                ++ "Chicago, 2022. Kept because it is funny and it was early."
       , href = Just "https://github.com/bazylhorsey/astonish"
       , category = Experiment
       , stages = []
@@ -272,23 +262,18 @@ roles =
       , org = "Arvist"
       , title = "Co-founder & CTO, now Technical Advisor"
       , body =
-            [ "Techstars '22. Vision AI for warehouse quality control, joined at "
-                ++ "pre-seed. $4M seed led by Rackhouse. Built the platform from "
-                ++ "first commit to about twenty customer deployments, shipping "
-                ++ "Quality, Safety, Yard Management, Productivity and Claims plus "
-                ++ "a mobile operator app and an admin console. Then built Arvist "
-                ++ "QC, the plug-and-play inspection system behind the pivot to "
-                ++ "quality: installs in a day, camera-agnostic, WMS optional. It "
-                ++ "halved a shipper's error rate at roughly 96% detection and "
-                ++ "about a second per item."
-            , "Grew engineering from solo to nine people across time zones, "
-                ++ "around 300 PRs and 131 releases in a quarter. As CISO, built "
-                ++ "the ISMS from nothing and got the company to ISO 27001:2022 "
-                ++ "and SOC 2 Type I readiness. Principal investigator on a $1M+ "
-                ++ "DoD-funded MxD ergonomic-safety AI project, deployed at PPC "
-                ++ "Flex."
+            [ "Techstars '22, then a $4M seed led by Rackhouse. Took the "
+                ++ "platform from first commit to about twenty customer "
+                ++ "deployments across five product lines, then built the "
+                ++ "plug-and-play inspection product behind the pivot: installs "
+                ++ "in a day, works with the cameras and systems a site already "
+                ++ "has."
+            , "Grew engineering from solo to nine across time zones. As CISO, "
+                ++ "built the ISMS from nothing to ISO 27001:2022 and SOC 2 Type I "
+                ++ "readiness. Principal investigator on a $1M+ DoD-funded MxD "
+                ++ "safety AI project."
             ]
-      , figures = metrics
+      , figures = []
       }
     , { span = "2019→2022"
       , place = "Chicago, IL"
@@ -296,15 +281,12 @@ roles =
       , title = "Software Manager → Application Manager → CTO"
       , body =
             [ "Smart-locker and mobility IoT, now Accessa, backed by Jason "
-                ++ "Calacanis with a $1M pre-seed. Part-time in college and at "
-                ++ "Levity, full-time CTO from 2021. Led a team of five and "
-                ++ "rebuilt the legacy PHP application as FastAPI and React "
-                ++ "microservices on AWS. Built the BLE SDKs and the iOS and "
-                ++ "Android integrations behind the 2020 Smart Locker launch, "
-                ++ "which became the core business."
-            , "Led development of the hardware as well: a System on Module with "
-                ++ "BLE and LTE for the lockers, and the APIs that wrapped it. The "
-                ++ "software was the easy half."
+                ++ "Calacanis with a $1M pre-seed. Part-time through college, CTO "
+                ++ "from 2021. Led a team of five, rebuilt a legacy PHP app as "
+                ++ "FastAPI and React services on AWS, and built the BLE SDKs and "
+                ++ "the BLE and LTE module behind the 2020 Smart Locker launch, "
+                ++ "which became the core business. The software was the easy "
+                ++ "half."
             ]
       , figures = []
       }
@@ -313,11 +295,11 @@ roles =
       , org = "Levity"
       , title = "Co-founder & CEO"
       , body =
-            [ "First startup out of Buena Vista's Foundry incubator. In 2021 I "
-                ++ "brought two of its engineers to Koloni and wound it down, "
-                ++ "which I count as the best outcome any of my companies had. "
-                ++ "Earlier: built the app for Match-Learn-Launch, a $175,000 "
-                ++ "Google.org Impact Challenge winner in 2019."
+            [ "First startup out of Buena Vista's Foundry incubator. Wound it "
+                ++ "down in 2021 and brought two of its engineers to Koloni, which "
+                ++ "I count as the best outcome any of my companies had. Earlier: "
+                ++ "the app for Match-Learn-Launch, a $175,000 Google.org Impact "
+                ++ "Challenge winner."
             ]
       , figures = []
       }
@@ -436,6 +418,7 @@ view model =
         , Html.main_ []
             [ hero
             , claim
+            , receipts
             , shipped model
             , path
             , writing
@@ -496,6 +479,13 @@ navLink ( anchor, label ) =
 hero : Element msg
 hero =
     Html.section [ Attr.class "hero wrap" ]
+        [ Html.div [ Attr.class "hero-copy" ] heroCopy
+        , diagram
+        ]
+
+
+heroCopy : List (Element msg)
+heroCopy =
         [ Html.p [ Attr.class "status" ]
             [ Html.span [ Attr.class "dot" ] []
             , Element.text "Chicago, IL"
@@ -529,12 +519,172 @@ hero =
         ]
 
 
+{-| Fig. 1 in the hero: the general architecture playbook, the one that
+usually starts on a napkin, drawn as SVG through Jorn's namespaced elements. Colors come from CSS classes, so it
+follows the theme like everything else, and it is prerendered with the page.
+-}
+diagram : Element msg
+diagram =
+    svg "svg"
+        [ Attr.class "diagram"
+        , Attr.attribute "viewBox" "0 0 400 480"
+        , Attr.attribute "role" "img"
+        , Attr.attribute "aria-labelledby" "dg-title"
+        ]
+        ([ svg "title"
+            [ Attr.id "dg-title" ]
+            [ Element.text
+                ("The napkin sketch: the customer's site feeds edge inference, "
+                    ++ "which feeds the platform, which feeds agents and the people "
+                    ++ "who approve their work. Misses loop back into retraining."
+                )
+            ]
+         , svgText "dg-cap" 1 14 "FIG. 1 / THE NAPKIN, WRAPPED IN CSS"
+         ]
+            ++ dgNode 40 "THEIR SITE" [ plain "their cameras, network and IT" ]
+            ++ dgEdge 112 "video, sensors"
+            ++ dgNode 160 "EDGE INFERENCE" [ plain "x86 · ARM · TensorRT · ", hot "26 ms" ]
+            ++ dgEdge 232 "events, evidence"
+            ++ dgNode 280 "PLATFORM" [ plain "model registry, pinned per customer" ]
+            ++ dgEdge 352 "claims, alerts"
+            ++ dgNode 400 "AGENTS + PEOPLE" [ plain "agents draft, a human approves" ]
+            ++ dgLoop
+        )
+
+
+svgNs : String
+svgNs =
+    "http://www.w3.org/2000/svg"
+
+
+svg : String -> List (Attr.Attribute msg) -> List (Element msg) -> Element msg
+svg =
+    Element.namespaced svgNs
+
+
+num : Float -> String
+num =
+    String.fromFloat
+
+
+svgText : String -> Float -> Float -> String -> Element msg
+svgText cls x y label =
+    svg "text"
+        [ Attr.class cls, Attr.attribute "x" (num x), Attr.attribute "y" (num y) ]
+        [ Element.text label ]
+
+
+type Span
+    = Plain String
+    | Hot String
+
+
+plain : String -> Span
+plain =
+    Plain
+
+
+hot : String -> Span
+hot =
+    Hot
+
+
+span : Span -> Element msg
+span part =
+    case part of
+        Plain t ->
+            svg "tspan" [] [ Element.text t ]
+
+        Hot t ->
+            svg "tspan" [ Attr.class "dg-hot" ] [ Element.text t ]
+
+
+{-| A box with a hard offset shadow, the same move as the work cards. -}
+dgNode : Float -> String -> List Span -> List (Element msg)
+dgNode y title sub =
+    [ svg "rect"
+        [ Attr.class "dg-shadow"
+        , Attr.attribute "x" "6"
+        , Attr.attribute "y" (num (y + 5))
+        , Attr.attribute "width" "318"
+        , Attr.attribute "height" "72"
+        ]
+        []
+    , svg "rect"
+        [ Attr.class "dg-box"
+        , Attr.attribute "x" "1.5"
+        , Attr.attribute "y" (num y)
+        , Attr.attribute "width" "318"
+        , Attr.attribute "height" "72"
+        ]
+        []
+    , svg "rect"
+        [ Attr.class "dg-tick"
+        , Attr.attribute "x" "18"
+        , Attr.attribute "y" (num (y + 21))
+        , Attr.attribute "width" "8"
+        , Attr.attribute "height" "8"
+        ]
+        []
+    , svgText "dg-title" 34 (y + 30) title
+    , svg "text"
+        [ Attr.class "dg-sub", Attr.attribute "x" "18", Attr.attribute "y" (num (y + 54)) ]
+        (List.map span sub)
+    ]
+
+
+{-| A down arrow between two boxes, with what flows along it. -}
+dgEdge : Float -> String -> List (Element msg)
+dgEdge y label =
+    [ svg "line"
+        [ Attr.class "dg-edge"
+        , Attr.attribute "x1" "160"
+        , Attr.attribute "y1" (num y)
+        , Attr.attribute "x2" "160"
+        , Attr.attribute "y2" (num (y + 40))
+        ]
+        []
+    , svg "path"
+        [ Attr.class "dg-head"
+        , Attr.attribute "d" ("M154 " ++ num (y + 38) ++ " L160 " ++ num (y + 47) ++ " L166 " ++ num (y + 38) ++ " Z")
+        ]
+        []
+    , svgText "dg-label" 174 (y + 28) label
+    ]
+
+
+{-| Misses go back into training and come out as a new model, pinned per
+customer. Dashed and orange: the part that keeps it working. -}
+dgLoop : List (Element msg)
+dgLoop =
+    [ svg "path"
+        [ Attr.class "dg-loop"
+        , Attr.attribute "d" "M320 436 H366 V196 H331"
+        ]
+        []
+    , svg "path"
+        [ Attr.class "dg-loop-head"
+        , Attr.attribute "d" "M333 190 L324 196 L333 202 Z"
+        ]
+        []
+    , svg "text"
+        [ Attr.class "dg-loop-label"
+        , Attr.attribute "transform" "translate(386 316) rotate(-90)"
+        , Attr.attribute "text-anchor" "middle"
+        ]
+        [ Element.text "misses → retrain → re-pin" ]
+    ]
+
+
 claim : Element msg
 claim =
-    section "claim"
-        "01 / the claim"
-        "Most AI dies in procurement and uptime, not in accuracy."
-        [ Html.ol [ Attr.class "claims" ]
+    Html.section [ Attr.class "section wrap split", Attr.id "claim" ]
+        [ Html.div [ Attr.class "split-head" ]
+            [ Html.p [ Attr.class "eyebrow" ] [ Element.text "01 / the claim" ]
+            , Html.h2 [ Attr.class "h2" ]
+                [ Element.text "Most AI dies in procurement and uptime, not in accuracy." ]
+            ]
+        , Html.ol [ Attr.class "claims split-body" ]
             (List.map claimItem
                 [ ( "Ship the 0→1, then make it survive."
                   , "A platform is a demo on day one and an uptime problem "
@@ -561,6 +711,20 @@ claim =
         ]
 
 
+{-| The numbers get their own full-bleed band between the argument and the
+work, so the page changes pace instead of repeating label, heading, list.
+-}
+receipts : Element msg
+receipts =
+    Html.section [ Attr.class "receipts", Attr.id "receipts" ]
+        [ Html.div [ Attr.class "wrap" ]
+            [ Html.p [ Attr.class "eyebrow" ] [ Element.text "02 / receipts" ]
+            , Html.h2 [ Attr.class "h2" ] [ Element.text "Numbers, not adjectives." ]
+            , Html.div [ Attr.class "nums" ] (List.map metric metrics)
+            ]
+        ]
+
+
 claimItem : ( String, String ) -> Element msg
 claimItem ( heading, body ) =
     Html.li []
@@ -580,7 +744,7 @@ metric item =
 shipped : Model -> Element Msg
 shipped model =
     Html.section [ Attr.class "section wrap", Attr.id "work" ]
-        [ Html.p [ Attr.class "eyebrow" ] [ Element.text "02 / work" ]
+        [ Html.p [ Attr.class "eyebrow" ] [ Element.text "03 / work" ]
         , Html.h2 [ Attr.class "h2" ] [ Element.text "Things that exist and run." ]
         , Html.div [ Attr.class "filters" ]
             (List.map (filterButton model.filter) filters)
@@ -728,7 +892,7 @@ statusLabel status =
 path : Element msg
 path =
     section "path"
-        "03 / path"
+        "04 / path"
         "Where the scar tissue came from."
         [ Html.ol [ Attr.class "path" ] (List.map roleItem roles) ]
 
@@ -769,7 +933,7 @@ figures items =
 writing : Element msg
 writing =
     section "writing"
-        "04 / writing & talking"
+        "05 / writing & talking"
         "Said out loud, on the record."
         [ groupLabel "Research"
         , paperCard
@@ -836,7 +1000,7 @@ band : Element msg
 band =
     Html.section [ Attr.class "band", Attr.id "band" ]
         [ Html.div [ Attr.class "wrap band-in" ]
-            [ Html.p [ Attr.class "eyebrow" ] [ Element.text "05 / other thing" ]
+            [ Html.p [ Attr.class "eyebrow" ] [ Element.text "06 / other thing" ]
             , Html.h2 [ Attr.class "band-name" ] [ Element.text "The Comedowns" ]
             , Html.p [ Attr.class "band-sub" ]
                 [ Element.text
@@ -877,7 +1041,7 @@ track index title =
 contact : Element msg
 contact =
     Html.section [ Attr.class "section wrap", Attr.id "contact" ]
-        [ Html.p [ Attr.class "eyebrow" ] [ Element.text "06 / contact" ]
+        [ Html.p [ Attr.class "eyebrow" ] [ Element.text "07 / contact" ]
         , Html.h2 [ Attr.class "h2" ] [ Element.text "Got something worth breaking?" ]
         , Html.p [ Attr.class "contact-lede" ]
             [ Element.text

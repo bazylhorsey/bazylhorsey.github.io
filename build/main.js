@@ -4502,7 +4502,7 @@ var $author$project$Main$band = A2(
 						]),
 					_List_fromArray(
 						[
-							$author$project$Jorn$Element$text('05 / other thing')
+							$author$project$Jorn$Element$text('06 / other thing')
 						])),
 					A2(
 					$author$project$Jorn$Element$Html$h2,
@@ -4572,14 +4572,20 @@ var $author$project$Main$claimItem = function (_v0) {
 					]))
 			]));
 };
-var $author$project$Main$section = F4(
-	function (anchor, eyebrow, heading, children) {
-		return A2(
-			$author$project$Jorn$Element$Html$section,
+var $author$project$Main$claim = A2(
+	$author$project$Jorn$Element$Html$section,
+	_List_fromArray(
+		[
+			$author$project$Jorn$Attribute$class('section wrap split'),
+			$author$project$Jorn$Attribute$id('claim')
+		]),
+	_List_fromArray(
+		[
+			A2(
+			$author$project$Jorn$Element$Html$div,
 			_List_fromArray(
 				[
-					$author$project$Jorn$Attribute$class('section wrap'),
-					$author$project$Jorn$Attribute$id(anchor)
+					$author$project$Jorn$Attribute$class('split-head')
 				]),
 			_List_fromArray(
 				[
@@ -4591,7 +4597,7 @@ var $author$project$Main$section = F4(
 						]),
 					_List_fromArray(
 						[
-							$author$project$Jorn$Element$text(eyebrow)
+							$author$project$Jorn$Element$text('01 / the claim')
 						])),
 					A2(
 					$author$project$Jorn$Element$Html$h2,
@@ -4601,23 +4607,14 @@ var $author$project$Main$section = F4(
 						]),
 					_List_fromArray(
 						[
-							$author$project$Jorn$Element$text(heading)
-						])),
-					A3($author$project$Jorn$Element$element, 'div', _List_Nil, children)
-				]));
-	});
-var $author$project$Main$claim = A4(
-	$author$project$Main$section,
-	'claim',
-	'01 / the claim',
-	'Most AI dies in procurement and uptime, not in accuracy.',
-	_List_fromArray(
-		[
+							$author$project$Jorn$Element$text('Most AI dies in procurement and uptime, not in accuracy.')
+						]))
+				])),
 			A2(
 			$author$project$Jorn$Element$Html$ol,
 			_List_fromArray(
 				[
-					$author$project$Jorn$Attribute$class('claims')
+					$author$project$Jorn$Attribute$class('claims split-body')
 				]),
 			A2(
 				$elm$core$List$map,
@@ -4679,7 +4676,7 @@ var $author$project$Main$contact = A2(
 				]),
 			_List_fromArray(
 				[
-					$author$project$Jorn$Element$text('06 / contact')
+					$author$project$Jorn$Element$text('07 / contact')
 				])),
 			A2(
 			$author$project$Jorn$Element$Html$h2,
@@ -4764,7 +4761,368 @@ var $author$project$Main$foot = A2(
 						]))
 				]))
 		]));
+var $elm$core$String$fromFloat = _String_fromNumber;
+var $author$project$Main$num = $elm$core$String$fromFloat;
+var $author$project$Jorn$Element$namespaced = F4(
+	function (namespace, tag, attributes, children) {
+		return A4($author$project$Jorn$Internal$Vdom$Element, namespace, tag, attributes, children);
+	});
+var $author$project$Main$svgNs = 'http://www.w3.org/2000/svg';
+var $author$project$Main$svg = $author$project$Jorn$Element$namespaced($author$project$Main$svgNs);
+var $author$project$Main$svgText = F4(
+	function (cls, x, y, label) {
+		return A3(
+			$author$project$Main$svg,
+			'text',
+			_List_fromArray(
+				[
+					$author$project$Jorn$Attribute$class(cls),
+					A2(
+					$author$project$Jorn$Attribute$attribute,
+					'x',
+					$author$project$Main$num(x)),
+					A2(
+					$author$project$Jorn$Attribute$attribute,
+					'y',
+					$author$project$Main$num(y))
+				]),
+			_List_fromArray(
+				[
+					$author$project$Jorn$Element$text(label)
+				]));
+	});
+var $author$project$Main$dgEdge = F2(
+	function (y, label) {
+		return _List_fromArray(
+			[
+				A3(
+				$author$project$Main$svg,
+				'line',
+				_List_fromArray(
+					[
+						$author$project$Jorn$Attribute$class('dg-edge'),
+						A2($author$project$Jorn$Attribute$attribute, 'x1', '160'),
+						A2(
+						$author$project$Jorn$Attribute$attribute,
+						'y1',
+						$author$project$Main$num(y)),
+						A2($author$project$Jorn$Attribute$attribute, 'x2', '160'),
+						A2(
+						$author$project$Jorn$Attribute$attribute,
+						'y2',
+						$author$project$Main$num(y + 40))
+					]),
+				_List_Nil),
+				A3(
+				$author$project$Main$svg,
+				'path',
+				_List_fromArray(
+					[
+						$author$project$Jorn$Attribute$class('dg-head'),
+						A2(
+						$author$project$Jorn$Attribute$attribute,
+						'd',
+						'M154 ' + ($author$project$Main$num(y + 38) + (' L160 ' + ($author$project$Main$num(y + 47) + (' L166 ' + ($author$project$Main$num(y + 38) + ' Z'))))))
+					]),
+				_List_Nil),
+				A4($author$project$Main$svgText, 'dg-label', 174, y + 28, label)
+			]);
+	});
+var $author$project$Main$dgLoop = _List_fromArray(
+	[
+		A3(
+		$author$project$Main$svg,
+		'path',
+		_List_fromArray(
+			[
+				$author$project$Jorn$Attribute$class('dg-loop'),
+				A2($author$project$Jorn$Attribute$attribute, 'd', 'M320 436 H366 V196 H331')
+			]),
+		_List_Nil),
+		A3(
+		$author$project$Main$svg,
+		'path',
+		_List_fromArray(
+			[
+				$author$project$Jorn$Attribute$class('dg-loop-head'),
+				A2($author$project$Jorn$Attribute$attribute, 'd', 'M333 190 L324 196 L333 202 Z')
+			]),
+		_List_Nil),
+		A3(
+		$author$project$Main$svg,
+		'text',
+		_List_fromArray(
+			[
+				$author$project$Jorn$Attribute$class('dg-loop-label'),
+				A2($author$project$Jorn$Attribute$attribute, 'transform', 'translate(386 316) rotate(-90)'),
+				A2($author$project$Jorn$Attribute$attribute, 'text-anchor', 'middle')
+			]),
+		_List_fromArray(
+			[
+				$author$project$Jorn$Element$text('misses → retrain → re-pin')
+			]))
+	]);
+var $author$project$Main$span = function (part) {
+	if (!part.$) {
+		var t = part.a;
+		return A3(
+			$author$project$Main$svg,
+			'tspan',
+			_List_Nil,
+			_List_fromArray(
+				[
+					$author$project$Jorn$Element$text(t)
+				]));
+	} else {
+		var t = part.a;
+		return A3(
+			$author$project$Main$svg,
+			'tspan',
+			_List_fromArray(
+				[
+					$author$project$Jorn$Attribute$class('dg-hot')
+				]),
+			_List_fromArray(
+				[
+					$author$project$Jorn$Element$text(t)
+				]));
+	}
+};
+var $author$project$Main$dgNode = F3(
+	function (y, title, sub) {
+		return _List_fromArray(
+			[
+				A3(
+				$author$project$Main$svg,
+				'rect',
+				_List_fromArray(
+					[
+						$author$project$Jorn$Attribute$class('dg-shadow'),
+						A2($author$project$Jorn$Attribute$attribute, 'x', '6'),
+						A2(
+						$author$project$Jorn$Attribute$attribute,
+						'y',
+						$author$project$Main$num(y + 5)),
+						A2($author$project$Jorn$Attribute$attribute, 'width', '318'),
+						A2($author$project$Jorn$Attribute$attribute, 'height', '72')
+					]),
+				_List_Nil),
+				A3(
+				$author$project$Main$svg,
+				'rect',
+				_List_fromArray(
+					[
+						$author$project$Jorn$Attribute$class('dg-box'),
+						A2($author$project$Jorn$Attribute$attribute, 'x', '1.5'),
+						A2(
+						$author$project$Jorn$Attribute$attribute,
+						'y',
+						$author$project$Main$num(y)),
+						A2($author$project$Jorn$Attribute$attribute, 'width', '318'),
+						A2($author$project$Jorn$Attribute$attribute, 'height', '72')
+					]),
+				_List_Nil),
+				A3(
+				$author$project$Main$svg,
+				'rect',
+				_List_fromArray(
+					[
+						$author$project$Jorn$Attribute$class('dg-tick'),
+						A2($author$project$Jorn$Attribute$attribute, 'x', '18'),
+						A2(
+						$author$project$Jorn$Attribute$attribute,
+						'y',
+						$author$project$Main$num(y + 21)),
+						A2($author$project$Jorn$Attribute$attribute, 'width', '8'),
+						A2($author$project$Jorn$Attribute$attribute, 'height', '8')
+					]),
+				_List_Nil),
+				A4($author$project$Main$svgText, 'dg-title', 34, y + 30, title),
+				A3(
+				$author$project$Main$svg,
+				'text',
+				_List_fromArray(
+					[
+						$author$project$Jorn$Attribute$class('dg-sub'),
+						A2($author$project$Jorn$Attribute$attribute, 'x', '18'),
+						A2(
+						$author$project$Jorn$Attribute$attribute,
+						'y',
+						$author$project$Main$num(y + 54))
+					]),
+				A2($elm$core$List$map, $author$project$Main$span, sub))
+			]);
+	});
+var $author$project$Main$Hot = function (a) {
+	return {$: 1, a: a};
+};
+var $author$project$Main$hot = $author$project$Main$Hot;
+var $author$project$Main$Plain = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$Main$plain = $author$project$Main$Plain;
+var $author$project$Main$diagram = A3(
+	$author$project$Main$svg,
+	'svg',
+	_List_fromArray(
+		[
+			$author$project$Jorn$Attribute$class('diagram'),
+			A2($author$project$Jorn$Attribute$attribute, 'viewBox', '0 0 400 480'),
+			A2($author$project$Jorn$Attribute$attribute, 'role', 'img'),
+			A2($author$project$Jorn$Attribute$attribute, 'aria-labelledby', 'dg-title')
+		]),
+	_Utils_ap(
+		_List_fromArray(
+			[
+				A3(
+				$author$project$Main$svg,
+				'title',
+				_List_fromArray(
+					[
+						$author$project$Jorn$Attribute$id('dg-title')
+					]),
+				_List_fromArray(
+					[
+						$author$project$Jorn$Element$text('The napkin sketch: the customer\'s site feeds edge inference, ' + ('which feeds the platform, which feeds agents and the people ' + 'who approve their work. Misses loop back into retraining.'))
+					])),
+				A4($author$project$Main$svgText, 'dg-cap', 1, 14, 'FIG. 1 / THE NAPKIN, WRAPPED IN CSS')
+			]),
+		_Utils_ap(
+			A3(
+				$author$project$Main$dgNode,
+				40,
+				'THEIR SITE',
+				_List_fromArray(
+					[
+						$author$project$Main$plain('their cameras, network and IT')
+					])),
+			_Utils_ap(
+				A2($author$project$Main$dgEdge, 112, 'video, sensors'),
+				_Utils_ap(
+					A3(
+						$author$project$Main$dgNode,
+						160,
+						'EDGE INFERENCE',
+						_List_fromArray(
+							[
+								$author$project$Main$plain('x86 · ARM · TensorRT · '),
+								$author$project$Main$hot('26 ms')
+							])),
+					_Utils_ap(
+						A2($author$project$Main$dgEdge, 232, 'events, evidence'),
+						_Utils_ap(
+							A3(
+								$author$project$Main$dgNode,
+								280,
+								'PLATFORM',
+								_List_fromArray(
+									[
+										$author$project$Main$plain('model registry, pinned per customer')
+									])),
+							_Utils_ap(
+								A2($author$project$Main$dgEdge, 352, 'claims, alerts'),
+								_Utils_ap(
+									A3(
+										$author$project$Main$dgNode,
+										400,
+										'AGENTS + PEOPLE',
+										_List_fromArray(
+											[
+												$author$project$Main$plain('agents draft, a human approves')
+											])),
+									$author$project$Main$dgLoop)))))))));
 var $author$project$Jorn$Element$Html$h1 = $author$project$Jorn$Element$element('h1');
+var $author$project$Main$heroCopy = _List_fromArray(
+	[
+		A2(
+		$author$project$Jorn$Element$Html$p,
+		_List_fromArray(
+			[
+				$author$project$Jorn$Attribute$class('status')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$author$project$Jorn$Element$Html$span,
+				_List_fromArray(
+					[
+						$author$project$Jorn$Attribute$class('dot')
+					]),
+				_List_Nil),
+				$author$project$Jorn$Element$text('Chicago, IL'),
+				$author$project$Jorn$Element$text(' / Open to work')
+			])),
+		A2(
+		$author$project$Jorn$Element$Html$h1,
+		_List_fromArray(
+			[
+				$author$project$Jorn$Attribute$class('name')
+			]),
+		_List_fromArray(
+			[
+				$author$project$Jorn$Element$text('Bazyl '),
+				A3($author$project$Jorn$Element$element, 'br', _List_Nil, _List_Nil),
+				$author$project$Jorn$Element$text('Horsey'),
+				A2(
+				$author$project$Jorn$Element$Html$span,
+				_List_fromArray(
+					[
+						$author$project$Jorn$Attribute$class('caret')
+					]),
+				_List_Nil)
+			])),
+		A2(
+		$author$project$Jorn$Element$Html$p,
+		_List_fromArray(
+			[
+				$author$project$Jorn$Attribute$class('lede')
+			]),
+		_List_fromArray(
+			[
+				$author$project$Jorn$Element$text('Serial co-founder and two-time VC-backed startup CTO. Applied AI: agentic ' + 'systems and edge inference.')
+			])),
+		A2(
+		$author$project$Jorn$Element$Html$p,
+		_List_fromArray(
+			[
+				$author$project$Jorn$Attribute$class('claim-line')
+			]),
+		_List_fromArray(
+			[
+				$author$project$Jorn$Element$text('I build AI that has to work in production, not in a notebook.')
+			])),
+		A2(
+		$author$project$Jorn$Element$Html$div,
+		_List_fromArray(
+			[
+				$author$project$Jorn$Attribute$class('hero-actions')
+			]),
+		_List_fromArray(
+			[
+				A2(
+				$author$project$Jorn$Element$Html$a,
+				_List_fromArray(
+					[
+						$author$project$Jorn$Attribute$class('btn btn-solid'),
+						$author$project$Jorn$Attribute$href('#work')
+					]),
+				_List_fromArray(
+					[
+						$author$project$Jorn$Element$text('What I\'ve shipped')
+					])),
+				A2(
+				$author$project$Jorn$Element$Html$a,
+				_List_fromArray(
+					[
+						$author$project$Jorn$Attribute$class('btn'),
+						$author$project$Jorn$Attribute$href('mailto:bhorsey16@gmail.com')
+					]),
+				_List_fromArray(
+					[
+						$author$project$Jorn$Element$text('bhorsey16@gmail.com')
+					]))
+			]))
+	]);
 var $author$project$Main$hero = A2(
 	$author$project$Jorn$Element$Html$section,
 	_List_fromArray(
@@ -4774,93 +5132,13 @@ var $author$project$Main$hero = A2(
 	_List_fromArray(
 		[
 			A2(
-			$author$project$Jorn$Element$Html$p,
-			_List_fromArray(
-				[
-					$author$project$Jorn$Attribute$class('status')
-				]),
-			_List_fromArray(
-				[
-					A2(
-					$author$project$Jorn$Element$Html$span,
-					_List_fromArray(
-						[
-							$author$project$Jorn$Attribute$class('dot')
-						]),
-					_List_Nil),
-					$author$project$Jorn$Element$text('Chicago, IL'),
-					$author$project$Jorn$Element$text(' / Open to work')
-				])),
-			A2(
-			$author$project$Jorn$Element$Html$h1,
-			_List_fromArray(
-				[
-					$author$project$Jorn$Attribute$class('name')
-				]),
-			_List_fromArray(
-				[
-					$author$project$Jorn$Element$text('Bazyl '),
-					A3($author$project$Jorn$Element$element, 'br', _List_Nil, _List_Nil),
-					$author$project$Jorn$Element$text('Horsey'),
-					A2(
-					$author$project$Jorn$Element$Html$span,
-					_List_fromArray(
-						[
-							$author$project$Jorn$Attribute$class('caret')
-						]),
-					_List_Nil)
-				])),
-			A2(
-			$author$project$Jorn$Element$Html$p,
-			_List_fromArray(
-				[
-					$author$project$Jorn$Attribute$class('lede')
-				]),
-			_List_fromArray(
-				[
-					$author$project$Jorn$Element$text('Serial co-founder and two-time VC-backed startup CTO. Applied AI: agentic ' + 'systems and edge inference.')
-				])),
-			A2(
-			$author$project$Jorn$Element$Html$p,
-			_List_fromArray(
-				[
-					$author$project$Jorn$Attribute$class('claim-line')
-				]),
-			_List_fromArray(
-				[
-					$author$project$Jorn$Element$text('I build AI that has to work in production, not in a notebook.')
-				])),
-			A2(
 			$author$project$Jorn$Element$Html$div,
 			_List_fromArray(
 				[
-					$author$project$Jorn$Attribute$class('hero-actions')
+					$author$project$Jorn$Attribute$class('hero-copy')
 				]),
-			_List_fromArray(
-				[
-					A2(
-					$author$project$Jorn$Element$Html$a,
-					_List_fromArray(
-						[
-							$author$project$Jorn$Attribute$class('btn btn-solid'),
-							$author$project$Jorn$Attribute$href('#work')
-						]),
-					_List_fromArray(
-						[
-							$author$project$Jorn$Element$text('What I\'ve shipped')
-						])),
-					A2(
-					$author$project$Jorn$Element$Html$a,
-					_List_fromArray(
-						[
-							$author$project$Jorn$Attribute$class('btn'),
-							$author$project$Jorn$Attribute$href('mailto:bhorsey16@gmail.com')
-						]),
-					_List_fromArray(
-						[
-							$author$project$Jorn$Element$text('bhorsey16@gmail.com')
-						]))
-				]))
+			$author$project$Main$heroCopy),
+			$author$project$Main$diagram
 		]));
 var $author$project$Jorn$Element$Html$main_ = $author$project$Jorn$Element$element('main');
 var $elm$core$List$isEmpty = function (xs) {
@@ -4979,23 +5257,12 @@ var $author$project$Main$roleItem = function (role) {
 						$author$project$Main$figures(role.q))))
 			]));
 };
-var $author$project$Main$metrics = _List_fromArray(
-	[
-		{i: 'of customer incidents traced to site power, network or hardware, not our code', j: '90%+'},
-		{i: 'days, median time to close a bug', j: '10.9→3'},
-		{i: 'ms per segmentation inference, new model', j: '400→26'},
-		{i: 'GPU load across five edge stations', j: '100→30%'},
-		{i: 'less GPT spend on one feature, same output', j: '6×'},
-		{i: 'versioned releases in a single quarter', j: '131'},
-		{i: 'median first response to a customer', j: '3 min'},
-		{i: 'engineers on a global team, from solo', j: '9'}
-	]);
 var $author$project$Main$roles = _List_fromArray(
 	[
 		{
 		e: _List_fromArray(
-			['Techstars \'22. Vision AI for warehouse quality control, joined at ' + ('pre-seed. $4M seed led by Rackhouse. Built the platform from ' + ('first commit to about twenty customer deployments, shipping ' + ('Quality, Safety, Yard Management, Productivity and Claims plus ' + ('a mobile operator app and an admin console. Then built Arvist ' + ('QC, the plug-and-play inspection system behind the pivot to ' + ('quality: installs in a day, camera-agnostic, WMS optional. It ' + ('halved a shipper\'s error rate at roughly 96% detection and ' + 'about a second per item.'))))))), 'Grew engineering from solo to nine people across time zones, ' + ('around 300 PRs and 131 releases in a quarter. As CISO, built ' + ('the ISMS from nothing and got the company to ISO 27001:2022 ' + ('and SOC 2 Type I readiness. Principal investigator on a $1M+ ' + ('DoD-funded MxD ergonomic-safety AI project, deployed at PPC ' + 'Flex.'))))]),
-		q: $author$project$Main$metrics,
+			['Techstars \'22, then a $4M seed led by Rackhouse. Took the ' + ('platform from first commit to about twenty customer ' + ('deployments across five product lines, then built the ' + ('plug-and-play inspection product behind the pivot: installs ' + ('in a day, works with the cameras and systems a site already ' + 'has.')))), 'Grew engineering from solo to nine across time zones. As CISO, ' + ('built the ISMS from nothing to ISO 27001:2022 and SOC 2 Type I ' + ('readiness. Principal investigator on a $1M+ DoD-funded MxD ' + 'safety AI project.'))]),
+		q: _List_Nil,
 		w: 'Arvist',
 		y: 'Chicago, IL',
 		z: '2023→now',
@@ -5003,7 +5270,7 @@ var $author$project$Main$roles = _List_fromArray(
 	},
 		{
 		e: _List_fromArray(
-			['Smart-locker and mobility IoT, now Accessa, backed by Jason ' + ('Calacanis with a $1M pre-seed. Part-time in college and at ' + ('Levity, full-time CTO from 2021. Led a team of five and ' + ('rebuilt the legacy PHP application as FastAPI and React ' + ('microservices on AWS. Built the BLE SDKs and the iOS and ' + ('Android integrations behind the 2020 Smart Locker launch, ' + 'which became the core business.'))))), 'Led development of the hardware as well: a System on Module with ' + ('BLE and LTE for the lockers, and the APIs that wrapped it. The ' + 'software was the easy half.')]),
+			['Smart-locker and mobility IoT, now Accessa, backed by Jason ' + ('Calacanis with a $1M pre-seed. Part-time through college, CTO ' + ('from 2021. Led a team of five, rebuilt a legacy PHP app as ' + ('FastAPI and React services on AWS, and built the BLE SDKs and ' + ('the BLE and LTE module behind the 2020 Smart Locker launch, ' + ('which became the core business. The software was the easy ' + 'half.')))))]),
 		q: _List_Nil,
 		w: 'Koloni',
 		y: 'Chicago, IL',
@@ -5012,7 +5279,7 @@ var $author$project$Main$roles = _List_fromArray(
 	},
 		{
 		e: _List_fromArray(
-			['First startup out of Buena Vista\'s Foundry incubator. In 2021 I ' + ('brought two of its engineers to Koloni and wound it down, ' + ('which I count as the best outcome any of my companies had. ' + ('Earlier: built the app for Match-Learn-Launch, a $175,000 ' + 'Google.org Impact Challenge winner in 2019.')))]),
+			['First startup out of Buena Vista\'s Foundry incubator. Wound it ' + ('down in 2021 and brought two of its engineers to Koloni, which ' + ('I count as the best outcome any of my companies had. Earlier: ' + ('the app for Match-Learn-Launch, a $175,000 Google.org Impact ' + 'Challenge winner.')))]),
 		q: _List_Nil,
 		w: 'Levity',
 		y: 'Storm Lake, IA',
@@ -5029,10 +5296,44 @@ var $author$project$Main$roles = _List_fromArray(
 		g: 'BS Computer Science, minor in Communications'
 	}
 	]);
+var $author$project$Main$section = F4(
+	function (anchor, eyebrow, heading, children) {
+		return A2(
+			$author$project$Jorn$Element$Html$section,
+			_List_fromArray(
+				[
+					$author$project$Jorn$Attribute$class('section wrap'),
+					$author$project$Jorn$Attribute$id(anchor)
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$author$project$Jorn$Element$Html$p,
+					_List_fromArray(
+						[
+							$author$project$Jorn$Attribute$class('eyebrow')
+						]),
+					_List_fromArray(
+						[
+							$author$project$Jorn$Element$text(eyebrow)
+						])),
+					A2(
+					$author$project$Jorn$Element$Html$h2,
+					_List_fromArray(
+						[
+							$author$project$Jorn$Attribute$class('h2')
+						]),
+					_List_fromArray(
+						[
+							$author$project$Jorn$Element$text(heading)
+						])),
+					A3($author$project$Jorn$Element$element, 'div', _List_Nil, children)
+				]));
+	});
 var $author$project$Main$path = A4(
 	$author$project$Main$section,
 	'path',
-	'03 / path',
+	'04 / path',
 	'Where the scar tissue came from.',
 	_List_fromArray(
 		[
@@ -5043,6 +5344,63 @@ var $author$project$Main$path = A4(
 					$author$project$Jorn$Attribute$class('path')
 				]),
 			A2($elm$core$List$map, $author$project$Main$roleItem, $author$project$Main$roles))
+		]));
+var $author$project$Main$metrics = _List_fromArray(
+	[
+		{i: 'of customer incidents traced to site power, network or hardware, not our code', j: '90%+'},
+		{i: 'days, median time to close a bug', j: '10.9→3'},
+		{i: 'ms per segmentation inference, new model', j: '400→26'},
+		{i: 'GPU load across five edge stations', j: '100→30%'},
+		{i: 'less GPT spend on one feature, same output', j: '6×'},
+		{i: 'versioned releases in a single quarter', j: '131'},
+		{i: 'median first response to a customer', j: '3 min'},
+		{i: 'engineers on a global team, from solo', j: '9'}
+	]);
+var $author$project$Main$receipts = A2(
+	$author$project$Jorn$Element$Html$section,
+	_List_fromArray(
+		[
+			$author$project$Jorn$Attribute$class('receipts'),
+			$author$project$Jorn$Attribute$id('receipts')
+		]),
+	_List_fromArray(
+		[
+			A2(
+			$author$project$Jorn$Element$Html$div,
+			_List_fromArray(
+				[
+					$author$project$Jorn$Attribute$class('wrap')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$author$project$Jorn$Element$Html$p,
+					_List_fromArray(
+						[
+							$author$project$Jorn$Attribute$class('eyebrow')
+						]),
+					_List_fromArray(
+						[
+							$author$project$Jorn$Element$text('02 / receipts')
+						])),
+					A2(
+					$author$project$Jorn$Element$Html$h2,
+					_List_fromArray(
+						[
+							$author$project$Jorn$Attribute$class('h2')
+						]),
+					_List_fromArray(
+						[
+							$author$project$Jorn$Element$text('Numbers, not adjectives.')
+						])),
+					A2(
+					$author$project$Jorn$Element$Html$div,
+					_List_fromArray(
+						[
+							$author$project$Jorn$Attribute$class('nums')
+						]),
+					A2($elm$core$List$map, $author$project$Main$metric, $author$project$Main$metrics))
+				]))
 		]));
 var $author$project$Main$PickFilter = function (a) {
 	return {$: 1, a: a};
@@ -5311,7 +5669,7 @@ var $author$project$Main$jornStages = _List_fromArray(
 var $author$project$Main$work = _List_fromArray(
 	[
 		{
-		h: 'Write your UI once in Elm. Run each piece in the browser, on the ' + ('server, or both, and decide at deploy time. An attempt at the ' + ('web framework that does not make you choose where your UI ' + ('runs: pure Elm virtual DOM, a diff that runs anywhere, a JSON ' + ('wire protocol, event routing, and a dependency-free browser ' + ('patcher. No kernel code, no fork. This page is one of its ' + 'consumers.'))))),
+		h: 'Write your UI once in Elm and decide at deploy time where each ' + ('piece runs: browser, server, or both. Pure Elm virtual DOM, a ' + ('diff that runs anywhere, a JSON wire protocol and a ' + ('dependency-free browser patcher. No kernel code, no fork. This ' + 'page runs on it.'))),
 		f: 0,
 		a: $elm$core$Maybe$Just('https://github.com/bazylhorsey/jorn'),
 		C: 'Jorn',
@@ -5320,7 +5678,7 @@ var $author$project$Main$work = _List_fromArray(
 			['elm', 'v0.0'])
 	},
 		{
-		h: 'An MCP server that connects local and remote Obsidian vaults to ' + ('desktop AI tools. Multi-vault switching, knowledge graph ' + ('analysis with hubs and orphans, hybrid full-text search, ' + 'backlink analysis, and vault analytics.')),
+		h: 'An MCP server that connects local and remote Obsidian vaults to ' + ('desktop AI tools: multi-vault switching, graph analysis, hybrid ' + 'search and backlinks.'),
 		f: 1,
 		a: $elm$core$Maybe$Just('https://github.com/bazylhorsey/obsidian-mcp-server'),
 		C: 'obsidian-mcp-server',
@@ -5329,7 +5687,7 @@ var $author$project$Main$work = _List_fromArray(
 			['typescript', '22 stars'])
 	},
 		{
-		h: 'A proposal to add user auto-stdin decoding to the Rust standard ' + ('library, filed as rust-lang/rust#117852 and prototyped in ' + ('RFC 3196. The most direct answer I have for what upstream ' + 'actually feels like from the outside.')),
+		h: 'A proposal to add typed stdin prompts to the Rust standard ' + ('library (rust-lang/rust#117852, RFC 3196). What upstream ' + 'actually feels like from the outside.'),
 		f: 2,
 		a: $elm$core$Maybe$Just('https://github.com/bazylhorsey/prompt-rust'),
 		C: 'prompt-rust',
@@ -5338,7 +5696,7 @@ var $author$project$Main$work = _List_fromArray(
 			['rust'])
 	},
 		{
-		h: 'A Rust take on Phoenix LiveView. Mostly valuable for what it taught ' + ('me: I know the browser-versus-server component trade-off from ' + ('the implementer side, which is the only way to have an ' + 'opinion about it.')),
+		h: 'A Rust take on Phoenix LiveView, built to learn the ' + ('browser-versus-server trade-off from the implementer\'s side. ' + 'The only way to have an opinion about it.'),
 		f: 1,
 		a: $elm$core$Maybe$Nothing,
 		C: 'Aethos',
@@ -5347,7 +5705,7 @@ var $author$project$Main$work = _List_fromArray(
 			['rust'])
 	},
 		{
-		h: 'Not my project: Hayleigh Thompson\'s Gleam web framework. Four open ' + ('PRs against it, including a 337-line fix for server component ' + ('context subscriptions, a replaced list.range in the diff ' + ('benchmark, a re-measured effects example, and a CI workflow ' + ('that runs the test suite on pushes to main. My bio says ' + 'upkeep is hard. Apparently I do it anyway.')))),
+		h: 'Hayleigh Thompson\'s Gleam web framework. Four open PRs, including ' + ('a 337-line fix for server component context subscriptions and ' + ('a CI workflow for main. Upkeep is hard. Apparently I do it ' + 'anyway.')),
 		f: 2,
 		a: $elm$core$Maybe$Just('https://github.com/lustre-labs/lustre/pulls?q=is%3Apr+author%3Abazylhorsey'),
 		C: 'Lustre',
@@ -5356,7 +5714,7 @@ var $author$project$Main$work = _List_fromArray(
 			['gleam'])
 	},
 		{
-		h: 'Not mine either: the open-source NVR that runs object detection ' + ('on camera feeds at the edge. A merged fix to its auth cookie ' + ('name pattern, and an open one for a shared-memory handle that ' + ('leaked whenever a captured frame was skipped. Same class of ' + 'bug as the day job, in someone else\'s codebase.'))),
+		h: 'The open-source NVR. A merged fix to its auth cookie pattern and ' + ('an open one for a shared-memory leak on skipped frames. Same ' + 'class of bug as the day job, in someone else\'s codebase.'),
 		f: 2,
 		a: $elm$core$Maybe$Just('https://github.com/blakeblackshear/frigate/pulls?q=is%3Apr+author%3Abazylhorsey'),
 		C: 'Frigate',
@@ -5365,7 +5723,7 @@ var $author$project$Main$work = _List_fromArray(
 			['python'])
 	},
 		{
-		h: 'A ChatGPT 3.0-era Lovable. Presented at the OpenAI Hackathon in ' + ('Chicago, 2022. Kept because it is funny and because it was ' + 'early.'),
+		h: 'A ChatGPT 3.0-era Lovable, presented at the OpenAI Hackathon in ' + 'Chicago, 2022. Kept because it is funny and it was early.',
 		f: 3,
 		a: $elm$core$Maybe$Just('https://github.com/bazylhorsey/astonish'),
 		C: 'astonish',
@@ -5400,7 +5758,7 @@ var $author$project$Main$shipped = function (model) {
 					]),
 				_List_fromArray(
 					[
-						$author$project$Jorn$Element$text('02 / work')
+						$author$project$Jorn$Element$text('03 / work')
 					])),
 				A2(
 				$author$project$Jorn$Element$Html$h2,
@@ -5741,7 +6099,7 @@ var $author$project$Main$posts = _List_fromArray(
 var $author$project$Main$writing = A4(
 	$author$project$Main$section,
 	'writing',
-	'04 / writing & talking',
+	'05 / writing & talking',
 	'Said out loud, on the record.',
 	_List_fromArray(
 		[
@@ -5783,6 +6141,7 @@ var $author$project$Main$view = function (model) {
 					[
 						$author$project$Main$hero,
 						$author$project$Main$claim,
+						$author$project$Main$receipts,
 						$author$project$Main$shipped(model),
 						$author$project$Main$path,
 						$author$project$Main$writing,
