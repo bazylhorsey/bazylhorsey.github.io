@@ -167,7 +167,7 @@ jornStages =
 
 metrics : List Metric
 metrics =
-    [ { figure = "20", caption = "customer deployments of the vision platform" }
+    [ { figure = "20", caption = "customer deployments, start to finish" }
     , { figure = "400→26", caption = "ms, segmentation inference per item" }
     , { figure = "6×", caption = "less GPT spend on one module, same output" }
     , { figure = "100→30%", caption = "GPU load across five stations" }
@@ -270,7 +270,7 @@ roles =
     [ { span = "2023→now"
       , place = "Chicago, IL"
       , org = "Arvist"
-      , title = "CTO, now Technical Advisor"
+      , title = "Co-founder & CTO, now Technical Advisor"
       , body =
             [ "Techstars '22. Vision AI for warehouse quality control, joined at "
                 ++ "pre-seed. $4M seed led by Rackhouse. Built the platform from "
@@ -507,13 +507,13 @@ hero =
             ]
         , Html.p [ Attr.class "lede" ]
             [ Element.text
-                ("Serial co-founder and startup CTO. Applied AI: agentic "
-                    ++ "systems, edge inference, and computer vision."
+                ("Serial co-founder and former startup CTO. Applied AI: agentic "
+                    ++ "systems and edge inference."
                 )
             ]
         , Html.p [ Attr.class "claim-line" ]
             [ Element.text
-                "I build AI that has to work on a real dock, not in a notebook."
+                "I build AI that has to work in production, not in a notebook."
             ]
         , Html.div [ Attr.class "hero-actions" ]
             [ Html.a [ Attr.class "btn btn-solid", Attr.href "#work" ]
@@ -535,8 +535,8 @@ claim =
         [ Html.ol [ Attr.class "claims" ]
             (List.map claimItem
                 [ ( "Ship the 0→1, then make it survive."
-                  , "A vision platform is a demo on day one and an uptime problem "
-                        ++ "on day ninety. I have taken Arvist from the first commit "
+                  , "A platform is a demo on day one and an uptime problem "
+                        ++ "on day ninety. I have taken one from the first commit "
                         ++ "to about twenty customer deployments, which is a "
                         ++ "different job than the one people pitch."
                   )

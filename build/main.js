@@ -4584,7 +4584,7 @@ var $author$project$Main$claim = A4(
 				$author$project$Main$claimItem,
 				_List_fromArray(
 					[
-						_Utils_Tuple2('Ship the 0→1, then make it survive.', 'A vision platform is a demo on day one and an uptime problem ' + ('on day ninety. I have taken Arvist from the first commit ' + ('to about twenty customer deployments, which is a ' + 'different job than the one people pitch.'))),
+						_Utils_Tuple2('Ship the 0→1, then make it survive.', 'A platform is a demo on day one and an uptime problem ' + ('on day ninety. I have taken one from the first commit ' + ('to about twenty customer deployments, which is a ' + 'different job than the one people pitch.'))),
 						_Utils_Tuple2('Replace the API call when the API call is the bottleneck.', 'GPT-dependent detections became in-house models. One ' + ('module\'s spend dropped 6×, segmentation went from 400 ' + ('ms to 26 ms, and GPU load at five stations fell from ' + ('100% to about 30%. Same accuracy requirement, ' + 'different bill.')))),
 						_Utils_Tuple2('Own the boring parts.', 'ISO 27001:2022 from a standing start. SOC 2 Type I ' + ('readiness. RLS multi-tenant Postgres. Hardened Linux on ' + ('Beelink mini PCs and Jetson. Three-minute median first ' + ('response. Upkeep is hard, and it is also most of the ' + 'job.'))))
 					])))
@@ -4778,7 +4778,7 @@ var $author$project$Main$hero = A2(
 				]),
 			_List_fromArray(
 				[
-					$author$project$Jorn$Element$text('Serial co-founder and startup CTO. Applied AI: agentic ' + 'systems, edge inference, and computer vision.')
+					$author$project$Jorn$Element$text('Serial co-founder and former startup CTO. Applied AI: agentic ' + 'systems and edge inference.')
 				])),
 			A2(
 			$author$project$Jorn$Element$Html$p,
@@ -4788,7 +4788,7 @@ var $author$project$Main$hero = A2(
 				]),
 			_List_fromArray(
 				[
-					$author$project$Jorn$Element$text('I build AI that has to work on a real dock, not in a notebook.')
+					$author$project$Jorn$Element$text('I build AI that has to work in production, not in a notebook.')
 				])),
 			A2(
 			$author$project$Jorn$Element$Html$div,
@@ -4941,7 +4941,7 @@ var $author$project$Main$roleItem = function (role) {
 };
 var $author$project$Main$metrics = _List_fromArray(
 	[
-		{i: 'customer deployments of the vision platform', j: '20'},
+		{i: 'customer deployments, start to finish', j: '20'},
 		{i: 'ms, segmentation inference per item', j: '400→26'},
 		{i: 'less GPT spend on one module, same output', j: '6×'},
 		{i: 'GPU load across five stations', j: '100→30%'},
@@ -4959,7 +4959,7 @@ var $author$project$Main$roles = _List_fromArray(
 		w: 'Arvist',
 		y: 'Chicago, IL',
 		z: '2023→now',
-		g: 'CTO, now Technical Advisor'
+		g: 'Co-founder & CTO, now Technical Advisor'
 	},
 		{
 		e: _List_fromArray(
