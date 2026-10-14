@@ -643,16 +643,55 @@ html[data-theme="night"] .diagram .dg-shadow {
   color: var(--muted);
 }
 
-/* Wide screens: everything fits, so lay it flat. The longest quote gets
-   the widest column. */
+/* Wide screens: three cards and a sliver of the next, so it is obvious the
+   strip keeps going. Stays inside the column instead of bleeding to the edge. */
 @media (min-width: 1000px) {
   .said-track {
     margin: 0;
-    padding: 0;
-    grid-auto-flow: row;
-    grid-template-columns: 1.35fr 1fr 1fr;
-    overflow: visible;
+    padding: 0.4rem 0 1rem;
+    scroll-padding-inline: 0;
+    grid-auto-columns: calc((100% - 3rem) / 3.2);
   }
+}
+
+.said-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.said-head .eyebrow {
+  margin: 0;
+}
+
+.said-nav {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.said-arrow {
+  width: 2.4rem;
+  height: 2.4rem;
+  display: grid;
+  place-items: center;
+  font: 600 1rem/1 var(--sans);
+  color: var(--ink);
+  background: var(--paper);
+  border: var(--gap) solid var(--line);
+  cursor: pointer;
+  transition: transform 0.14s, box-shadow 0.14s;
+}
+
+.said-arrow:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 2px 2px 0 var(--ink);
+}
+
+.said-arrow:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 /* receipts ---------------------------------------------------------- */

@@ -63,6 +63,7 @@ type alias Model =
 type Msg
     = ToggleTheme
     | PickFilter Filter
+    | NudgeSaid Int
 
 
 {-| The shell passes `{ "dark": true }` when the visitor picked night last
@@ -90,6 +91,9 @@ update msg model =
 
         PickFilter filter ->
             { model | filter = filter }
+
+        NudgeSaid _ ->
+            model
 
 
 
@@ -752,16 +756,30 @@ testimonials =
       , role = "Head of Engineering"
       , href = Just "https://www.linkedin.com/in/matthew-bronstein-a9230462/"
       }
+    , { quote =
+            "A vastly experienced and trusted technological genius who ALWAYS "
+                ++ "has a solution for every problem."
+      , name = "Oshoke Oyati"
+      , role = "Web Development Lead"
+      , href = Nothing
+      }
     ]
 
 
-{-| What people who worked with me say. A swipeable strip on phones, three
-across on wide screens. No autoplay: it sits still until you move it.
+{-| What people who worked with me say. One card per person, in a strip that
+scrolls sideways: swipe, trackpad, or the arrows. No autoplay: it sits still
+until you move it.
 -}
-said : Element msg
+said : Element Msg
 said =
     Html.div [ Attr.class "said wrap" ]
-        [ Html.p [ Attr.class "eyebrow" ] [ Element.text "said about working with me" ]
+        [ Html.div [ Attr.class "said-head" ]
+            [ Html.p [ Attr.class "eyebrow" ] [ Element.text "said about working with me" ]
+            , Html.div [ Attr.class "said-nav" ]
+                [ nudge -1 "Previous" "←"
+                , nudge 1 "Next" "→"
+                ]
+            ]
         , Html.ul
             [ Attr.class "said-track"
             , Attr.attribute "tabindex" "0"
@@ -769,6 +787,17 @@ said =
             ]
             (List.map testimonial testimonials)
         ]
+
+
+nudge : Int -> String -> String -> Element Msg
+nudge direction label glyph =
+    Html.button
+        [ Attr.class "said-arrow"
+        , Attr.type_ "button"
+        , Attr.attribute "aria-label" label
+        , Events.onClick (NudgeSaid direction)
+        ]
+        [ Element.text glyph ]
 
 
 testimonial : Testimonial -> Element msg
@@ -1198,6 +1227,11 @@ receive raw model =
                     )
     in
     case routed of
+        Ok (NudgeSaid direction) ->
+            -- Scrolling is the browser's job, not the tree's: nothing to diff,
+            -- so tell the shell which way to move the strip.
+            ( model, send "scroll" (Encode.int direction) )
+
         Ok msg ->
             let
                 next =

@@ -133,6 +133,15 @@
       app.ports.toClient.subscribe((message) => {
         if (message.mount) jorn.mount(message.mount);
         else if (message.patches) jorn.patch(message.patches);
+        else if (message.scroll) {
+          const track = document.querySelector(".said-track");
+          const card = track && track.querySelector(".said-card");
+          if (card) {
+            const step = card.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0);
+            const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+            track.scrollBy({ left: message.scroll * step, behavior: still ? "auto" : "smooth" });
+          }
+        }
         else if (message.error) console.warn(message.error);
         syncTheme();
       });

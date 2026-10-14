@@ -600,11 +600,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.I.B === region.M.B)
+	if (region.I.D === region.M.D)
 	{
-		return 'on line ' + region.I.B;
+		return 'on line ' + region.I.D;
 	}
-	return 'on lines ' + region.I.B + ' through ' + region.M.B;
+	return 'on lines ' + region.I.D + ' through ' + region.M.D;
 }
 
 
@@ -3739,7 +3739,7 @@ var $elm$json$Json$Decode$field = _Json_decodeField;
 var $author$project$Main$init = function (flags) {
 	return {
 		r: $author$project$Main$Everything,
-		A: function () {
+		C: function () {
 			var _v0 = A2(
 				$elm$json$Json$Decode$decodeValue,
 				A2($elm$json$Json$Decode$field, 'dark', $elm$json$Json$Decode$bool),
@@ -3764,7 +3764,7 @@ var $elm$core$Result$andThen = F2(
 	});
 var $author$project$Jorn$Internal$Event$Incoming = F3(
 	function (path, name, event) {
-		return {N: event, C: name, D: path};
+		return {N: event, E: name, F: path};
 	});
 var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $elm$json$Json$Decode$list = _Json_decodeList;
@@ -4344,30 +4344,30 @@ var $author$project$Jorn$Internal$Event$find = F2(
 	});
 var $author$project$Jorn$Internal$Event$route = F2(
 	function (incoming, element) {
-		var _v0 = A2($author$project$Jorn$Internal$Event$find, incoming.D, element);
+		var _v0 = A2($author$project$Jorn$Internal$Event$find, incoming.F, element);
 		if (_v0.$ === 1) {
 			return $elm$core$Result$Err(
-				$author$project$Jorn$Internal$Event$NodeNotFound(incoming.D));
+				$author$project$Jorn$Internal$Event$NodeNotFound(incoming.F));
 		} else {
 			if (_v0.a.$ === 1) {
 				return $elm$core$Result$Err(
-					A2($author$project$Jorn$Internal$Event$NoHandler, incoming.D, incoming.C));
+					A2($author$project$Jorn$Internal$Event$NoHandler, incoming.F, incoming.E));
 			} else {
 				var _v1 = _v0.a;
 				var attributes = _v1.c;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					incoming.C,
+					incoming.E,
 					$author$project$Jorn$Internal$Vdom$facts(attributes).R);
 				if (_v2.$ === 1) {
 					return $elm$core$Result$Err(
-						A2($author$project$Jorn$Internal$Event$NoHandler, incoming.D, incoming.C));
+						A2($author$project$Jorn$Internal$Event$NoHandler, incoming.F, incoming.E));
 				} else {
 					var _v3 = _v2.a;
 					var handler = _v3.b;
 					return A2(
 						$elm$core$Result$mapError,
-						$author$project$Jorn$Internal$Event$DecodeFailed(incoming.C),
+						$author$project$Jorn$Internal$Event$DecodeFailed(incoming.E),
 						A2($elm$json$Json$Decode$decodeValue, handler, incoming.N));
 				}
 			}
@@ -4385,17 +4385,20 @@ var $author$project$Main$send = F2(
 	});
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		if (!msg.$) {
-			return _Utils_update(
-				model,
-				{
-					A: (!model.A) ? 1 : 0
-				});
-		} else {
-			var filter = msg.a;
-			return _Utils_update(
-				model,
-				{r: filter});
+		switch (msg.$) {
+			case 0:
+				return _Utils_update(
+					model,
+					{
+						C: (!model.C) ? 1 : 0
+					});
+			case 1:
+				var filter = msg.a;
+				return _Utils_update(
+					model,
+					{r: filter});
+			default:
+				return model;
 		}
 	});
 var $author$project$Jorn$Internal$Vdom$Attr = F2(
@@ -5207,7 +5210,7 @@ var $author$project$Main$roleItem = function (role) {
 						_List_Nil,
 						_List_fromArray(
 							[
-								$author$project$Jorn$Element$text(role.z)
+								$author$project$Jorn$Element$text(role.B)
 							])),
 						A2(
 						$author$project$Jorn$Element$Html$span,
@@ -5277,7 +5280,7 @@ var $author$project$Main$roles = _List_fromArray(
 		q: $author$project$Main$metrics,
 		w: 'Arvist',
 		y: 'Chicago, IL',
-		z: '2023→now',
+		B: '2023→now',
 		g: 'Co-founder & CTO, now Technical Advisor'
 	},
 		{
@@ -5286,7 +5289,7 @@ var $author$project$Main$roles = _List_fromArray(
 		q: _List_Nil,
 		w: 'Koloni',
 		y: 'Chicago, IL',
-		z: '2019→2022',
+		B: '2019→2022',
 		g: 'Software Manager → Application Manager → CTO'
 	},
 		{
@@ -5295,7 +5298,7 @@ var $author$project$Main$roles = _List_fromArray(
 		q: _List_Nil,
 		w: 'Levity',
 		y: 'Storm Lake, IA',
-		z: '2020→2021',
+		B: '2020→2021',
 		g: 'Co-founder & CEO'
 	},
 		{
@@ -5304,7 +5307,7 @@ var $author$project$Main$roles = _List_fromArray(
 		q: _List_Nil,
 		w: 'Buena Vista University',
 		y: 'Storm Lake, IA',
-		z: '2016→2020',
+		B: '2016→2020',
 		g: 'BS Computer Science, minor in Communications'
 	}
 	]);
@@ -5357,6 +5360,46 @@ var $author$project$Main$path = A4(
 				]),
 			A2($elm$core$List$map, $author$project$Main$roleItem, $author$project$Main$roles))
 		]));
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var $author$project$Main$NudgeSaid = function (a) {
+	return {$: 2, a: a};
+};
+var $author$project$Jorn$Element$Html$button = $author$project$Jorn$Element$element('button');
+var $author$project$Jorn$Internal$Vdom$On = F2(
+	function (a, b) {
+		return {$: 2, a: a, b: b};
+	});
+var $author$project$Jorn$Event$on = F2(
+	function (name, decoder) {
+		return A2($author$project$Jorn$Internal$Vdom$On, name, decoder);
+	});
+var $elm$json$Json$Decode$succeed = _Json_succeed;
+var $author$project$Jorn$Event$onClick = function (msg) {
+	return A2(
+		$author$project$Jorn$Event$on,
+		'click',
+		$elm$json$Json$Decode$succeed(msg));
+};
+var $author$project$Jorn$Attribute$type_ = $author$project$Jorn$Attribute$attribute('type');
+var $author$project$Main$nudge = F3(
+	function (direction, label, glyph) {
+		return A2(
+			$author$project$Jorn$Element$Html$button,
+			_List_fromArray(
+				[
+					$author$project$Jorn$Attribute$class('said-arrow'),
+					$author$project$Jorn$Attribute$type_('button'),
+					A2($author$project$Jorn$Attribute$attribute, 'aria-label', label),
+					$author$project$Jorn$Event$onClick(
+					$author$project$Main$NudgeSaid(direction))
+				]),
+			_List_fromArray(
+				[
+					$author$project$Jorn$Element$text(glyph)
+				]));
+	});
 var $author$project$Main$testimonial = function (t) {
 	return A2(
 		$author$project$Jorn$Element$Html$li,
@@ -5377,7 +5420,7 @@ var $author$project$Main$testimonial = function (t) {
 						_List_Nil,
 						_List_fromArray(
 							[
-								$author$project$Jorn$Element$text(t.E)
+								$author$project$Jorn$Element$text(t.z)
 							]))
 					])),
 				A2(
@@ -5400,7 +5443,7 @@ var $author$project$Main$testimonial = function (t) {
 									]),
 								_List_fromArray(
 									[
-										$author$project$Jorn$Element$text(t.C)
+										$author$project$Jorn$Element$text(t.E)
 									]));
 						} else {
 							return A3(
@@ -5409,7 +5452,7 @@ var $author$project$Main$testimonial = function (t) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										$author$project$Jorn$Element$text(t.C)
+										$author$project$Jorn$Element$text(t.E)
 									]));
 						}
 					}(),
@@ -5418,7 +5461,7 @@ var $author$project$Main$testimonial = function (t) {
 						_List_Nil,
 						_List_fromArray(
 							[
-								$author$project$Jorn$Element$text(t.F)
+								$author$project$Jorn$Element$text(t.A)
 							]))
 					]))
 			]));
@@ -5427,22 +5470,23 @@ var $author$project$Main$testimonials = _List_fromArray(
 	[
 		{
 		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/ACoAADlC9G4Bwlszm246aKubHcdIWI4ymrnp8Y4'),
-		C: 'Sherif Okunade',
-		E: 'Bazyl has a habit of making complicated things look suspiciously ' + ('easy. The kind of person you want around when things break, ' + ('ideas get weird, or someone says, \u201CThat\u2019s probably ' + ('impossible.\u201D He\u2019ll either find a solution or make ' + 'the problem regret showing up.'))),
-		F: 'Web Developer'
+		E: 'Sherif Okunade',
+		z: 'Bazyl has a habit of making complicated things look suspiciously ' + ('easy. The kind of person you want around when things break, ' + ('ideas get weird, or someone says, \u201CThat\u2019s probably ' + ('impossible.\u201D He\u2019ll either find a solution or make ' + 'the problem regret showing up.'))),
+		A: 'Web Developer'
 	},
 		{
 		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/ACoAAEM91EABQb_ji6dKGuFDCIYeRoTpS9Pbk_4'),
-		C: 'Jesse Onyekwelu',
-		E: 'A natural mentor who empowers engineers. I started exploring ' + ('systems programming and Rust because of an impressive project ' + 'I saw on his GitHub.'),
-		F: 'Web Developer'
+		E: 'Jesse Onyekwelu',
+		z: 'A natural mentor who empowers engineers. I started exploring ' + ('systems programming and Rust because of an impressive project ' + 'I saw on his GitHub.'),
+		A: 'Web Developer'
 	},
 		{
 		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/matthew-bronstein-a9230462/'),
-		C: 'Matthew Bronstein',
-		E: 'Constantly geeking out over the newest tech releases and figuring ' + 'out how they can solve real problems.',
-		F: 'Head of Engineering'
-	}
+		E: 'Matthew Bronstein',
+		z: 'Constantly geeking out over the newest tech releases and figuring ' + 'out how they can solve real problems.',
+		A: 'Head of Engineering'
+	},
+		{a: $elm$core$Maybe$Nothing, E: 'Oshoke Oyati', z: 'A vastly experienced and trusted technological genius who ALWAYS ' + 'has a solution for every problem.', A: 'Web Development Lead'}
 	]);
 var $author$project$Main$said = A2(
 	$author$project$Jorn$Element$Html$div,
@@ -5453,14 +5497,34 @@ var $author$project$Main$said = A2(
 	_List_fromArray(
 		[
 			A2(
-			$author$project$Jorn$Element$Html$p,
+			$author$project$Jorn$Element$Html$div,
 			_List_fromArray(
 				[
-					$author$project$Jorn$Attribute$class('eyebrow')
+					$author$project$Jorn$Attribute$class('said-head')
 				]),
 			_List_fromArray(
 				[
-					$author$project$Jorn$Element$text('said about working with me')
+					A2(
+					$author$project$Jorn$Element$Html$p,
+					_List_fromArray(
+						[
+							$author$project$Jorn$Attribute$class('eyebrow')
+						]),
+					_List_fromArray(
+						[
+							$author$project$Jorn$Element$text('said about working with me')
+						])),
+					A2(
+					$author$project$Jorn$Element$Html$div,
+					_List_fromArray(
+						[
+							$author$project$Jorn$Attribute$class('said-nav')
+						]),
+					_List_fromArray(
+						[
+							A3($author$project$Main$nudge, -1, 'Previous', '←'),
+							A3($author$project$Main$nudge, 1, 'Next', '→')
+						]))
 				])),
 			A2(
 			$author$project$Jorn$Element$Html$ul,
@@ -5475,23 +5539,6 @@ var $author$project$Main$said = A2(
 var $author$project$Main$PickFilter = function (a) {
 	return {$: 1, a: a};
 };
-var $author$project$Jorn$Element$Html$button = $author$project$Jorn$Element$element('button');
-var $author$project$Jorn$Internal$Vdom$On = F2(
-	function (a, b) {
-		return {$: 2, a: a, b: b};
-	});
-var $author$project$Jorn$Event$on = F2(
-	function (name, decoder) {
-		return A2($author$project$Jorn$Internal$Vdom$On, name, decoder);
-	});
-var $elm$json$Json$Decode$succeed = _Json_succeed;
-var $author$project$Jorn$Event$onClick = function (msg) {
-	return A2(
-		$author$project$Jorn$Event$on,
-		'click',
-		$elm$json$Json$Decode$succeed(msg));
-};
-var $author$project$Jorn$Attribute$type_ = $author$project$Jorn$Attribute$attribute('type');
 var $author$project$Main$filterButton = F2(
 	function (current, _v0) {
 		var filter = _v0.a;
@@ -5669,7 +5716,7 @@ var $author$project$Main$itemCard = F2(
 							_List_Nil,
 							_List_fromArray(
 								[
-									$author$project$Jorn$Element$text(item.C)
+									$author$project$Jorn$Element$text(item.E)
 								])),
 						A2(
 							$elm$core$List$map,
@@ -5742,7 +5789,7 @@ var $author$project$Main$work = _List_fromArray(
 		h: 'Write your UI once in Elm and decide at deploy time where each ' + ('piece runs: browser, server, or both. Pure Elm virtual DOM, a ' + ('diff that runs anywhere, a JSON wire protocol and a ' + ('dependency-free browser patcher. No kernel code, no fork. This ' + 'page runs on it.'))),
 		f: 0,
 		a: $elm$core$Maybe$Just('https://github.com/bazylhorsey/jorn'),
-		C: 'Jorn',
+		E: 'Jorn',
 		k: $author$project$Main$jornStages,
 		m: _List_fromArray(
 			['elm', 'v0.0'])
@@ -5751,7 +5798,7 @@ var $author$project$Main$work = _List_fromArray(
 		h: 'An MCP server that connects local and remote Obsidian vaults to ' + ('desktop AI tools: multi-vault switching, graph analysis, hybrid ' + 'search and backlinks.'),
 		f: 1,
 		a: $elm$core$Maybe$Just('https://github.com/bazylhorsey/obsidian-mcp-server'),
-		C: 'obsidian-mcp-server',
+		E: 'obsidian-mcp-server',
 		k: _List_Nil,
 		m: _List_fromArray(
 			['typescript', '22 stars'])
@@ -5760,7 +5807,7 @@ var $author$project$Main$work = _List_fromArray(
 		h: 'A proposal to add typed stdin prompts to the Rust standard ' + ('library (rust-lang/rust#117852, RFC 3196). What upstream ' + 'actually feels like from the outside.'),
 		f: 2,
 		a: $elm$core$Maybe$Just('https://github.com/bazylhorsey/prompt-rust'),
-		C: 'prompt-rust',
+		E: 'prompt-rust',
 		k: _List_Nil,
 		m: _List_fromArray(
 			['rust'])
@@ -5769,7 +5816,7 @@ var $author$project$Main$work = _List_fromArray(
 		h: 'A Rust take on Phoenix LiveView, built to learn the ' + ('browser-versus-server trade-off from the implementer\'s side. ' + 'The only way to have an opinion about it.'),
 		f: 1,
 		a: $elm$core$Maybe$Nothing,
-		C: 'Aethos',
+		E: 'Aethos',
 		k: _List_Nil,
 		m: _List_fromArray(
 			['rust'])
@@ -5778,7 +5825,7 @@ var $author$project$Main$work = _List_fromArray(
 		h: 'Hayleigh Thompson\'s Gleam web framework. Four open PRs, including ' + ('a 337-line fix for server component context subscriptions and ' + ('a CI workflow for main. Upkeep is hard. Apparently I do it ' + 'anyway.')),
 		f: 2,
 		a: $elm$core$Maybe$Just('https://github.com/lustre-labs/lustre/pulls?q=is%3Apr+author%3Abazylhorsey'),
-		C: 'Lustre',
+		E: 'Lustre',
 		k: _List_Nil,
 		m: _List_fromArray(
 			['gleam'])
@@ -5787,7 +5834,7 @@ var $author$project$Main$work = _List_fromArray(
 		h: 'The open-source NVR. A merged fix to its auth cookie pattern and ' + ('an open one for a shared-memory leak on skipped frames. Same ' + 'class of bug as the day job, in someone else\'s codebase.'),
 		f: 2,
 		a: $elm$core$Maybe$Just('https://github.com/blakeblackshear/frigate/pulls?q=is%3Apr+author%3Abazylhorsey'),
-		C: 'Frigate',
+		E: 'Frigate',
 		k: _List_Nil,
 		m: _List_fromArray(
 			['python'])
@@ -5796,7 +5843,7 @@ var $author$project$Main$work = _List_fromArray(
 		h: 'A ChatGPT 3.0-era Lovable, presented at the OpenAI Hackathon in ' + 'Chicago, 2022. Kept because it is funny and it was early.',
 		f: 3,
 		a: $elm$core$Maybe$Just('https://github.com/bazylhorsey/astonish'),
-		C: 'astonish',
+		E: 'astonish',
 		k: _List_Nil,
 		m: _List_fromArray(
 			['python'])
@@ -5942,7 +5989,7 @@ var $author$project$Main$topbar = function (model) {
 						_List_fromArray(
 							[
 								$author$project$Jorn$Element$text(
-								(!model.A) ? 'night' : 'day')
+								(!model.C) ? 'night' : 'day')
 							]))
 					]))
 			]));
@@ -6199,7 +6246,7 @@ var $author$project$Main$view = function (model) {
 		_List_fromArray(
 			[
 				$author$project$Jorn$Attribute$class(
-				'page page--' + $author$project$Main$themeName(model.A))
+				'page page--' + $author$project$Main$themeName(model.C))
 			]),
 		_List_fromArray(
 			[
@@ -6239,18 +6286,28 @@ var $author$project$Main$receive = F2(
 				$elm$json$Json$Decode$errorToString,
 				A2($elm$json$Json$Decode$decodeValue, $author$project$Jorn$Internal$Event$decoder, raw)));
 		if (!routed.$) {
-			var msg = routed.a;
-			var next = A2($author$project$Main$update, msg, model);
-			return _Utils_Tuple2(
-				next,
-				A2(
-					$author$project$Main$send,
-					'patches',
-					$author$project$Jorn$Patch$encode(
-						A2(
-							$author$project$Jorn$Patch$diff,
-							$author$project$Main$view(model),
-							$author$project$Main$view(next)))));
+			if (routed.a.$ === 2) {
+				var direction = routed.a.a;
+				return _Utils_Tuple2(
+					model,
+					A2(
+						$author$project$Main$send,
+						'scroll',
+						$elm$json$Json$Encode$int(direction)));
+			} else {
+				var msg = routed.a;
+				var next = A2($author$project$Main$update, msg, model);
+				return _Utils_Tuple2(
+					next,
+					A2(
+						$author$project$Main$send,
+						'patches',
+						$author$project$Jorn$Patch$encode(
+							A2(
+								$author$project$Jorn$Patch$diff,
+								$author$project$Main$view(model),
+								$author$project$Main$view(next)))));
+			}
 		} else {
 			var problem = routed.a;
 			return _Utils_Tuple2(
