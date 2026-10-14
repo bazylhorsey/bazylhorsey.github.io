@@ -600,11 +600,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.G.B === region.K.B)
+	if (region.I.B === region.M.B)
 	{
-		return 'on line ' + region.G.B;
+		return 'on line ' + region.I.B;
 	}
-	return 'on lines ' + region.G.B + ' through ' + region.K.B;
+	return 'on lines ' + region.I.B + ' through ' + region.M.B;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.Q,
 		impl.S,
-		impl.R,
+		impl.U,
+		impl.T,
 		function() { return function() {} }
 	);
 });
@@ -2902,13 +2902,13 @@ var $author$project$Jorn$Internal$Vdom$encodeOptions = function (options) {
 			[
 				_Utils_Tuple2(
 				'preventDefault',
-				$elm$json$Json$Encode$bool(options.F)),
-				_Utils_Tuple2(
-				'stopPropagation',
 				$elm$json$Json$Encode$bool(options.H)),
 				_Utils_Tuple2(
+				'stopPropagation',
+				$elm$json$Json$Encode$bool(options.J)),
+				_Utils_Tuple2(
 				'include',
-				A2($elm$json$Json$Encode$list, $elm$json$Json$Encode$string, options.E))
+				A2($elm$json$Json$Encode$list, $elm$json$Json$Encode$string, options.G))
 			]));
 };
 var $elm$core$Basics$identity = function (x) {
@@ -2931,22 +2931,22 @@ var $author$project$Jorn$Internal$Vdom$encodeNode = function (node) {
 				[
 					_Utils_Tuple2(
 					'tag',
-					$elm$json$Json$Encode$string(r.O)),
+					$elm$json$Json$Encode$string(r.Q)),
 					_Utils_Tuple2(
 					'namespace',
-					$elm$json$Json$Encode$string(r.M)),
+					$elm$json$Json$Encode$string(r.O)),
 					_Utils_Tuple2(
 					'attrs',
-					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $elm$json$Json$Encode$string, r.I)),
+					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $elm$json$Json$Encode$string, r.K)),
 					_Utils_Tuple2(
 					'props',
-					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $elm$core$Basics$identity, r.N)),
+					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $elm$core$Basics$identity, r.P)),
 					_Utils_Tuple2(
 					'events',
-					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $author$project$Jorn$Internal$Vdom$encodeOptions, r.P)),
+					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $author$project$Jorn$Internal$Vdom$encodeOptions, r.R)),
 					_Utils_Tuple2(
 					'children',
-					A2($elm$json$Json$Encode$list, $author$project$Jorn$Internal$Vdom$encodeNode, r.J))
+					A2($elm$json$Json$Encode$list, $author$project$Jorn$Internal$Vdom$encodeNode, r.L))
 				]));
 	}
 };
@@ -3125,12 +3125,12 @@ var $author$project$Jorn$Internal$Vdom$addPaths = F2(
 var $author$project$Jorn$Internal$Vdom$combineOptions = F2(
 	function (added, options) {
 		return {
-			E: A2($author$project$Jorn$Internal$Vdom$addPaths, added.E, options.E),
-			F: added.F || options.F,
-			H: added.H || options.H
+			G: A2($author$project$Jorn$Internal$Vdom$addPaths, added.G, options.G),
+			H: added.H || options.H,
+			J: added.J || options.J
 		};
 	});
-var $author$project$Jorn$Internal$Vdom$defaultOptions = {E: _List_Nil, F: false, H: false};
+var $author$project$Jorn$Internal$Vdom$defaultOptions = {G: _List_Nil, H: false, J: false};
 var $author$project$Jorn$Internal$Vdom$splitOptions = function (attribute) {
 	if (attribute.$ === 3) {
 		var added = attribute.a;
@@ -3561,11 +3561,11 @@ var $author$project$Jorn$Internal$Vdom$addFact = F2(
 					return _Utils_update(
 						acc,
 						{
-							I: A3(
+							K: A3(
 								$elm$core$Dict$update,
 								'class',
 								$author$project$Jorn$Internal$Vdom$mergeClass(value),
-								acc.I)
+								acc.K)
 						});
 				} else {
 					var name = bare.a;
@@ -3573,7 +3573,7 @@ var $author$project$Jorn$Internal$Vdom$addFact = F2(
 					return _Utils_update(
 						acc,
 						{
-							I: A3($elm$core$Dict$insert, name, value, acc.I)
+							K: A3($elm$core$Dict$insert, name, value, acc.K)
 						});
 				}
 			case 1:
@@ -3582,7 +3582,7 @@ var $author$project$Jorn$Internal$Vdom$addFact = F2(
 				return _Utils_update(
 					acc,
 					{
-						N: A3($elm$core$Dict$insert, name, value, acc.N)
+						P: A3($elm$core$Dict$insert, name, value, acc.P)
 					});
 			case 2:
 				var name = bare.a;
@@ -3590,11 +3590,11 @@ var $author$project$Jorn$Internal$Vdom$addFact = F2(
 				return _Utils_update(
 					acc,
 					{
-						P: A3(
+						R: A3(
 							$elm$core$Dict$insert,
 							name,
 							_Utils_Tuple2(options, decoder),
-							acc.P)
+							acc.R)
 					});
 			default:
 				return acc;
@@ -3605,7 +3605,7 @@ var $author$project$Jorn$Internal$Vdom$facts = function (attributes) {
 	return A3(
 		$elm$core$List$foldl,
 		$author$project$Jorn$Internal$Vdom$addFact,
-		{I: $elm$core$Dict$empty, P: $elm$core$Dict$empty, N: $elm$core$Dict$empty},
+		{K: $elm$core$Dict$empty, R: $elm$core$Dict$empty, P: $elm$core$Dict$empty},
 		attributes);
 };
 var $elm$core$Dict$map = F2(
@@ -3708,19 +3708,19 @@ var $author$project$Jorn$Internal$Vdom$toNode = function (html) {
 		var f = $author$project$Jorn$Internal$Vdom$facts(attributes);
 		return $author$project$Jorn$Internal$Vdom$NodeElement(
 			{
-				I: f.I,
-				J: A2($elm$core$List$map, $author$project$Jorn$Internal$Vdom$toNode, children),
-				P: A2(
+				K: f.K,
+				L: A2($elm$core$List$map, $author$project$Jorn$Internal$Vdom$toNode, children),
+				R: A2(
 					$elm$core$Dict$map,
 					F2(
 						function (_v1, _v2) {
 							var options = _v2.a;
 							return options;
 						}),
-					f.P),
-				M: namespace,
-				N: f.N,
-				O: tag
+					f.R),
+				O: namespace,
+				P: f.P,
+				Q: tag
 			});
 	}
 };
@@ -3764,7 +3764,7 @@ var $elm$core$Result$andThen = F2(
 	});
 var $author$project$Jorn$Internal$Event$Incoming = F3(
 	function (path, name, event) {
-		return {L: event, C: name, D: path};
+		return {N: event, C: name, D: path};
 	});
 var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $elm$json$Json$Decode$list = _Json_decodeList;
@@ -3931,22 +3931,22 @@ var $author$project$Jorn$Internal$Patch$diffFacts = F4(
 					return A3($author$project$Jorn$Internal$Patch$SetEvent, path, name, options);
 				}),
 			$author$project$Jorn$Internal$Patch$RemoveEvent(path),
-			old.P,
-			_new.P,
+			old.R,
+			_new.R,
 			A6(
 				$author$project$Jorn$Internal$Patch$diffDict,
 				$author$project$Jorn$Internal$Patch$sameValue,
 				$author$project$Jorn$Internal$Patch$SetProperty(path),
 				$author$project$Jorn$Internal$Patch$RemoveProperty(path),
-				old.N,
-				_new.N,
+				old.P,
+				_new.P,
 				A6(
 					$author$project$Jorn$Internal$Patch$diffDict,
 					$elm$core$Basics$eq,
 					$author$project$Jorn$Internal$Patch$SetAttribute(path),
 					$author$project$Jorn$Internal$Patch$RemoveAttribute(path),
-					old.I,
-					_new.I,
+					old.K,
+					_new.K,
 					acc)));
 	});
 var $author$project$Jorn$Internal$Patch$diffChildren = F5(
@@ -4358,7 +4358,7 @@ var $author$project$Jorn$Internal$Event$route = F2(
 				var _v2 = A2(
 					$elm$core$Dict$get,
 					incoming.C,
-					$author$project$Jorn$Internal$Vdom$facts(attributes).P);
+					$author$project$Jorn$Internal$Vdom$facts(attributes).R);
 				if (_v2.$ === 1) {
 					return $elm$core$Result$Err(
 						A2($author$project$Jorn$Internal$Event$NoHandler, incoming.D, incoming.C));
@@ -4368,7 +4368,7 @@ var $author$project$Jorn$Internal$Event$route = F2(
 					return A2(
 						$elm$core$Result$mapError,
 						$author$project$Jorn$Internal$Event$DecodeFailed(incoming.C),
-						A2($elm$json$Json$Decode$decodeValue, handler, incoming.L));
+						A2($elm$json$Json$Decode$decodeValue, handler, incoming.N));
 				}
 			}
 		}
@@ -5357,6 +5357,121 @@ var $author$project$Main$path = A4(
 				]),
 			A2($elm$core$List$map, $author$project$Main$roleItem, $author$project$Main$roles))
 		]));
+var $author$project$Main$testimonial = function (t) {
+	return A2(
+		$author$project$Jorn$Element$Html$li,
+		_List_fromArray(
+			[
+				$author$project$Jorn$Attribute$class('said-card')
+			]),
+		_List_fromArray(
+			[
+				A3(
+				$author$project$Jorn$Element$element,
+				'blockquote',
+				_List_Nil,
+				_List_fromArray(
+					[
+						A2(
+						$author$project$Jorn$Element$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$author$project$Jorn$Element$text(t.E)
+							]))
+					])),
+				A2(
+				$author$project$Jorn$Element$Html$p,
+				_List_fromArray(
+					[
+						$author$project$Jorn$Attribute$class('said-who')
+					]),
+				_List_fromArray(
+					[
+						function () {
+						var _v0 = t.a;
+						if (!_v0.$) {
+							var href = _v0.a;
+							return A2(
+								$author$project$Jorn$Element$Html$a,
+								_List_fromArray(
+									[
+										$author$project$Jorn$Attribute$href(href)
+									]),
+								_List_fromArray(
+									[
+										$author$project$Jorn$Element$text(t.C)
+									]));
+						} else {
+							return A3(
+								$author$project$Jorn$Element$element,
+								'b',
+								_List_Nil,
+								_List_fromArray(
+									[
+										$author$project$Jorn$Element$text(t.C)
+									]));
+						}
+					}(),
+						A2(
+						$author$project$Jorn$Element$Html$span,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$author$project$Jorn$Element$text(t.F)
+							]))
+					]))
+			]));
+};
+var $author$project$Main$testimonials = _List_fromArray(
+	[
+		{
+		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/ACoAADlC9G4Bwlszm246aKubHcdIWI4ymrnp8Y4'),
+		C: 'Sherif Okunade',
+		E: 'Bazyl has a habit of making complicated things look suspiciously ' + ('easy. The kind of person you want around when things break, ' + ('ideas get weird, or someone says, \u201CThat\u2019s probably ' + ('impossible.\u201D He\u2019ll either find a solution or make ' + 'the problem regret showing up.'))),
+		F: 'Web Developer'
+	},
+		{
+		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/ACoAAEM91EABQb_ji6dKGuFDCIYeRoTpS9Pbk_4'),
+		C: 'Jesse Onyekwelu',
+		E: 'A natural mentor who empowers engineers. I started exploring ' + ('systems programming and Rust because of an impressive project ' + 'I saw on his GitHub.'),
+		F: 'Web Developer'
+	},
+		{
+		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/matthew-bronstein-a9230462/'),
+		C: 'Matthew Bronstein',
+		E: 'Constantly geeking out over the newest tech releases and figuring ' + 'out how they can solve real problems.',
+		F: 'Head of Engineering'
+	}
+	]);
+var $author$project$Main$said = A2(
+	$author$project$Jorn$Element$Html$div,
+	_List_fromArray(
+		[
+			$author$project$Jorn$Attribute$class('said wrap')
+		]),
+	_List_fromArray(
+		[
+			A2(
+			$author$project$Jorn$Element$Html$p,
+			_List_fromArray(
+				[
+					$author$project$Jorn$Attribute$class('eyebrow')
+				]),
+			_List_fromArray(
+				[
+					$author$project$Jorn$Element$text('said about working with me')
+				])),
+			A2(
+			$author$project$Jorn$Element$Html$ul,
+			_List_fromArray(
+				[
+					$author$project$Jorn$Attribute$class('said-track'),
+					A2($author$project$Jorn$Attribute$attribute, 'tabindex', '0'),
+					A2($author$project$Jorn$Attribute$attribute, 'aria-label', 'Testimonials')
+				]),
+			A2($elm$core$List$map, $author$project$Main$testimonial, $author$project$Main$testimonials))
+		]));
 var $author$project$Main$PickFilter = function (a) {
 	return {$: 1, a: a};
 };
@@ -6096,6 +6211,7 @@ var $author$project$Main$view = function (model) {
 					[
 						$author$project$Main$hero,
 						$author$project$Main$claim,
+						$author$project$Main$said,
 						$author$project$Main$shipped(model),
 						$author$project$Main$path,
 						$author$project$Main$writing,
@@ -6148,7 +6264,7 @@ var $author$project$Main$receive = F2(
 var $elm$core$Platform$worker = _Platform_worker;
 var $author$project$Main$main = $elm$core$Platform$worker(
 	{
-		Q: function (flags) {
+		S: function (flags) {
 			var model = $author$project$Main$init(flags);
 			return _Utils_Tuple2(
 				model,
@@ -6158,9 +6274,9 @@ var $author$project$Main$main = $elm$core$Platform$worker(
 					$author$project$Jorn$Patch$encodeHtml(
 						$author$project$Main$view(model))));
 		},
-		R: function (_v0) {
+		T: function (_v0) {
 			return $author$project$Main$fromClient($elm$core$Basics$identity);
 		},
-		S: $author$project$Main$receive
+		U: $author$project$Main$receive
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$value)(0)}});}(this));

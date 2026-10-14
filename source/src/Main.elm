@@ -418,6 +418,7 @@ view model =
         , Html.main_ []
             [ hero
             , claim
+            , said
             , shipped model
             , path
             , writing
@@ -713,6 +714,76 @@ claim =
                   )
                 ]
             )
+        ]
+
+
+type alias Testimonial =
+    { quote : String
+    , name : String
+    , role : String
+    , href : Maybe String
+    }
+
+
+testimonials : List Testimonial
+testimonials =
+    [ { quote =
+            "Bazyl has a habit of making complicated things look suspiciously "
+                ++ "easy. The kind of person you want around when things break, "
+                ++ "ideas get weird, or someone says, \u{201C}That\u{2019}s probably "
+                ++ "impossible.\u{201D} He\u{2019}ll either find a solution or make "
+                ++ "the problem regret showing up."
+      , name = "Sherif Okunade"
+      , role = "Web Developer"
+      , href = Just "https://www.linkedin.com/in/ACoAADlC9G4Bwlszm246aKubHcdIWI4ymrnp8Y4"
+      }
+    , { quote =
+            "A natural mentor who empowers engineers. I started exploring "
+                ++ "systems programming and Rust because of an impressive project "
+                ++ "I saw on his GitHub."
+      , name = "Jesse Onyekwelu"
+      , role = "Web Developer"
+      , href = Just "https://www.linkedin.com/in/ACoAAEM91EABQb_ji6dKGuFDCIYeRoTpS9Pbk_4"
+      }
+    , { quote =
+            "Constantly geeking out over the newest tech releases and figuring "
+                ++ "out how they can solve real problems."
+      , name = "Matthew Bronstein"
+      , role = "Head of Engineering"
+      , href = Just "https://www.linkedin.com/in/matthew-bronstein-a9230462/"
+      }
+    ]
+
+
+{-| What people who worked with me say. A swipeable strip on phones, three
+across on wide screens. No autoplay: it sits still until you move it.
+-}
+said : Element msg
+said =
+    Html.div [ Attr.class "said wrap" ]
+        [ Html.p [ Attr.class "eyebrow" ] [ Element.text "said about working with me" ]
+        , Html.ul
+            [ Attr.class "said-track"
+            , Attr.attribute "tabindex" "0"
+            , Attr.attribute "aria-label" "Testimonials"
+            ]
+            (List.map testimonial testimonials)
+        ]
+
+
+testimonial : Testimonial -> Element msg
+testimonial t =
+    Html.li [ Attr.class "said-card" ]
+        [ Element.element "blockquote" [] [ Html.p [] [ Element.text t.quote ] ]
+        , Html.p [ Attr.class "said-who" ]
+            [ case t.href of
+                Just href ->
+                    Html.a [ Attr.href href ] [ Element.text t.name ]
+
+                Nothing ->
+                    Element.element "b" [] [ Element.text t.name ]
+            , Html.span [] [ Element.text t.role ]
+            ]
         ]
 
 

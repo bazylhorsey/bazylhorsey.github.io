@@ -159,7 +159,8 @@ a {
   width: 100%;
   max-width: var(--maxw);
   margin-inline: auto;
-  padding-inline: clamp(1.1rem, 4vw, 2.5rem);
+  --pad: clamp(1.1rem, 4vw, 2.5rem);
+  padding-inline: var(--pad);
 }
 
 /* top bar ----------------------------------------------------------- */
@@ -551,6 +552,107 @@ html[data-theme="night"] .diagram .dg-shadow {
   margin: 0;
   max-width: 62ch;
   color: var(--ink-2);
+}
+
+/* said about working with me ---------------------------------------- */
+
+/* Sits right under the claim section, outside its grid, so the sticky
+   heading on the left cannot slide down over the cards. */
+.said {
+  margin-top: calc(-1 * clamp(1.6rem, 5vw, 3rem));
+  padding-bottom: clamp(1rem, 3vw, 2rem);
+}
+
+/* Phones and tablets: a swipeable strip. The next card peeks in from the
+   right so it reads as "there is more", and snap keeps cards from landing
+   half-on. No JS, no autoplay. */
+.said-track {
+  list-style: none;
+  margin: 0 calc(-1 * var(--pad));
+  padding: 0.4rem var(--pad) 1rem;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(85%, 26rem);
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: var(--pad);
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+}
+
+.said-track:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.said-card {
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1.4rem;
+  padding: 1.5rem;
+  border: var(--gap) solid var(--line);
+  border-top: 4px solid var(--accent);
+  background: var(--paper);
+}
+
+.said-card blockquote {
+  margin: 0;
+}
+
+.said-card blockquote p {
+  margin: 0;
+  font-size: 1.06rem;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.said-who {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.said-who a,
+.said-who b {
+  font-weight: 700;
+  width: fit-content;
+  color: var(--ink);
+}
+
+.said-who b {
+  border-bottom: 2px solid transparent;
+}
+
+.said-who a {
+  text-decoration: none;
+  border-bottom: 2px solid var(--accent);
+}
+
+.said-who a:hover {
+  color: var(--accent-text);
+}
+
+.said-who span {
+  font: 600 0.68rem/1.3 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+}
+
+/* Wide screens: everything fits, so lay it flat. The longest quote gets
+   the widest column. */
+@media (min-width: 1000px) {
+  .said-track {
+    margin: 0;
+    padding: 0;
+    grid-auto-flow: row;
+    grid-template-columns: 1.35fr 1fr 1fr;
+    overflow: visible;
+  }
 }
 
 /* receipts ---------------------------------------------------------- */
