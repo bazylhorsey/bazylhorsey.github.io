@@ -5475,18 +5475,18 @@ var $author$project$Main$testimonials = _List_fromArray(
 		A: 'Web Developer'
 	},
 		{
+		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/matthew-bronstein-a9230462/'),
+		E: 'Matthew Bronstein',
+		z: 'Passionate technology leader who is constantly geeking out over the ' + ('newest tech releases and figuring out how they can solve real ' + 'problems.'),
+		A: 'Head of Engineering'
+	},
+		{
 		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/ACoAAEM91EABQb_ji6dKGuFDCIYeRoTpS9Pbk_4'),
 		E: 'Jesse Onyekwelu',
 		z: 'A natural mentor who empowers engineers. I started exploring ' + ('systems programming and Rust because of an impressive project ' + 'I saw on his GitHub.'),
 		A: 'Web Developer'
 	},
-		{
-		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/matthew-bronstein-a9230462/'),
-		E: 'Matthew Bronstein',
-		z: 'Constantly geeking out over the newest tech releases and figuring ' + 'out how they can solve real problems.',
-		A: 'Head of Engineering'
-	},
-		{a: $elm$core$Maybe$Nothing, E: 'Oshoke Oyati', z: 'A vastly experienced and trusted technological genius who ALWAYS ' + 'has a solution for every problem.', A: 'Web Development Lead'}
+		{a: $elm$core$Maybe$Nothing, E: 'Oshoke Oyati', z: 'His depth of knowledge, resourcefulness, and unwavering ' + ('commitment to excellence make him \u2026 someone you can ' + 'always count on.'), A: 'Web Development Lead'}
 	]);
 var $author$project$Main$said = A2(
 	$author$project$Jorn$Element$Html$div,

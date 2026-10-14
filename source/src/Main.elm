@@ -742,6 +742,14 @@ testimonials =
       , href = Just "https://www.linkedin.com/in/ACoAADlC9G4Bwlszm246aKubHcdIWI4ymrnp8Y4"
       }
     , { quote =
+            "Passionate technology leader who is constantly geeking out over the "
+                ++ "newest tech releases and figuring out how they can solve real "
+                ++ "problems."
+      , name = "Matthew Bronstein"
+      , role = "Head of Engineering"
+      , href = Just "https://www.linkedin.com/in/matthew-bronstein-a9230462/"
+      }
+    , { quote =
             "A natural mentor who empowers engineers. I started exploring "
                 ++ "systems programming and Rust because of an impressive project "
                 ++ "I saw on his GitHub."
@@ -750,15 +758,9 @@ testimonials =
       , href = Just "https://www.linkedin.com/in/ACoAAEM91EABQb_ji6dKGuFDCIYeRoTpS9Pbk_4"
       }
     , { quote =
-            "Constantly geeking out over the newest tech releases and figuring "
-                ++ "out how they can solve real problems."
-      , name = "Matthew Bronstein"
-      , role = "Head of Engineering"
-      , href = Just "https://www.linkedin.com/in/matthew-bronstein-a9230462/"
-      }
-    , { quote =
-            "A vastly experienced and trusted technological genius who ALWAYS "
-                ++ "has a solution for every problem."
+            "His depth of knowledge, resourcefulness, and unwavering "
+                ++ "commitment to excellence make him \u{2026} someone you can "
+                ++ "always count on."
       , name = "Oshoke Oyati"
       , role = "Web Development Lead"
       , href = Nothing

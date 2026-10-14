@@ -94,3 +94,14 @@ Was "A vastly experienced and trusted technological genius who ALWAYS has a
 solution for every problem." Now (the cut is "an invaluable asset and"):
 > His depth of knowledge, resourcefulness, and unwavering commitment to
 > excellence make him … someone you can always count on.
+
+### 2026-10-14: excerpts picked for the strip
+
+Order: Sherif, Matthew, Jesse, Oshoke. The originals above are unchanged.
+
+- Sherif: full quote.
+- Matthew: full quote, first letter capitalized.
+- Jesse: "A natural mentor who empowers engineers. I started exploring systems
+  programming and Rust because of an impressive project I saw on his GitHub."
+- Oshoke: "His depth of knowledge, resourcefulness, and unwavering commitment
+  to excellence make him … someone you can always count on."
