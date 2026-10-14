@@ -167,14 +167,14 @@ jornStages =
 
 metrics : List Metric
 metrics =
-    [ { figure = "90%+", caption = "of customer incidents traced to site power, network or hardware, not our code" }
-    , { figure = "10.9→3", caption = "days, median time to close a bug" }
-    , { figure = "400→26", caption = "ms per segmentation inference, new model" }
-    , { figure = "100→30%", caption = "GPU load across five edge stations" }
-    , { figure = "6×", caption = "less GPT spend on one feature, same output" }
+    [ { figure = "2", caption = "VC-backed startups as CTO" }
+    , { figure = "7 yrs", caption = "shipping production software, from part-time in college to CTO" }
+    , { figure = "20", caption = "customer deployments, first commit to running on their hardware" }
+    , { figure = "9", caption = "engineers grown from solo, across time zones" }
+    , { figure = "6×", caption = "less LLM spend on one feature, same output" }
+    , { figure = "15×", caption = "faster inference after a model swap, 400 ms to 26 ms" }
     , { figure = "131", caption = "versioned releases in a single quarter" }
-    , { figure = "3 min", caption = "median first response to a customer" }
-    , { figure = "9", caption = "engineers on a global team, from solo" }
+    , { figure = "$1M+", caption = "DoD-funded AI program, principal investigator" }
     ]
 
 

@@ -5348,14 +5348,14 @@ var $author$project$Main$path = A4(
 		]));
 var $author$project$Main$metrics = _List_fromArray(
 	[
-		{i: 'of customer incidents traced to site power, network or hardware, not our code', j: '90%+'},
-		{i: 'days, median time to close a bug', j: '10.9→3'},
-		{i: 'ms per segmentation inference, new model', j: '400→26'},
-		{i: 'GPU load across five edge stations', j: '100→30%'},
-		{i: 'less GPT spend on one feature, same output', j: '6×'},
+		{i: 'VC-backed startups as CTO', j: '2'},
+		{i: 'shipping production software, from part-time in college to CTO', j: '7 yrs'},
+		{i: 'customer deployments, first commit to running on their hardware', j: '20'},
+		{i: 'engineers grown from solo, across time zones', j: '9'},
+		{i: 'less LLM spend on one feature, same output', j: '6×'},
+		{i: 'faster inference after a model swap, 400 ms to 26 ms', j: '15×'},
 		{i: 'versioned releases in a single quarter', j: '131'},
-		{i: 'median first response to a customer', j: '3 min'},
-		{i: 'engineers on a global team, from solo', j: '9'}
+		{i: 'DoD-funded AI program, principal investigator', j: '$1M+'}
 	]);
 var $author$project$Main$receipts = A2(
 	$author$project$Jorn$Element$Html$section,
