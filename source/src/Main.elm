@@ -323,7 +323,7 @@ roles =
     , { span = "2016→2020"
       , place = "Storm Lake, IA"
       , org = "Buena Vista University"
-      , title = "BS Computer Science, minor in Communication"
+      , title = "BS Computer Science, minor in Communications"
       , body =
             [ "Dean's List. President of the Robotics Club. Collegiate wrestler, "
                 ++ "which explains more about how I run engineering than any "

@@ -4986,7 +4986,7 @@ var $author$project$Main$roles = _List_fromArray(
 		w: 'Buena Vista University',
 		y: 'Storm Lake, IA',
 		z: '2016→2020',
-		g: 'BS Computer Science, minor in Communication'
+		g: 'BS Computer Science, minor in Communications'
 	}
 	]);
 var $author$project$Main$path = A4(
