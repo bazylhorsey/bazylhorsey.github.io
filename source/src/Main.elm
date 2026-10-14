@@ -295,8 +295,9 @@ roles =
       , org = "Koloni"
       , title = "Software Manager → Application Manager → CTO"
       , body =
-            [ "Smart-locker and mobility IoT, now Accessa. Part-time in college "
-                ++ "and at Levity, full-time CTO from 2021. Led a team of five and "
+            [ "Smart-locker and mobility IoT, now Accessa, backed by Jason "
+                ++ "Calacanis with a $1M pre-seed. Part-time in college and at "
+                ++ "Levity, full-time CTO from 2021. Led a team of five and "
                 ++ "rebuilt the legacy PHP application as FastAPI and React "
                 ++ "microservices on AWS. Built the BLE SDKs and the iOS and "
                 ++ "Android integrations behind the 2020 Smart Locker launch, "

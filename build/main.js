@@ -4963,7 +4963,7 @@ var $author$project$Main$roles = _List_fromArray(
 	},
 		{
 		e: _List_fromArray(
-			['Smart-locker and mobility IoT, now Accessa. Part-time in college ' + ('and at Levity, full-time CTO from 2021. Led a team of five and ' + ('rebuilt the legacy PHP application as FastAPI and React ' + ('microservices on AWS. Built the BLE SDKs and the iOS and ' + ('Android integrations behind the 2020 Smart Locker launch, ' + 'which became the core business.')))), 'Led development of the hardware as well: a System on Module with ' + ('BLE and LTE for the lockers, and the APIs that wrapped it. The ' + 'software was the easy half.')]),
+			['Smart-locker and mobility IoT, now Accessa, backed by Jason ' + ('Calacanis with a $1M pre-seed. Part-time in college and at ' + ('Levity, full-time CTO from 2021. Led a team of five and ' + ('rebuilt the legacy PHP application as FastAPI and React ' + ('microservices on AWS. Built the BLE SDKs and the iOS and ' + ('Android integrations behind the 2020 Smart Locker launch, ' + 'which became the core business.'))))), 'Led development of the hardware as well: a System on Module with ' + ('BLE and LTE for the lockers, and the APIs that wrapped it. The ' + 'software was the easy half.')]),
 		q: _List_Nil,
 		w: 'Koloni',
 		y: 'Chicago, IL',
