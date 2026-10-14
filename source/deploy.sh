@@ -28,7 +28,7 @@ cp src/Main.elm "$SITE/source/src/"
 cp public/index.html public/portfolio.css public/favicon.svg public/og.png \
    public/apple-touch-icon.png public/robots.txt public/sitemap.xml \
    "$SITE/source/public/"
-cp README.md elm.json build.sh bundle.sh deploy.sh prerender.mjs run.mjs \
+cp README.md TESTIMONIALS.md elm.json build.sh bundle.sh deploy.sh prerender.mjs run.mjs \
    audit.html serve.command .gitignore "$SITE/source/"
 
 cat > "$SITE/README.md" <<'MD'
