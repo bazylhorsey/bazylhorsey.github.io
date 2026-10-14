@@ -71,14 +71,16 @@ html = html.replace(
     + '" type="image/svg+xml" />',
 )
 
-html = html.replace(
-    '<link rel="stylesheet" href="portfolio.css" />',
-    "<style>\n" + css + "\n</style>",
+html, n_css = re.subn(
+    r'<link rel="stylesheet" href="portfolio\.css(\?v=[0-9a-f]+)?" />',
+    lambda m: "<style>\n" + css + "\n</style>",
+    html,
 )
 
-html = html.replace(
-    '<script src="build/main.js"></script>',
-    "<script>\n" + elm + "\n</script>",
+html, n_js = re.subn(
+    r'<script src="build/main\.js(\?v=[0-9a-f]+)?"></script>',
+    lambda m: "<script>\n" + elm + "\n</script>",
+    html,
 )
 
 # "<script type=\"module\">" ... "</script>" -> the import line goes, the

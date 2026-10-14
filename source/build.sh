@@ -45,6 +45,28 @@ cp public/robots.txt public/sitemap.xml "$OUT/"
 #    JavaScript still get the whole page. Jorn mounts over it in the browser.
 node prerender.mjs
 
+# 7. cache-bust: stamp each asset URL in index.html with a hash of its
+#    contents. GitHub Pages caches files for 10 minutes, so without this a
+#    returning visitor can get new HTML with an old main.js, and Jorn mounts
+#    the old page right over the new prerendered one.
+python3 - "$OUT" <<'PY2'
+import hashlib, pathlib, sys
+out = pathlib.Path(sys.argv[1])
+page = out / "index.html"
+html = page.read_text(encoding="utf-8")
+for ref, path in [
+    ('href="portfolio.css"', "portfolio.css"),
+    ('src="build/main.js"', "build/main.js"),
+    ('from "./vendor/jorn.js"', "vendor/jorn.js"),
+]:
+    if ref not in html:
+        sys.exit(f"cache-bust: {ref} not found in index.html")
+    v = hashlib.sha256((out / path).read_bytes()).hexdigest()[:10]
+    html = html.replace(ref, ref[:-1] + "?v=" + v + '"')
+page.write_text(html, encoding="utf-8")
+print("cache-busted asset URLs in index.html")
+PY2
+
 echo
 echo "built $OUT/"
 echo "preview:  python3 -m http.server -d $OUT 8080"
