@@ -1,0 +1,41 @@
+# Bazyl Horsey
+
+> Serial co-founder and two-time VC-backed startup CTO, based in Chicago, IL. Applied AI: agentic systems and edge inference. Builds AI that has to work in production, not in a notebook. Open to forward deployed and applied AI roles, technical leadership, and on-site customer work.
+
+Contact: bhorsey16@gmail.com
+
+## Profile
+
+- [Portfolio](https://bazylhorsey.github.io/): the full site, prerendered HTML
+- [GitHub](https://github.com/bazylhorsey)
+- [LinkedIn](https://www.linkedin.com/in/bazyl-horsey-075506139)
+- [ORCID](https://orcid.org/0009-0000-4566-0406)
+- [Medium](https://bazyl-25260.medium.com/)
+
+## Experience
+
+- Arvist, Chicago (2023 to now): Co-founder & CTO, now Technical Advisor. Techstars '22, then a $4M seed led by Rackhouse. Took the platform from first commit to about twenty customer deployments across five product lines. Grew engineering from solo to nine across time zones. As CISO, built the ISMS to ISO 27001:2022 and SOC 2 Type I readiness. Principal investigator on a $1M+ DoD-funded MxD safety AI project. Cut one feature's GPT spend 6x by moving to in-house models, and took a segmentation model from 400 ms to 26 ms per inference. 131 versioned releases in a single quarter. Median time to close a bug went from 10.9 to 3 days. Median first response to a customer: 3 minutes.
+- Koloni, Chicago (2019 to 2022): Software Manager, Application Manager, then CTO from 2021, leading a team of five. Smart-locker and mobility IoT, now Accessa, backed by Jason Calacanis with a $1M pre-seed. Built the BLE SDKs and mobile integrations behind the 2020 Smart Locker launch, plus the in-house System on Module (BLE and LTE) and its APIs.
+- Levity, Storm Lake, IA (2020 to 2021): Co-founder & CEO. First startup out of Buena Vista's Foundry incubator.
+- Buena Vista University (2016 to 2020): BS Computer Science, minor in Communications. Dean's List, Robotics Club president, collegiate wrestler.
+
+## Projects
+
+- [Jorn](https://github.com/bazylhorsey/jorn): Elm virtual DOM with a diff and a JSON patch protocol. Write UI once in Elm and decide at deploy time where it runs. The portfolio runs on it.
+- [obsidian-mcp-server](https://github.com/bazylhorsey/obsidian-mcp-server): MCP server connecting Obsidian vaults to desktop AI tools.
+- [prompt-rust](https://github.com/bazylhorsey/prompt-rust): proposal for typed stdin prompts in the Rust standard library.
+- Open source contributions to [Lustre](https://github.com/lustre-labs/lustre) (Gleam) and [Frigate](https://github.com/blakeblackshear/frigate) (Python).
+
+## Writing and talks
+
+- [Implementing concepts from green logistics in the turkey production supply chain](https://doi.org/10.3389/frsus.2024.1416964): Frontiers in Sustainability, 2024, second author.
+- [Software Leaders Uncensored, with Steve Taplin](https://youtu.be/mk7CKtatU8U): podcast.
+- [Deep Learning Leaders, with Eric Landau](https://encord.com/deep-learning-leaders/): podcast.
+- [Why vertical monopoly doesn't work for warehouse software anymore](https://arvist.ai/vertical-monopoly/)
+- [Why your integration quote is wrong](https://arvist.ai/why-your-integration-quote-is-wrong/)
+
+## What people say
+
+- "Bazyl has a habit of making complicated things look suspiciously easy." Sherif Okunade, Web Developer
+- "Passionate technology leader who is constantly geeking out over the newest tech releases and figuring out how they can solve real problems." Matthew Bronstein, Head of Engineering
+- "A natural mentor who empowers engineers." Jesse Onyekwelu, Web Developer

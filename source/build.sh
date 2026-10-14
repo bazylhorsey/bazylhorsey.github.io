@@ -31,7 +31,8 @@ elm make src/Main.elm --optimize --output="$OUT/build/main.js"
 cp "$JORN/client/jorn.js" "$OUT/vendor/jorn.js"
 
 # 3. the page shell and its stylesheet
-cp public/index.html public/portfolio.css public/favicon.svg public/og.png public/apple-touch-icon.png "$OUT/"
+cp public/index.html public/portfolio.css public/favicon.svg public/favicon.ico \
+   public/favicon-48.png public/favicon-192.png public/og.png public/apple-touch-icon.png "$OUT/"
 # Older iOS asks for the -precomposed name first; same image.
 cp public/apple-touch-icon.png "$OUT/apple-touch-icon-precomposed.png"
 
@@ -43,7 +44,7 @@ mkdir -p "$OUT/fonts"
 cp public/fonts/bigshoulders.woff2 public/fonts/BigShoulders-OFL.txt "$OUT/fonts/"
 
 # 5. crawler files
-cp public/robots.txt public/sitemap.xml "$OUT/"
+cp public/robots.txt public/sitemap.xml public/llms.txt "$OUT/"
 
 # 6. prerender the Elm view into index.html so crawlers that do not run
 #    JavaScript still get the whole page. Jorn mounts over it in the browser.
