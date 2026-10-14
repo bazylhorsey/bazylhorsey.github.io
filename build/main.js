@@ -4778,7 +4778,7 @@ var $author$project$Main$hero = A2(
 				]),
 			_List_fromArray(
 				[
-					$author$project$Jorn$Element$text('Serial co-founder and two-time startup CTO. Applied AI: agentic ' + 'systems and edge inference.')
+					$author$project$Jorn$Element$text('Serial co-founder and two-time VC-backed startup CTO. Applied AI: agentic ' + 'systems and edge inference.')
 				])),
 			A2(
 			$author$project$Jorn$Element$Html$p,
