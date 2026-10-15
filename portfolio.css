@@ -1644,8 +1644,41 @@ html[data-theme="night"] .diagram .dg-shadow {
 
 @media print {
   .topbar,
-  .page::before {
+  .page::before,
+  .foot,
+  .essay-end,
+  .essay-head .link {
     display: none !important;
+  }
+  /* Ink on white whatever theme was on screen. */
+  .page {
+    --paper: #fff;
+    --paper-2: #f3f1ec;
+    --ink: #121110;
+    --ink-2: #2b2925;
+    --muted: #55514a;
+    --line: #121110;
+    --accent-text: #a8350a;
+  }
+  .essay {
+    padding: 0;
+  }
+  .essay-head {
+    padding-bottom: 1.2rem;
+    margin-bottom: 1.6rem;
+  }
+  .essay-body {
+    font-size: 11pt;
+    line-height: 1.55;
+  }
+  .essay-body h2 {
+    margin-top: 1.7em;
+    break-after: avoid;
+  }
+  .essay-quote,
+  .essay-steps li,
+  .essay-bullets li {
+    break-inside: avoid;
   }
   body {
     background: #fff;

@@ -50,7 +50,7 @@ sections =
       , [ P "When I met Arvist, I had more hair. I don't remember much of the four years that followed. I was distracted."
         , P "I joined as Arvist's first technical hire and became its cofounder and CTO. I was a hired gun. Young, a little dangerous, looking for something to point at and shoot. My last couple of startups hadn't made it. Arvist was the first one I couldn't let die."
         , P "If you haven't heard of Arvist: it turns the cameras a warehouse already has into computer vision that watches the floor. Inspections, safety, the moments nobody can watch all day. It installs in a day and works with the systems a site already runs."
-        , P "I've never been the type A guy, and I won't pretend to be one now. I'm type \"find a way.\" I wrestled in middle school, high school, and part of college. Most of what I know about running engineering came from the mat: stay low, keep moving, fight for position. But Nilay, my cofounder and Arvist's CEO, noticed two things about me. I had my head in the clouds. And I would find a path around any obstacle, pushing back only if a request wasn't profitable for the one customer asking and had no chance of ever serving anyone else."
+        , P "I've never been the type A guy, and I won't pretend to be one now. I'm type \"find a way.\" I wrestled in middle school, high school, and part of college. Most of what I know about running engineering came from the mat: stay low, keep moving, fight for position. But Nilay, my cofounder and Arvist's CEO, noticed two things about me. I had my head in the clouds. And I would find a path around any obstacle, pushing back only if a request wasn't profitable for the one customer asking *and* had no chance of ever serving anyone else."
         , P "That second habit turned out to be the job. It had a name somewhere. I just hadn't read it yet."
         ]
       )
@@ -194,7 +194,7 @@ viewBlock : Block -> Element msg
 viewBlock block =
     case block of
         P text ->
-            Html.p [] [ Element.text text ]
+            Html.p [] (inline text)
 
         Quote text ->
             Element.element "blockquote" [ Attr.class "essay-quote" ]
@@ -205,6 +205,24 @@ viewBlock block =
 
         Bullets items ->
             Html.ul [ Attr.class "essay-bullets" ] (List.map leadItem items)
+
+
+{-| Words wrapped in asterisks are italic, as they are in the PDF. Splitting
+on "*" puts every odd piece inside the asterisks.
+-}
+inline : String -> List (Element msg)
+inline text =
+    String.split "*" text
+        |> List.indexedMap Tuple.pair
+        |> List.filter (\( _, piece ) -> piece /= "")
+        |> List.map
+            (\( i, piece ) ->
+                if modBy 2 i == 1 then
+                    Element.element "em" [] [ Element.text piece ]
+
+                else
+                    Element.text piece
+            )
 
 
 leadItem : ( String, String ) -> Element msg

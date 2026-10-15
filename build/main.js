@@ -6055,7 +6055,7 @@ var $author$project$Essay$sections = _List_fromArray(
 				$author$project$Essay$P('When I met Arvist, I had more hair. I don\'t remember much of the four years that followed. I was distracted.'),
 				$author$project$Essay$P('I joined as Arvist\'s first technical hire and became its cofounder and CTO. I was a hired gun. Young, a little dangerous, looking for something to point at and shoot. My last couple of startups hadn\'t made it. Arvist was the first one I couldn\'t let die.'),
 				$author$project$Essay$P('If you haven\'t heard of Arvist: it turns the cameras a warehouse already has into computer vision that watches the floor. Inspections, safety, the moments nobody can watch all day. It installs in a day and works with the systems a site already runs.'),
-				$author$project$Essay$P('I\'ve never been the type A guy, and I won\'t pretend to be one now. I\'m type \"find a way.\" I wrestled in middle school, high school, and part of college. Most of what I know about running engineering came from the mat: stay low, keep moving, fight for position. But Nilay, my cofounder and Arvist\'s CEO, noticed two things about me. I had my head in the clouds. And I would find a path around any obstacle, pushing back only if a request wasn\'t profitable for the one customer asking and had no chance of ever serving anyone else.'),
+				$author$project$Essay$P('I\'ve never been the type A guy, and I won\'t pretend to be one now. I\'m type \"find a way.\" I wrestled in middle school, high school, and part of college. Most of what I know about running engineering came from the mat: stay low, keep moving, fight for position. But Nilay, my cofounder and Arvist\'s CEO, noticed two things about me. I had my head in the clouds. And I would find a path around any obstacle, pushing back only if a request wasn\'t profitable for the one customer asking *and* had no chance of ever serving anyone else.'),
 				$author$project$Essay$P('That second habit turned out to be the job. It had a name somewhere. I just hadn\'t read it yet.')
 			])),
 		_Utils_Tuple2(
@@ -6189,6 +6189,38 @@ var $author$project$Essay$sections = _List_fromArray(
 			]))
 	]);
 var $author$project$Essay$title = 'The Distracted Forward Deployed Officer';
+var $elm$core$Basics$modBy = _Basics_modBy;
+var $elm$core$Basics$neq = _Utils_notEqual;
+var $elm$core$Tuple$pair = F2(
+	function (a, b) {
+		return _Utils_Tuple2(a, b);
+	});
+var $author$project$Essay$inline = function (text) {
+	return A2(
+		$elm$core$List$map,
+		function (_v1) {
+			var i = _v1.a;
+			var piece = _v1.b;
+			return (A2($elm$core$Basics$modBy, 2, i) === 1) ? A3(
+				$author$project$Jorn$Element$element,
+				'em',
+				_List_Nil,
+				_List_fromArray(
+					[
+						$author$project$Jorn$Element$text(piece)
+					])) : $author$project$Jorn$Element$text(piece);
+		},
+		A2(
+			$elm$core$List$filter,
+			function (_v0) {
+				var piece = _v0.b;
+				return piece !== '';
+			},
+			A2(
+				$elm$core$List$indexedMap,
+				$elm$core$Tuple$pair,
+				A2($elm$core$String$split, '*', text))));
+};
 var $elm$core$String$startsWith = _String_startsWith;
 var $author$project$Essay$leadItem = function (_v0) {
 	var lead = _v0.a;
@@ -6223,10 +6255,7 @@ var $author$project$Essay$viewBlock = function (block) {
 			return A2(
 				$author$project$Jorn$Element$Html$p,
 				_List_Nil,
-				_List_fromArray(
-					[
-						$author$project$Jorn$Element$text(text)
-					]));
+				$author$project$Essay$inline(text));
 		case 1:
 			var text = block.a;
 			return A3(
