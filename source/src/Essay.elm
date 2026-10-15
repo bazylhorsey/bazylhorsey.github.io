@@ -88,7 +88,7 @@ sections =
         ]
       )
     , ( "What I was actually listening to"
-      , [ P "Here's what I heard, all those years everyone thought I wasn't paying attention."
+      , [ P "Here's what I heard, all those years I looked like I wasn't paying attention."
         , P "Nilay told me every warehouse is different. I heard a product spec, not a warning."
         , P "Customers told me their compliance requirements were unavoidable. A sensitive site doesn't bend its procurement for a startup. So we became the kind of company that gets through it."
         , P "Customers told me they needed KPIs. Not a feed full of detections. Numbers they could carry into their own meetings and defend."
@@ -113,7 +113,7 @@ sections =
         ]
       )
     , ( "Where the limit was"
-      , [ P "When we got in over our heads, it wasn't because nobody was protecting the product team. It was because we'd hit a real limit, and the answer was structure. We turned what our customers asked for on ourselves: KPIs in live feedback loops, in real time, in a team small enough that everyone could see them."
+      , [ P "When we got in over our heads, it was because we'd hit a real limit, and the answer was structure. We turned what our customers asked for on ourselves: KPIs in live feedback loops, in real time, in a team small enough that everyone could see them."
         ]
       )
     , ( "What it turned into"
@@ -149,7 +149,7 @@ sections =
       )
     , ( "Where my mind drifted"
       , [ P "I'm not going to list the hundreds of things I owned at Arvist. That isn't the point, and it isn't the gift."
-        , P "Here's the point. People thought I was distracted, and some days I was. But my mind wandered. It wandered to the floor. Every single time. To the operator fighting a screen that didn't help them. To the camera angle that would never see the pallet. To the customer who would say yes if we could just find a way to never say no."
+        , P "Here's the point. I looked distracted, and some days I was. But my mind wandered. It wandered to the floor. Every single time. To the operator fighting a screen that didn't help them. To the camera angle that would never see the pallet. To the customer who would say yes if we could just find a way to never say no."
         , Quote "Distracted is what listening looks like when the person you're listening to isn't in the room."
         , P "So here's the definition I'd offer, from a company that isn't one of the big players. Yet. A forward deployed engineer isn't defined by where they sit. They're defined by where their attention goes when nobody is directing it."
         , P "Mine went to the customer. It always did. I think the team I'm leaving behind does the same, and that's the thing I'm proudest of."
