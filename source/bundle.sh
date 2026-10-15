@@ -65,20 +65,20 @@ if exports != 1:
 
 # Drop the module import; the patcher is inlined as a classic script instead.
 html = html.replace(
-    '<link rel="icon" href="favicon.svg" type="image/svg+xml" />',
+    '<link rel="icon" href="/favicon.svg" type="image/svg+xml" />',
     '<link rel="icon" href="data:image/svg+xml,'
     + icon.replace("\n", "").replace("#", "%23").replace("<", "%3C").replace(">", "%3E").replace('"', "%22")
     + '" type="image/svg+xml" />',
 )
 
 html, n_css = re.subn(
-    r'<link rel="stylesheet" href="portfolio\.css(\?v=[0-9a-f]+)?" />',
+    r'<link rel="stylesheet" href="/?portfolio\.css(\?v=[0-9a-f]+)?" />',
     lambda m: "<style>\n" + css + "\n</style>",
     html,
 )
 
 html, n_js = re.subn(
-    r'<script src="build/main\.js(\?v=[0-9a-f]+)?"></script>',
+    r'<script src="/?build/main\.js(\?v=[0-9a-f]+)?"></script>',
     lambda m: "<script>\n" + elm + "\n</script>",
     html,
 )

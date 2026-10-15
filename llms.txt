@@ -28,6 +28,7 @@ Contact: bhorsey16@gmail.com
 
 ## Writing and talks
 
+- [The Distracted Forward Deployed Officer](https://bazylhorsey.github.io/writing/distracted-forward-deployed-officer/): essay, 2026, on four years at Arvist and what forward deployed engineering looks like from the floor. Includes a nine-point playbook.
 - [Implementing concepts from green logistics in the turkey production supply chain](https://doi.org/10.3389/frsus.2024.1416964): Frontiers in Sustainability, 2024, second author.
 - [Software Leaders Uncensored, with Steve Taplin](https://youtu.be/mk7CKtatU8U): podcast.
 - [Deep Learning Leaders, with Eric Landau](https://encord.com/deep-learning-leaders/): podcast.

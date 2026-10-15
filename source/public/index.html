@@ -76,9 +76,9 @@
     <link rel="icon" href="/favicon.ico" sizes="48x48" />
     <link rel="icon" href="/favicon-192.png" type="image/png" sizes="192x192" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
-    <link rel="preload" href="fonts/bigshoulders.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="stylesheet" href="portfolio.css" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href="/fonts/bigshoulders.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/portfolio.css" />
     <script>
       // Pick the theme before anything paints, so a dark-mode visitor never
       // sees a flash of paper. A stored choice wins; otherwise follow the OS.
@@ -107,11 +107,11 @@
     -->
     <div id="app"></div>
 
-    <script src="build/main.js"></script>
+    <script src="/build/main.js"></script>
     <script type="module">
       // Client mode: the Elm program runs right here in the page, and the same
       // patcher a server component would use applies the diffs to the DOM.
-      import { connect } from "./vendor/jorn.js";
+      import { connect } from "/vendor/jorn.js";
 
       const root = document.documentElement;
       const app = Elm.Main.init({

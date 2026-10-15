@@ -24,7 +24,9 @@ rm -f "$SITE/portfolio.html"           # the bundle.sh single-file copy, not for
 touch "$SITE/.nojekyll"                # serve files as-is, no Jekyll pass
 mkdir -p "$SITE/source/public/fonts" "$SITE/source/src"
 cp public/fonts/bigshoulders.woff2 public/fonts/BigShoulders-OFL.txt "$SITE/source/public/fonts/"
-cp src/Main.elm "$SITE/source/src/"
+cp src/Main.elm src/Essay.elm "$SITE/source/src/"
+mkdir -p "$SITE/source/public/writing"
+cp public/writing/the-distracted-forward-deployed-officer.pdf "$SITE/source/public/writing/"
 cp public/index.html public/portfolio.css public/favicon.svg public/favicon.ico \
    public/favicon-48.png public/favicon-192.png public/og.png \
    public/apple-touch-icon.png public/robots.txt public/sitemap.xml public/llms.txt \

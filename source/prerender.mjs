@@ -13,7 +13,8 @@
 // Real hydration, adopting the existing DOM instead, is Jorn stage 7.
 
 import { createRequire } from "node:module";
-import { readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { dirname } from "node:path";
 
 const require = createRequire(import.meta.url);
 const { Elm } = require("./build/build/main.js");
@@ -36,22 +37,103 @@ function html(node) {
   return `<${node.tag}${attrs}>${node.children.map(html).join("")}</${node.tag}>`;
 }
 
-const tree = await new Promise((resolve, reject) => {
-  const app = Elm.Main.init({ flags: { dark: false } });
-  app.ports.toClient.subscribe((message) => {
-    if (message.mount) resolve(message.mount);
-    else if (message.error) reject(new Error(message.error));
+function render(flags) {
+  return new Promise((resolve, reject) => {
+    const app = Elm.Main.init({ flags });
+    app.ports.toClient.subscribe((message) => {
+      if (message.mount) resolve(message.mount);
+      else if (message.error) reject(new Error(message.error));
+    });
+    setTimeout(() => reject(new Error("nothing mounted")), 2000);
   });
-  setTimeout(() => reject(new Error("nothing mounted")), 2000);
-});
+}
 
-const file = "build/index.html";
-const page = readFileSync(file, "utf8");
+// Swap exactly one occurrence, or stop the build. A silent miss here would
+// ship the essay with the home page's title and canonical URL.
+function swap(page, from, to) {
+  const n = page.split(from).length - 1;
+  if (n !== 1) throw new Error(`expected 1 of ${JSON.stringify(from.slice(0, 60))}, found ${n}`);
+  return page.replace(from, to);
+}
+
+const SITE = "https://bazylhorsey.github.io";
+const ESSAY = {
+  path: "/writing/distracted-forward-deployed-officer/",
+  title: "The Distracted Forward Deployed Officer",
+  // His words, from the essay.
+  description:
+    "A forward deployed engineer isn't defined by where they sit. They're defined by where their attention goes when nobody is directing it.",
+  date: "2026-10-15",
+};
+
+// The essay page is the same shell as the home page (same stylesheet, same
+// compiled Elm, same patcher and glue), with its own head and flags.
+function essayShell(home) {
+  const url = SITE + ESSAY.path;
+  const full = `${ESSAY.title} | Bazyl Horsey`;
+  let page = home;
+  page = page.replace(/<title>[^<]*<\/title>/, `<title>${full}</title>`);
+  page = page.replace(
+    /(<meta\s+name="description"\s+content=")[^"]*(")/,
+    `$1${escAttr(ESSAY.description)}$2`,
+  );
+  page = page.replace(
+    /(<meta\s+property="og:description"\s+content=")[^"]*(")/,
+    `$1${escAttr(ESSAY.description)}$2`,
+  );
+  page = swap(page, '<meta property="og:type" content="website" />', '<meta property="og:type" content="article" />');
+  page = page.replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${escAttr(full)}$2`);
+  page = swap(page, `<meta property="og:url" content="${SITE}/" />`, `<meta property="og:url" content="${url}" />`);
+  page = swap(page, `<link rel="canonical" href="${SITE}/" />`, `<link rel="canonical" href="${url}" />`);
+  page = page.replace(/(<meta property="og:image:alt" content=")[^"]*(")/, `$1${escAttr(full)}$2`);
+  // Home has WebSite + Person blocks; the essay gets one Article block.
+  const ld = page.match(/\s*<script type="application\/ld\+json">[\s\S]*?<\/script>/g) || [];
+  if (ld.length < 1) throw new Error("no JSON-LD in the shell");
+  ld.forEach((block) => (page = page.replace(block, "")));
+  const article = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: ESSAY.title,
+    description: ESSAY.description,
+    datePublished: ESSAY.date,
+    url,
+    mainEntityOfPage: url,
+    image: `${SITE}/og.png`,
+    author: { "@type": "Person", name: "Bazyl Horsey", url: `${SITE}/` },
+  };
+  page = swap(
+    page,
+    "</title>",
+    `</title>\n    <script type="application/ld+json">\n${JSON.stringify(article, null, 2)}\n    </script>`,
+  );
+  page = swap(
+    page,
+    'flags: { dark: root.dataset.theme === "night" },',
+    'flags: { dark: root.dataset.theme === "night", page: "essay" },',
+  );
+  return page;
+}
+
 const empty = '<div id="app"></div>';
-if (!page.includes(empty)) {
-  console.error(`expected ${empty} in ${file}`);
+const homeFile = "build/index.html";
+const home = readFileSync(homeFile, "utf8");
+if (!home.includes(empty)) {
+  console.error(`expected ${empty} in ${homeFile}`);
   process.exit(1);
 }
-const body = html(tree);
-writeFileSync(file, page.replace(empty, `<div id="app">${body}</div>`));
-console.log(`prerendered ${(body.length / 1024).toFixed(0)} KB of HTML into ${file}`);
+
+const pages = [
+  { file: homeFile, shell: home, flags: { dark: false } },
+  {
+    file: "build" + ESSAY.path + "index.html",
+    shell: essayShell(home),
+    flags: { dark: false, page: "essay" },
+  },
+];
+
+for (const { file, shell, flags } of pages) {
+  const body = html(await render(flags));
+  mkdirSync(dirname(file), { recursive: true });
+  writeFileSync(file, shell.replace(empty, `<div id="app">${body}</div>`));
+  console.log(`prerendered ${(body.length / 1024).toFixed(0)} KB of HTML into ${file}`);
+}

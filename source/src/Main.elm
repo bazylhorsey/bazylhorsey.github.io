@@ -21,6 +21,7 @@ import Jorn.Element.Html as Html
 import Jorn.Event as Events
 import Jorn.Internal.Event as Routing
 import Jorn.Patch
+import Essay
 
 
 
@@ -54,9 +55,15 @@ type Filter
     | Only Category
 
 
+type Page
+    = Home
+    | EssayPage
+
+
 type alias Model =
     { theme : Theme
     , filter : Filter
+    , page : Page
     }
 
 
@@ -80,6 +87,13 @@ init flags =
             _ ->
                 Paper
     , filter = Everything
+    , page =
+        case Decode.decodeValue (Decode.field "page" Decode.string) flags of
+            Ok "essay" ->
+                EssayPage
+
+            _ ->
+                Home
     }
 
 
@@ -366,7 +380,15 @@ podcasts =
 {-| Blog posts under my own byline, newest first. -}
 posts : List Post
 posts =
-    [ { date = "2026.08"
+    [ { date = Essay.dateLabel
+      , outlet = "essay"
+      , title = Essay.title
+      , gist =
+            "Distracted is what listening looks like when the person you're "
+                ++ "listening to isn't in the room."
+      , href = Essay.slug
+      }
+    , { date = "2026.08"
       , outlet = "arvist blog"
       , title = "Why vertical monopoly doesn't work for warehouse software anymore"
       , gist =
@@ -420,15 +442,21 @@ view model =
         [ Attr.class ("page page--" ++ themeName model.theme) ]
         [ topbar model
         , Html.main_ []
-            [ hero
-            , claim
-            , said
-            , shipped model
-            , path
-            , writing
-            , band
-            , contact
-            ]
+            (case model.page of
+                Home ->
+                    [ hero
+                    , claim
+                    , said
+                    , shipped model
+                    , path
+                    , writing
+                    , band
+                    , contact
+                    ]
+
+                EssayPage ->
+                    [ Essay.view ]
+            )
         , foot
         ]
 
@@ -447,9 +475,17 @@ topbar : Model -> Element Msg
 topbar model =
     Html.header [ Attr.class "topbar" ]
         [ Html.div [ Attr.class "wrap topbar-in" ]
-            [ Html.span [ Attr.class "mark" ] [ Element.text "Bazyl Horsey" ]
+            [ Html.a [ Attr.class "mark", Attr.href "/" ] [ Element.text "Bazyl Horsey" ]
             , Html.nav [ Attr.class "topnav" ]
-                (List.map navLink
+                (List.map
+                    (navLink
+                        (if model.page == Home then
+                            ""
+
+                         else
+                            "/"
+                        )
+                    )
                     [ ( "#claim", "claim" )
                     , ( "#work", "work" )
                     , ( "#path", "path" )
@@ -475,9 +511,9 @@ topbar model =
         ]
 
 
-navLink : ( String, String ) -> Element msg
-navLink ( anchor, label ) =
-    Html.a [ Attr.href anchor ] [ Element.text label ]
+navLink : String -> ( String, String ) -> Element msg
+navLink base ( anchor, label ) =
+    Html.a [ Attr.href (base ++ anchor) ] [ Element.text label ]
 
 
 hero : Element msg

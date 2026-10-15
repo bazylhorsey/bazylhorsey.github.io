@@ -46,6 +46,10 @@ cp public/fonts/bigshoulders.woff2 public/fonts/BigShoulders-OFL.txt "$OUT/fonts
 # 5. crawler files
 cp public/robots.txt public/sitemap.xml public/llms.txt "$OUT/"
 
+# 5b. the essay's PDF, next to the page that carries the same words
+mkdir -p "$OUT/writing"
+cp public/writing/the-distracted-forward-deployed-officer.pdf "$OUT/writing/"
+
 # 6. prerender the Elm view into index.html so crawlers that do not run
 #    JavaScript still get the whole page. Jorn mounts over it in the browser.
 node prerender.mjs
@@ -57,19 +61,19 @@ node prerender.mjs
 python3 - "$OUT" <<'PY2'
 import hashlib, pathlib, sys
 out = pathlib.Path(sys.argv[1])
-page = out / "index.html"
-html = page.read_text(encoding="utf-8")
-for ref, path in [
-    ('href="portfolio.css"', "portfolio.css"),
-    ('src="build/main.js"', "build/main.js"),
-    ('from "./vendor/jorn.js"', "vendor/jorn.js"),
-]:
-    if ref not in html:
-        sys.exit(f"cache-bust: {ref} not found in index.html")
-    v = hashlib.sha256((out / path).read_bytes()).hexdigest()[:10]
-    html = html.replace(ref, ref[:-1] + "?v=" + v + '"')
-page.write_text(html, encoding="utf-8")
-print("cache-busted asset URLs in index.html")
+for page in [out / "index.html", out / "writing/distracted-forward-deployed-officer/index.html"]:
+    html = page.read_text(encoding="utf-8")
+    for ref, path in [
+        ('href="/portfolio.css"', "portfolio.css"),
+        ('src="/build/main.js"', "build/main.js"),
+        ('from "/vendor/jorn.js"', "vendor/jorn.js"),
+    ]:
+        if ref not in html:
+            sys.exit(f"cache-bust: {ref} not found in {page}")
+        v = hashlib.sha256((out / path).read_bytes()).hexdigest()[:10]
+        html = html.replace(ref, ref[:-1] + "?v=" + v + '"')
+    page.write_text(html, encoding="utf-8")
+    print(f"cache-busted asset URLs in {page}")
 PY2
 
 echo

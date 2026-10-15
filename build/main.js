@@ -600,11 +600,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.I.D === region.M.D)
+	if (region.J.D === region.N.D)
 	{
-		return 'on line ' + region.I.D;
+		return 'on line ' + region.J.D;
 	}
-	return 'on lines ' + region.I.D + ' through ' + region.M.D;
+	return 'on lines ' + region.J.D + ' through ' + region.N.D;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.S,
-		impl.U,
 		impl.T,
+		impl.V,
+		impl.U,
 		function() { return function() {} }
 	);
 });
@@ -2902,13 +2902,13 @@ var $author$project$Jorn$Internal$Vdom$encodeOptions = function (options) {
 			[
 				_Utils_Tuple2(
 				'preventDefault',
-				$elm$json$Json$Encode$bool(options.H)),
+				$elm$json$Json$Encode$bool(options.I)),
 				_Utils_Tuple2(
 				'stopPropagation',
-				$elm$json$Json$Encode$bool(options.J)),
+				$elm$json$Json$Encode$bool(options.K)),
 				_Utils_Tuple2(
 				'include',
-				A2($elm$json$Json$Encode$list, $elm$json$Json$Encode$string, options.G))
+				A2($elm$json$Json$Encode$list, $elm$json$Json$Encode$string, options.H))
 			]));
 };
 var $elm$core$Basics$identity = function (x) {
@@ -2931,22 +2931,22 @@ var $author$project$Jorn$Internal$Vdom$encodeNode = function (node) {
 				[
 					_Utils_Tuple2(
 					'tag',
-					$elm$json$Json$Encode$string(r.Q)),
+					$elm$json$Json$Encode$string(r.R)),
 					_Utils_Tuple2(
 					'namespace',
-					$elm$json$Json$Encode$string(r.O)),
+					$elm$json$Json$Encode$string(r.P)),
 					_Utils_Tuple2(
 					'attrs',
-					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $elm$json$Json$Encode$string, r.K)),
+					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $elm$json$Json$Encode$string, r.L)),
 					_Utils_Tuple2(
 					'props',
-					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $elm$core$Basics$identity, r.P)),
+					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $elm$core$Basics$identity, r.Q)),
 					_Utils_Tuple2(
 					'events',
-					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $author$project$Jorn$Internal$Vdom$encodeOptions, r.R)),
+					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $author$project$Jorn$Internal$Vdom$encodeOptions, r.S)),
 					_Utils_Tuple2(
 					'children',
-					A2($elm$json$Json$Encode$list, $author$project$Jorn$Internal$Vdom$encodeNode, r.L))
+					A2($elm$json$Json$Encode$list, $author$project$Jorn$Internal$Vdom$encodeNode, r.M))
 				]));
 	}
 };
@@ -3125,12 +3125,12 @@ var $author$project$Jorn$Internal$Vdom$addPaths = F2(
 var $author$project$Jorn$Internal$Vdom$combineOptions = F2(
 	function (added, options) {
 		return {
-			G: A2($author$project$Jorn$Internal$Vdom$addPaths, added.G, options.G),
-			H: added.H || options.H,
-			J: added.J || options.J
+			H: A2($author$project$Jorn$Internal$Vdom$addPaths, added.H, options.H),
+			I: added.I || options.I,
+			K: added.K || options.K
 		};
 	});
-var $author$project$Jorn$Internal$Vdom$defaultOptions = {G: _List_Nil, H: false, J: false};
+var $author$project$Jorn$Internal$Vdom$defaultOptions = {H: _List_Nil, I: false, K: false};
 var $author$project$Jorn$Internal$Vdom$splitOptions = function (attribute) {
 	if (attribute.$ === 3) {
 		var added = attribute.a;
@@ -3561,11 +3561,11 @@ var $author$project$Jorn$Internal$Vdom$addFact = F2(
 					return _Utils_update(
 						acc,
 						{
-							K: A3(
+							L: A3(
 								$elm$core$Dict$update,
 								'class',
 								$author$project$Jorn$Internal$Vdom$mergeClass(value),
-								acc.K)
+								acc.L)
 						});
 				} else {
 					var name = bare.a;
@@ -3573,7 +3573,7 @@ var $author$project$Jorn$Internal$Vdom$addFact = F2(
 					return _Utils_update(
 						acc,
 						{
-							K: A3($elm$core$Dict$insert, name, value, acc.K)
+							L: A3($elm$core$Dict$insert, name, value, acc.L)
 						});
 				}
 			case 1:
@@ -3582,7 +3582,7 @@ var $author$project$Jorn$Internal$Vdom$addFact = F2(
 				return _Utils_update(
 					acc,
 					{
-						P: A3($elm$core$Dict$insert, name, value, acc.P)
+						Q: A3($elm$core$Dict$insert, name, value, acc.Q)
 					});
 			case 2:
 				var name = bare.a;
@@ -3590,11 +3590,11 @@ var $author$project$Jorn$Internal$Vdom$addFact = F2(
 				return _Utils_update(
 					acc,
 					{
-						R: A3(
+						S: A3(
 							$elm$core$Dict$insert,
 							name,
 							_Utils_Tuple2(options, decoder),
-							acc.R)
+							acc.S)
 					});
 			default:
 				return acc;
@@ -3605,7 +3605,7 @@ var $author$project$Jorn$Internal$Vdom$facts = function (attributes) {
 	return A3(
 		$elm$core$List$foldl,
 		$author$project$Jorn$Internal$Vdom$addFact,
-		{K: $elm$core$Dict$empty, R: $elm$core$Dict$empty, P: $elm$core$Dict$empty},
+		{L: $elm$core$Dict$empty, S: $elm$core$Dict$empty, Q: $elm$core$Dict$empty},
 		attributes);
 };
 var $elm$core$Dict$map = F2(
@@ -3708,19 +3708,19 @@ var $author$project$Jorn$Internal$Vdom$toNode = function (html) {
 		var f = $author$project$Jorn$Internal$Vdom$facts(attributes);
 		return $author$project$Jorn$Internal$Vdom$NodeElement(
 			{
-				K: f.K,
-				L: A2($elm$core$List$map, $author$project$Jorn$Internal$Vdom$toNode, children),
-				R: A2(
+				L: f.L,
+				M: A2($elm$core$List$map, $author$project$Jorn$Internal$Vdom$toNode, children),
+				S: A2(
 					$elm$core$Dict$map,
 					F2(
 						function (_v1, _v2) {
 							var options = _v2.a;
 							return options;
 						}),
-					f.R),
-				O: namespace,
-				P: f.P,
-				Q: tag
+					f.S),
+				P: namespace,
+				Q: f.Q,
+				R: tag
 			});
 	}
 };
@@ -3730,21 +3730,35 @@ var $author$project$Jorn$Patch$encodeHtml = function (element) {
 };
 var $elm$json$Json$Decode$value = _Json_decodeValue;
 var $author$project$Main$fromClient = _Platform_incomingPort('fromClient', $elm$json$Json$Decode$value);
+var $author$project$Main$EssayPage = 1;
 var $author$project$Main$Everything = {$: 0};
+var $author$project$Main$Home = 0;
 var $author$project$Main$Night = 1;
 var $author$project$Main$Paper = 0;
 var $elm$json$Json$Decode$bool = _Json_decodeBool;
 var $elm$json$Json$Decode$decodeValue = _Json_run;
 var $elm$json$Json$Decode$field = _Json_decodeField;
+var $elm$json$Json$Decode$string = _Json_decodeString;
 var $author$project$Main$init = function (flags) {
 	return {
-		r: $author$project$Main$Everything,
-		C: function () {
+		t: $author$project$Main$Everything,
+		G: function () {
 			var _v0 = A2(
+				$elm$json$Json$Decode$decodeValue,
+				A2($elm$json$Json$Decode$field, 'page', $elm$json$Json$Decode$string),
+				flags);
+			if ((!_v0.$) && (_v0.a === 'essay')) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}(),
+		C: function () {
+			var _v1 = A2(
 				$elm$json$Json$Decode$decodeValue,
 				A2($elm$json$Json$Decode$field, 'dark', $elm$json$Json$Decode$bool),
 				flags);
-			if ((!_v0.$) && _v0.a) {
+			if ((!_v1.$) && _v1.a) {
 				return 1;
 			} else {
 				return 0;
@@ -3764,12 +3778,11 @@ var $elm$core$Result$andThen = F2(
 	});
 var $author$project$Jorn$Internal$Event$Incoming = F3(
 	function (path, name, event) {
-		return {N: event, E: name, F: path};
+		return {O: event, E: name, F: path};
 	});
 var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $elm$json$Json$Decode$list = _Json_decodeList;
 var $elm$json$Json$Decode$map3 = _Json_map3;
-var $elm$json$Json$Decode$string = _Json_decodeString;
 var $author$project$Jorn$Internal$Event$decoder = A4(
 	$elm$json$Json$Decode$map3,
 	$author$project$Jorn$Internal$Event$Incoming,
@@ -3931,22 +3944,22 @@ var $author$project$Jorn$Internal$Patch$diffFacts = F4(
 					return A3($author$project$Jorn$Internal$Patch$SetEvent, path, name, options);
 				}),
 			$author$project$Jorn$Internal$Patch$RemoveEvent(path),
-			old.R,
-			_new.R,
+			old.S,
+			_new.S,
 			A6(
 				$author$project$Jorn$Internal$Patch$diffDict,
 				$author$project$Jorn$Internal$Patch$sameValue,
 				$author$project$Jorn$Internal$Patch$SetProperty(path),
 				$author$project$Jorn$Internal$Patch$RemoveProperty(path),
-				old.P,
-				_new.P,
+				old.Q,
+				_new.Q,
 				A6(
 					$author$project$Jorn$Internal$Patch$diffDict,
 					$elm$core$Basics$eq,
 					$author$project$Jorn$Internal$Patch$SetAttribute(path),
 					$author$project$Jorn$Internal$Patch$RemoveAttribute(path),
-					old.K,
-					_new.K,
+					old.L,
+					_new.L,
 					acc)));
 	});
 var $author$project$Jorn$Internal$Patch$diffChildren = F5(
@@ -4358,7 +4371,7 @@ var $author$project$Jorn$Internal$Event$route = F2(
 				var _v2 = A2(
 					$elm$core$Dict$get,
 					incoming.E,
-					$author$project$Jorn$Internal$Vdom$facts(attributes).R);
+					$author$project$Jorn$Internal$Vdom$facts(attributes).S);
 				if (_v2.$ === 1) {
 					return $elm$core$Result$Err(
 						A2($author$project$Jorn$Internal$Event$NoHandler, incoming.F, incoming.E));
@@ -4368,7 +4381,7 @@ var $author$project$Jorn$Internal$Event$route = F2(
 					return A2(
 						$elm$core$Result$mapError,
 						$author$project$Jorn$Internal$Event$DecodeFailed(incoming.E),
-						A2($elm$json$Json$Decode$decodeValue, handler, incoming.N));
+						A2($elm$json$Json$Decode$decodeValue, handler, incoming.O));
 				}
 			}
 		}
@@ -4396,7 +4409,7 @@ var $author$project$Main$update = F2(
 				var filter = msg.a;
 				return _Utils_update(
 					model,
-					{r: filter});
+					{t: filter});
 			default:
 				return model;
 		}
@@ -5233,7 +5246,7 @@ var $author$project$Main$roleItem = function (role) {
 						_List_Nil,
 						_List_fromArray(
 							[
-								$author$project$Jorn$Element$text(role.w),
+								$author$project$Jorn$Element$text(role.x),
 								A2(
 								$author$project$Jorn$Element$Html$span,
 								_List_fromArray(
@@ -5242,7 +5255,7 @@ var $author$project$Main$roleItem = function (role) {
 									]),
 								_List_fromArray(
 									[
-										$author$project$Jorn$Element$text(role.g)
+										$author$project$Jorn$Element$text(role.e)
 									]))
 							])),
 					_Utils_ap(
@@ -5257,8 +5270,8 @@ var $author$project$Main$roleItem = function (role) {
 											$author$project$Jorn$Element$text(line)
 										]));
 							},
-							role.e),
-						$author$project$Main$figures(role.q))))
+							role.f),
+						$author$project$Main$figures(role.s))))
 			]));
 };
 var $author$project$Main$metrics = _List_fromArray(
@@ -5275,40 +5288,40 @@ var $author$project$Main$metrics = _List_fromArray(
 var $author$project$Main$roles = _List_fromArray(
 	[
 		{
-		e: _List_fromArray(
+		f: _List_fromArray(
 			['Techstars \'22, then a $4M seed led by Rackhouse. Took the ' + ('platform from first commit to about twenty customer ' + ('deployments across five product lines, then built the ' + ('plug-and-play inspection product behind the pivot: installs ' + ('in a day, works with the cameras and systems a site already ' + 'has.')))), 'Grew engineering from solo to nine across time zones. As CISO, ' + ('built the ISMS from nothing to ISO 27001:2022 and SOC 2 Type I ' + ('readiness. Principal investigator on a $1M+ DoD-funded MxD ' + 'safety AI project.'))]),
-		q: $author$project$Main$metrics,
-		w: 'Arvist',
+		s: $author$project$Main$metrics,
+		x: 'Arvist',
 		y: 'Chicago, IL',
 		B: '2023→now',
-		g: 'Co-founder & CTO, now Technical Advisor'
+		e: 'Co-founder & CTO, now Technical Advisor'
 	},
 		{
-		e: _List_fromArray(
+		f: _List_fromArray(
 			['Smart-locker and mobility IoT, now Accessa, backed by Jason ' + ('Calacanis with a $1M pre-seed. Part-time through college, CTO ' + ('from 2021, leading a team of five. Built the BLE SDKs and mobile ' + ('integrations behind the 2020 Smart Locker launch, which became ' + 'the core business.'))), 'Led the hardware too: our own System on Module with BLE and LTE ' + ('for the lockers, and the APIs that wrapped it. The software ' + 'was the easy half.')]),
-		q: _List_Nil,
-		w: 'Koloni',
+		s: _List_Nil,
+		x: 'Koloni',
 		y: 'Chicago, IL',
 		B: '2019→2022',
-		g: 'Software Manager → Application Manager → CTO'
+		e: 'Software Manager → Application Manager → CTO'
 	},
 		{
-		e: _List_fromArray(
+		f: _List_fromArray(
 			['First startup out of Buena Vista\'s Foundry incubator. Wound it ' + ('down in 2021 and brought two of its engineers to Koloni, which ' + ('I count as the best outcome any of my companies had. Earlier: ' + ('the app for Match-Learn-Launch, a $175,000 Google.org Impact ' + 'Challenge winner.')))]),
-		q: _List_Nil,
-		w: 'Levity',
+		s: _List_Nil,
+		x: 'Levity',
 		y: 'Storm Lake, IA',
 		B: '2020→2021',
-		g: 'Co-founder & CEO'
+		e: 'Co-founder & CEO'
 	},
 		{
-		e: _List_fromArray(
+		f: _List_fromArray(
 			['Dean\'s List. President of the Robotics Club. Collegiate wrestler, ' + ('which explains more about how I run engineering than any ' + 'conference talk does.')]),
-		q: _List_Nil,
-		w: 'Buena Vista University',
+		s: _List_Nil,
+		x: 'Buena Vista University',
 		y: 'Storm Lake, IA',
 		B: '2016→2020',
-		g: 'BS Computer Science, minor in Communications'
+		e: 'BS Computer Science, minor in Communications'
 	}
 	]);
 var $author$project$Main$section = F4(
@@ -5703,7 +5716,7 @@ var $author$project$Main$itemCard = F2(
 							_Utils_Tuple2('card', true),
 							_Utils_Tuple2(
 							'card-feature',
-							(!item.f) && _Utils_eq(filter, $author$project$Main$Everything))
+							(!item.g) && _Utils_eq(filter, $author$project$Main$Everything))
 						]))
 				]),
 			_List_fromArray(
@@ -5728,8 +5741,8 @@ var $author$project$Main$itemCard = F2(
 							$author$project$Main$tag,
 							_Utils_ap(
 								item.m,
-								$author$project$Main$statusTag(item.f))))),
-					(!item.f) ? A2(
+								$author$project$Main$statusTag(item.g))))),
+					(!item.g) ? A2(
 					$author$project$Jorn$Element$Html$p,
 					_List_fromArray(
 						[
@@ -5792,7 +5805,7 @@ var $author$project$Main$work = _List_fromArray(
 	[
 		{
 		h: 'Write your UI once in Elm and decide at deploy time where each ' + ('piece runs: browser, server, or both. Pure Elm virtual DOM, a ' + ('diff that runs anywhere, a JSON wire protocol and a ' + ('dependency-free browser patcher. No kernel code, no fork. This ' + 'page runs on it.'))),
-		f: 0,
+		g: 0,
 		a: $elm$core$Maybe$Just('https://github.com/bazylhorsey/jorn'),
 		E: 'Jorn',
 		k: $author$project$Main$jornStages,
@@ -5801,7 +5814,7 @@ var $author$project$Main$work = _List_fromArray(
 	},
 		{
 		h: 'An MCP server that connects local and remote Obsidian vaults to ' + ('desktop AI tools: multi-vault switching, graph analysis, hybrid ' + 'search and backlinks.'),
-		f: 1,
+		g: 1,
 		a: $elm$core$Maybe$Just('https://github.com/bazylhorsey/obsidian-mcp-server'),
 		E: 'obsidian-mcp-server',
 		k: _List_Nil,
@@ -5810,7 +5823,7 @@ var $author$project$Main$work = _List_fromArray(
 	},
 		{
 		h: 'A proposal to add typed stdin prompts to the Rust standard ' + ('library (rust-lang/rust#117852, RFC 3196). What upstream ' + 'actually feels like from the outside.'),
-		f: 2,
+		g: 2,
 		a: $elm$core$Maybe$Just('https://github.com/bazylhorsey/prompt-rust'),
 		E: 'prompt-rust',
 		k: _List_Nil,
@@ -5819,7 +5832,7 @@ var $author$project$Main$work = _List_fromArray(
 	},
 		{
 		h: 'A Rust take on Phoenix LiveView, built to learn the ' + ('browser-versus-server trade-off from the implementer\'s side. ' + 'The only way to have an opinion about it.'),
-		f: 1,
+		g: 1,
 		a: $elm$core$Maybe$Nothing,
 		E: 'Aethos',
 		k: _List_Nil,
@@ -5828,7 +5841,7 @@ var $author$project$Main$work = _List_fromArray(
 	},
 		{
 		h: 'Hayleigh Thompson\'s Gleam web framework. Four open PRs, including ' + ('a 337-line fix for server component context subscriptions and ' + ('a CI workflow for main. Upkeep is hard. Apparently I do it ' + 'anyway.')),
-		f: 2,
+		g: 2,
 		a: $elm$core$Maybe$Just('https://github.com/lustre-labs/lustre/pulls?q=is%3Apr+author%3Abazylhorsey'),
 		E: 'Lustre',
 		k: _List_Nil,
@@ -5837,7 +5850,7 @@ var $author$project$Main$work = _List_fromArray(
 	},
 		{
 		h: 'The open-source NVR. A merged fix to its auth cookie pattern and ' + ('an open one for a shared-memory leak on skipped frames. Same ' + 'class of bug as the day job, in someone else\'s codebase.'),
-		f: 2,
+		g: 2,
 		a: $elm$core$Maybe$Just('https://github.com/blakeblackshear/frigate/pulls?q=is%3Apr+author%3Abazylhorsey'),
 		E: 'Frigate',
 		k: _List_Nil,
@@ -5846,7 +5859,7 @@ var $author$project$Main$work = _List_fromArray(
 	},
 		{
 		h: 'A ChatGPT 3.0-era Lovable, presented at the OpenAI Hackathon in ' + 'Chicago, 2022. Kept because it is funny and it was early.',
-		f: 3,
+		g: 3,
 		a: $elm$core$Maybe$Just('https://github.com/bazylhorsey/astonish'),
 		E: 'astonish',
 		k: _List_Nil,
@@ -5858,7 +5871,7 @@ var $author$project$Main$visibleWork = function (filter) {
 	return A2(
 		$elm$core$List$filter,
 		function (item) {
-			return A2($author$project$Main$kept, filter, item.f);
+			return A2($author$project$Main$kept, filter, item.g);
 		},
 		$author$project$Main$work);
 };
@@ -5900,7 +5913,7 @@ var $author$project$Main$shipped = function (model) {
 					]),
 				A2(
 					$elm$core$List$map,
-					$author$project$Main$filterButton(model.r),
+					$author$project$Main$filterButton(model.t),
 					$author$project$Main$filters)),
 				A2(
 				$author$project$Jorn$Element$Html$ul,
@@ -5910,8 +5923,8 @@ var $author$project$Main$shipped = function (model) {
 					]),
 				A2(
 					$elm$core$List$map,
-					$author$project$Main$itemCard(model.r),
-					$author$project$Main$visibleWork(model.r)))
+					$author$project$Main$itemCard(model.t),
+					$author$project$Main$visibleWork(model.t)))
 			]));
 };
 var $author$project$Main$themeName = function (theme) {
@@ -5924,20 +5937,22 @@ var $author$project$Main$themeName = function (theme) {
 var $author$project$Main$ToggleTheme = {$: 0};
 var $author$project$Jorn$Element$Html$header = $author$project$Jorn$Element$element('header');
 var $author$project$Jorn$Element$Html$nav = $author$project$Jorn$Element$element('nav');
-var $author$project$Main$navLink = function (_v0) {
-	var anchor = _v0.a;
-	var label = _v0.b;
-	return A2(
-		$author$project$Jorn$Element$Html$a,
-		_List_fromArray(
-			[
-				$author$project$Jorn$Attribute$href(anchor)
-			]),
-		_List_fromArray(
-			[
-				$author$project$Jorn$Element$text(label)
-			]));
-};
+var $author$project$Main$navLink = F2(
+	function (base, _v0) {
+		var anchor = _v0.a;
+		var label = _v0.b;
+		return A2(
+			$author$project$Jorn$Element$Html$a,
+			_List_fromArray(
+				[
+					$author$project$Jorn$Attribute$href(
+					_Utils_ap(base, anchor))
+				]),
+			_List_fromArray(
+				[
+					$author$project$Jorn$Element$text(label)
+				]));
+	});
 var $author$project$Main$topbar = function (model) {
 	return A2(
 		$author$project$Jorn$Element$Html$header,
@@ -5956,10 +5971,11 @@ var $author$project$Main$topbar = function (model) {
 				_List_fromArray(
 					[
 						A2(
-						$author$project$Jorn$Element$Html$span,
+						$author$project$Jorn$Element$Html$a,
 						_List_fromArray(
 							[
-								$author$project$Jorn$Attribute$class('mark')
+								$author$project$Jorn$Attribute$class('mark'),
+								$author$project$Jorn$Attribute$href('/')
 							]),
 						_List_fromArray(
 							[
@@ -5973,7 +5989,8 @@ var $author$project$Main$topbar = function (model) {
 							]),
 						A2(
 							$elm$core$List$map,
-							$author$project$Main$navLink,
+							$author$project$Main$navLink(
+								(!model.G) ? '' : '/'),
 							_List_fromArray(
 								[
 									_Utils_Tuple2('#claim', 'claim'),
@@ -5999,6 +6016,382 @@ var $author$project$Main$topbar = function (model) {
 					]))
 			]));
 };
+var $elm$core$List$append = F2(
+	function (xs, ys) {
+		if (!ys.b) {
+			return xs;
+		} else {
+			return A3($elm$core$List$foldr, $elm$core$List$cons, ys, xs);
+		}
+	});
+var $elm$core$List$concat = function (lists) {
+	return A3($elm$core$List$foldr, $elm$core$List$append, _List_Nil, lists);
+};
+var $elm$core$List$concatMap = F2(
+	function (f, list) {
+		return $elm$core$List$concat(
+			A2($elm$core$List$map, f, list));
+	});
+var $author$project$Essay$dateLabel = '2026.10';
+var $author$project$Essay$pdf = '/writing/the-distracted-forward-deployed-officer.pdf';
+var $author$project$Essay$Bullets = function (a) {
+	return {$: 3, a: a};
+};
+var $author$project$Essay$P = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$Essay$Quote = function (a) {
+	return {$: 1, a: a};
+};
+var $author$project$Essay$Steps = function (a) {
+	return {$: 2, a: a};
+};
+var $author$project$Essay$sections = _List_fromArray(
+	[
+		_Utils_Tuple2(
+		'I had more hair',
+		_List_fromArray(
+			[
+				$author$project$Essay$P('When I met Arvist, I had more hair. I don\'t remember much of the four years that followed. I was distracted.'),
+				$author$project$Essay$P('I joined as Arvist\'s first technical hire and became its cofounder and CTO. I was a hired gun. Young, a little dangerous, looking for something to point at and shoot. My last couple of startups hadn\'t made it. Arvist was the first one I couldn\'t let die.'),
+				$author$project$Essay$P('If you haven\'t heard of Arvist: it turns the cameras a warehouse already has into computer vision that watches the floor. Inspections, safety, the moments nobody can watch all day. It installs in a day and works with the systems a site already runs.'),
+				$author$project$Essay$P('I\'ve never been the type A guy, and I won\'t pretend to be one now. I\'m type \"find a way.\" I wrestled in middle school, high school, and part of college. Most of what I know about running engineering came from the mat: stay low, keep moving, fight for position. But Nilay, my cofounder and Arvist\'s CEO, noticed two things about me. I had my head in the clouds. And I would find a path around any obstacle, pushing back only if a request wasn\'t profitable for the one customer asking and had no chance of ever serving anyone else.'),
+				$author$project$Essay$P('That second habit turned out to be the job. It had a name somewhere. I just hadn\'t read it yet.')
+			])),
+		_Utils_Tuple2(
+		'Every warehouse is different',
+		_List_fromArray(
+			[
+				$author$project$Essay$P('I came in talking about multiples. Build it once, sell it many times. That\'s the whole promise of SaaS.'),
+				$author$project$Essay$P('Nilay answered in four words: \"Every warehouse is different.\"'),
+				$author$project$Essay$P('I listened. Then I had an existential crisis. How do you build a SaaS when every customer is different?'),
+				$author$project$Essay$P('There was no time to find the perfect answer. We had customers to deploy. So we deployed, and let the answer find us.')
+			])),
+		_Utils_Tuple2(
+		'A hundred pounds of sand',
+		_List_fromArray(
+			[
+				$author$project$Essay$P('One government-adjacent project needed us to detect sensitive powders on a facility floor. Explosive ones. The kind you don\'t spill for practice. I had no business being anywhere near them.'),
+				$author$project$Essay$P('So I bought 100 pounds of colored sand and poured it across the floor. My team watched the cameras, recording the RTSP streams through VLC. I swept the sand around. All day.'),
+				$author$project$Essay$P('You could read the question on their faces: what the hell is he doing? To their credit, they stayed along for the ride. I didn\'t fully know what I was doing either. I was distracted.'),
+				$author$project$Essay$P('By the end of the day, we had training data. That\'s forward deployment in miniature: the customer\'s problem, a bag of sand, and whatever gets you to a working model.'),
+				$author$project$Essay$P('I wasn\'t the guy with the Gantt chart. I was the guy with the sand.'),
+				$author$project$Essay$P('Another time, we needed a safety incident on camera. A real-looking one. So I played the distracted, unsafe worker. Headphones on. Arms full of stacked boxes I couldn\'t see over. I walked straight into another pile of boxes and went down. On purpose. I landed on a box corner and bruised a rib.'),
+				$author$project$Essay$P('That was kind of the point. It had to look real. I knew I could take the punch, I knew everything would be okay, and I knew Arvist would have good evaluation data by the end of it. For once, I was only pretending to be distracted.'),
+				$author$project$Essay$P('It wasn\'t the only room I had no business being in. I ended up defining KPIs for DoD-funded work alongside professors who knew far more than I did. A very thorough government PM once caught me holding a screwdriver that wasn\'t on our funding sheet. I\'d borrowed it from the next desk. I was distracted.')
+			])),
+		_Utils_Tuple2(
+		'The part that isn\'t different',
+		_List_fromArray(
+			[
+				$author$project$Essay$P('Multiples did show up. Just not where I expected. Not in features. In protocols.'),
+				$author$project$Essay$P('Yes, every warehouse is different. But nearly every camera speaks RTSP. Nearly every system worth talking to speaks HTTP or MQTT. So I drew a hard line: we build on open, agnostic protocols, and we don\'t spend our weeks on proprietary APIs.'),
+				$author$project$Essay$P('That hit some nerves. It was still right. When you can\'t standardize the customer, standardize the plumbing. Custom work gets cheap when the boring layer never moves.')
+			])),
+		_Utils_Tuple2(
+		'A reason to never say no',
+		_List_fromArray(
+			[
+				$author$project$Essay$P('Time moved. I was distracted. Customers came, and it was a big, beautiful blur of getting shit done.'),
+				$author$project$Essay$P('Somewhere in that blur, I gave our dev team a speech I still believe:'),
+				$author$project$Essay$Quote('A smart dev team knows when to push back. A genius dev team gives the business a reason to never say no to the customer.'),
+				$author$project$Essay$P('That isn\'t the same as having no backbone. Saying yes to everything is how teams burn out. Building systems where yes is cheap is how teams win. Serve the customer by being smart, not by being a pushover.'),
+				$author$project$Essay$P('Pushback is a privilege you earn by shipping.'),
+				$author$project$Essay$P('Then a customer said something I\'ll keep forever: \"Wow, these guys can do everything.\" They were talking about my dev team.')
+			])),
+		_Utils_Tuple2(
+		'What I was actually listening to',
+		_List_fromArray(
+			[
+				$author$project$Essay$P('Here\'s what I heard, all those years everyone thought I wasn\'t paying attention.'),
+				$author$project$Essay$P('Nilay told me every warehouse is different. I heard a product spec, not a warning.'),
+				$author$project$Essay$P('Customers told me their compliance requirements were unavoidable. A sensitive site doesn\'t bend its procurement for a startup. So we became the kind of company that gets through it.'),
+				$author$project$Essay$P('Customers told me they needed KPIs. Not a feed full of detections. Numbers they could carry into their own meetings and defend.'),
+				$author$project$Essay$P('And customers told me, without ever saying it out loud, that uptime was ours. Over 90% of our incidents traced back to site power, network, or hardware, not our code. It didn\'t matter. You can\'t ask a customer to share responsibility for their own building. You can\'t write a runbook for one, either. So we owned all of it.'),
+				$author$project$Essay$P('Even the acts of God. When a hurricane came through, I felt like Odysseus: the gods throwing weather at us, and me just trying to get everything back online and get home.'),
+				$author$project$Essay$P('None of that came from a playbook. It came from listening.')
+			])),
+		_Utils_Tuple2(
+		'Carrying it',
+		_List_fromArray(
+			[
+				$author$project$Essay$P('At first, the job was comfortable. I was the first committer. I drew the architecture and taught our first team the basics: git team workflows, how to work in one repo together, how to use Docker. I was nurturing a team, and the problems still fit in my head.'),
+				$author$project$Essay$P('Then there was the other job. It felt like constant failure, just pointed forward. Reality punched me in the face, personally and often. Half the time I thought I was drowning. Turns out I was swimming. It looks exactly the same from inside the water.'),
+				$author$project$Essay$P('Every customer was different. The product lived in someone else\'s building, on someone else\'s power and network. That\'s about the hardest kind of company a small pre-seed startup can be. It\'s also the moat. Something this hard to make is just as hard to copy, and we were making it, successfully. My developers didn\'t need that distraction. So I carried it.'),
+				$author$project$Essay$P('I didn\'t protect them from the work. I protected them from the weight. Some weeks the only thing holding it up was my belief in my own strength and tenacity.'),
+				$author$project$Essay$P('You don\'t get to be a cofounder and also be tired of it. Some mornings I had to go find something in myself to keep it breathing, because nobody else was coming to do that part. And I\'ll say it plainly: I loved it. I was passionate the whole way through, even on the drowning days.'),
+				$author$project$Essay$P('I didn\'t know what I was doing. I\'m saying that on purpose. The people who say they did either weren\'t in the room or are lying.'),
+				$author$project$Essay$P('Then came compliance. Customers required it, Nilay needed it, and they were right: high-sensitivity customers don\'t get through procurement on charm. So I took it on, and became the security lead of a company that had never had one.'),
+				$author$project$Essay$P('What I didn\'t have was the bravery to tell him how much stronger I\'d need to become to carry it. Compliance, on top of nurturing a team, on top of writing code and reviewing it, on top of strategy and product. Any one of those is a job. I was doing all of them and trying not to let anyone see the seams.'),
+				$author$project$Essay$P('That was the era when I couldn\'t afford to be distracted. In hindsight, it\'s when I was most distant.'),
+				$author$project$Essay$P('That\'s the difference I didn\'t understand at the time. Distracted, my mind went to the floor, the customer, the team. Distant, it went nowhere. It just held on.'),
+				$author$project$Essay$P('I\'ll own the misses from that era. I won\'t apologize for the swings.'),
+				$author$project$Essay$P('This is where I was.')
+			])),
+		_Utils_Tuple2(
+		'Where the limit was',
+		_List_fromArray(
+			[
+				$author$project$Essay$P('When we got in over our heads, it wasn\'t because nobody was protecting the product team. It was because we\'d hit a real limit, and the answer was structure. We turned what our customers asked for on ourselves: KPIs in live feedback loops, in real time, in a team small enough that everyone could see them.')
+			])),
+		_Utils_Tuple2(
+		'What it turned into',
+		_List_fromArray(
+			[
+				$author$project$Essay$P('The big players who coined \"forward deployed engineer\" mostly mean an engineer embedded with a customer, writing code on site. That\'s part of it. We weren\'t one of those players, and what we built at Arvist got there by a different road.'),
+				$author$project$Essay$P('Palantir had already written this playbook. We didn\'t have a copy. So we wrote it again, from scratch, on warehouse floors across the country. I was on planes within weeks of starting.'),
+				$author$project$Essay$P('When every AI startup started hiring \"forward deployed engineers,\" I read the job descriptions and recognized our Tuesdays.'),
+				$author$project$Essay$P('We didn\'t copy the playbook. We were too busy to read it. Same pressure, same answer. That isn\'t luck. That\'s the answer being right.'),
+				$author$project$Essay$P('For us, forward deployment became a unit of development. Customer-need led. People in the loop. And an amazing product manager who could tell when a feature we\'d built three times needed to graduate into a stable, traditional product.'),
+				$author$project$Essay$P('Today Arvist has landed a Fortune 500 customer. It runs a partner program that reaches across the world. Those partners can forward deploy without us in the loop, because the toolbelt lets them:'),
+				$author$project$Essay$Bullets(
+				_List_fromArray(
+					[
+						_Utils_Tuple2('Frontend SDKs', ', so we can build into the dashboard screens customers already have on their floors.'),
+						_Utils_Tuple2('Backend SDKs', ', so anyone can build on our streaming pipelines without re-solving primitives like motion detection or OCR.')
+					])),
+				$author$project$Essay$P('I don\'t need to be in the room for it to keep working anymore. That was the whole point of the toolbelt.'),
+				$author$project$Essay$P('And the team still goes onto the floor. They get to know the operators and the executives. They learn the pains, and they deliver.'),
+				$author$project$Essay$P('We got dirty. I have scars. It was worth it.')
+			])),
+		_Utils_Tuple2(
+		'The playbook, as I\'d hand it over',
+		_List_fromArray(
+			[
+				$author$project$Essay$P('If I could give the next first technical hire one page, it would be this.'),
+				$author$project$Essay$Steps(
+				_List_fromArray(
+					[
+						_Utils_Tuple2('Hear what\'s under the ask.', 'Every warehouse is different. Compliance, KPIs and uptime aren\'t.'),
+						_Utils_Tuple2('Push back on one condition only.', 'When it isn\'t profitable for this customer and has no chance of serving the next one.'),
+						_Utils_Tuple2('Standardize the plumbing, not the customer.', 'RTSP, HTTP, MQTT. Open protocols over proprietary APIs, every time.'),
+						_Utils_Tuple2('Make yes cheap.', 'A smart team knows when to push back. A genius team builds systems that give the business a reason to never say no.'),
+						_Utils_Tuple2('Productize on the third build.', 'When you\'ve built it three times, hand it to someone who can make it stable.'),
+						_Utils_Tuple2('Own the uptime, even when it isn\'t yours.', 'The customer can\'t share responsibility for their own building.'),
+						_Utils_Tuple2('Turn the KPIs on yourself.', 'Live feedback loops, visible to the whole team.'),
+						_Utils_Tuple2('Get on the floor.', 'Meet the operators and the executives. Learn the pains. Deliver.'),
+						_Utils_Tuple2('Hand over the tools.', 'SDKs, so your own forward deployed engineers and your partners spend less time rebuilding the basics and more time making the customer happy.')
+					]))
+			])),
+		_Utils_Tuple2(
+		'Where my mind drifted',
+		_List_fromArray(
+			[
+				$author$project$Essay$P('I\'m not going to list the hundreds of things I owned at Arvist. That isn\'t the point, and it isn\'t the gift.'),
+				$author$project$Essay$P('Here\'s the point. People thought I was distracted, and some days I was. But my mind wandered. It wandered to the floor. Every single time. To the operator fighting a screen that didn\'t help them. To the camera angle that would never see the pallet. To the customer who would say yes if we could just find a way to never say no.'),
+				$author$project$Essay$Quote('Distracted is what listening looks like when the person you\'re listening to isn\'t in the room.'),
+				$author$project$Essay$P('So here\'s the definition I\'d offer, from a company that isn\'t one of the big players. Yet. A forward deployed engineer isn\'t defined by where they sit. They\'re defined by where their attention goes when nobody is directing it.'),
+				$author$project$Essay$P('Mine went to the customer. It always did. I think the team I\'m leaving behind does the same, and that\'s the thing I\'m proudest of.'),
+				$author$project$Essay$P('You raise something so it can stand without you. Nobody warns you how it feels when it works. It\'s a strange kind of proud.'),
+				$author$project$Essay$P('Nilay told me every warehouse is different. He was right. So am I, now.'),
+				$author$project$Essay$P('To the team: thanks for following the guy with the bag of sand.'),
+				$author$project$Essay$P('This is the story of the distracted forward deployed officer. I was distracted. Turns out I was also listening.')
+			]))
+	]);
+var $author$project$Essay$title = 'The Distracted Forward Deployed Officer';
+var $elm$core$String$startsWith = _String_startsWith;
+var $author$project$Essay$leadItem = function (_v0) {
+	var lead = _v0.a;
+	var rest = _v0.b;
+	return A2(
+		$author$project$Jorn$Element$Html$li,
+		_List_Nil,
+		_List_fromArray(
+			[
+				A2(
+				$author$project$Jorn$Element$Html$span,
+				_List_Nil,
+				_List_fromArray(
+					[
+						A3(
+						$author$project$Jorn$Element$element,
+						'strong',
+						_List_Nil,
+						_List_fromArray(
+							[
+								$author$project$Jorn$Element$text(lead)
+							])),
+						$author$project$Jorn$Element$text(
+						A2($elm$core$String$startsWith, ',', rest) ? rest : (' ' + rest))
+					]))
+			]));
+};
+var $author$project$Essay$viewBlock = function (block) {
+	switch (block.$) {
+		case 0:
+			var text = block.a;
+			return A2(
+				$author$project$Jorn$Element$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$author$project$Jorn$Element$text(text)
+					]));
+		case 1:
+			var text = block.a;
+			return A3(
+				$author$project$Jorn$Element$element,
+				'blockquote',
+				_List_fromArray(
+					[
+						$author$project$Jorn$Attribute$class('essay-quote')
+					]),
+				_List_fromArray(
+					[
+						A2(
+						$author$project$Jorn$Element$Html$p,
+						_List_Nil,
+						_List_fromArray(
+							[
+								$author$project$Jorn$Element$text(text)
+							]))
+					]));
+		case 2:
+			var items = block.a;
+			return A2(
+				$author$project$Jorn$Element$Html$ol,
+				_List_fromArray(
+					[
+						$author$project$Jorn$Attribute$class('essay-steps')
+					]),
+				A2($elm$core$List$map, $author$project$Essay$leadItem, items));
+		default:
+			var items = block.a;
+			return A2(
+				$author$project$Jorn$Element$Html$ul,
+				_List_fromArray(
+					[
+						$author$project$Jorn$Attribute$class('essay-bullets')
+					]),
+				A2($elm$core$List$map, $author$project$Essay$leadItem, items));
+	}
+};
+var $author$project$Essay$viewSection = function (_v0) {
+	var heading = _v0.a;
+	var blocks = _v0.b;
+	return A2(
+		$elm$core$List$cons,
+		A2(
+			$author$project$Jorn$Element$Html$h2,
+			_List_Nil,
+			_List_fromArray(
+				[
+					$author$project$Jorn$Element$text(heading)
+				])),
+		A2($elm$core$List$map, $author$project$Essay$viewBlock, blocks));
+};
+var $author$project$Essay$view = A3(
+	$author$project$Jorn$Element$element,
+	'article',
+	_List_fromArray(
+		[
+			$author$project$Jorn$Attribute$class('essay wrap')
+		]),
+	_List_fromArray(
+		[
+			A2(
+			$author$project$Jorn$Element$Html$header,
+			_List_fromArray(
+				[
+					$author$project$Jorn$Attribute$class('essay-head')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$author$project$Jorn$Element$Html$p,
+					_List_fromArray(
+						[
+							$author$project$Jorn$Attribute$class('eyebrow')
+						]),
+					_List_fromArray(
+						[
+							$author$project$Jorn$Element$text('essay / ' + $author$project$Essay$dateLabel)
+						])),
+					A2(
+					$author$project$Jorn$Element$Html$h1,
+					_List_fromArray(
+						[
+							$author$project$Jorn$Attribute$class('essay-title')
+						]),
+					_List_fromArray(
+						[
+							$author$project$Jorn$Element$text($author$project$Essay$title)
+						])),
+					A2(
+					$author$project$Jorn$Element$Html$p,
+					_List_fromArray(
+						[
+							$author$project$Jorn$Attribute$class('essay-byline')
+						]),
+					_List_fromArray(
+						[
+							A3(
+							$author$project$Jorn$Element$element,
+							'b',
+							_List_Nil,
+							_List_fromArray(
+								[
+									$author$project$Jorn$Element$text('Bazyl Horsey')
+								])),
+							A2(
+							$author$project$Jorn$Element$Html$span,
+							_List_Nil,
+							_List_fromArray(
+								[
+									$author$project$Jorn$Element$text('Chicago, IL')
+								]))
+						])),
+					A2(
+					$author$project$Jorn$Element$Html$a,
+					_List_fromArray(
+						[
+							$author$project$Jorn$Attribute$class('link'),
+							$author$project$Jorn$Attribute$href($author$project$Essay$pdf)
+						]),
+					_List_fromArray(
+						[
+							$author$project$Jorn$Element$text('read it as a PDF')
+						]))
+				])),
+			A2(
+			$author$project$Jorn$Element$Html$div,
+			_List_fromArray(
+				[
+					$author$project$Jorn$Attribute$class('essay-body')
+				]),
+			A2($elm$core$List$concatMap, $author$project$Essay$viewSection, $author$project$Essay$sections)),
+			A2(
+			$author$project$Jorn$Element$Html$footer,
+			_List_fromArray(
+				[
+					$author$project$Jorn$Attribute$class('essay-end')
+				]),
+			_List_fromArray(
+				[
+					A2(
+					$author$project$Jorn$Element$Html$a,
+					_List_fromArray(
+						[
+							$author$project$Jorn$Attribute$class('btn'),
+							$author$project$Jorn$Attribute$href('/')
+						]),
+					_List_fromArray(
+						[
+							$author$project$Jorn$Element$text('Back to the portfolio')
+						])),
+					A2(
+					$author$project$Jorn$Element$Html$a,
+					_List_fromArray(
+						[
+							$author$project$Jorn$Attribute$class('btn'),
+							$author$project$Jorn$Attribute$href('mailto:bhorsey16@gmail.com')
+						]),
+					_List_fromArray(
+						[
+							$author$project$Jorn$Element$text('bhorsey16@gmail.com')
+						]))
+				]))
+		]));
 var $author$project$Main$groupLabel = function (label) {
 	return A2(
 		$author$project$Jorn$Element$Html$p,
@@ -6011,7 +6404,7 @@ var $author$project$Main$groupLabel = function (label) {
 				$author$project$Jorn$Element$text(label)
 			]));
 };
-var $author$project$Main$paper = {e: 'Frontiers in Sustainability 5:1416964. Modeled roughly 50% lower ' + ('emissions by rerouting livestock between brooders and ' + ('finishers with a Gurobi optimization over distance, ' + ('exclusivity, and capacity. The notebook is public, which is ' + 'the point of publishing.'))), t: 'Implementing concepts from green logistics in the turkey production supply chain', a: 'https://doi.org/10.3389/frsus.2024.1416964', u: 'peer reviewed / 2024 / second author', v: 'doi:10.3389/frsus.2024.1416964'};
+var $author$project$Main$paper = {f: 'Frontiers in Sustainability 5:1416964. Modeled roughly 50% lower ' + ('emissions by rerouting livestock between brooders and ' + ('finishers with a Gurobi optimization over distance, ' + ('exclusivity, and capacity. The notebook is public, which is ' + 'the point of publishing.'))), u: 'Implementing concepts from green logistics in the turkey production supply chain', a: 'https://doi.org/10.3389/frsus.2024.1416964', v: 'peer reviewed / 2024 / second author', w: 'doi:10.3389/frsus.2024.1416964'};
 var $author$project$Main$paperCard = A3(
 	$author$project$Jorn$Element$element,
 	'article',
@@ -6029,21 +6422,21 @@ var $author$project$Main$paperCard = A3(
 				]),
 			_List_fromArray(
 				[
-					$author$project$Jorn$Element$text($author$project$Main$paper.u)
+					$author$project$Jorn$Element$text($author$project$Main$paper.v)
 				])),
 			A2(
 			$author$project$Jorn$Element$Html$h3,
 			_List_Nil,
 			_List_fromArray(
 				[
-					$author$project$Jorn$Element$text($author$project$Main$paper.t)
+					$author$project$Jorn$Element$text($author$project$Main$paper.u)
 				])),
 			A2(
 			$author$project$Jorn$Element$Html$p,
 			_List_Nil,
 			_List_fromArray(
 				[
-					$author$project$Jorn$Element$text($author$project$Main$paper.e)
+					$author$project$Jorn$Element$text($author$project$Main$paper.f)
 				])),
 			A2(
 			$author$project$Jorn$Element$Html$div,
@@ -6062,7 +6455,7 @@ var $author$project$Main$paperCard = A3(
 						]),
 					_List_fromArray(
 						[
-							$author$project$Jorn$Element$text($author$project$Main$paper.v)
+							$author$project$Jorn$Element$text($author$project$Main$paper.w)
 						])),
 					A2(
 					$author$project$Jorn$Element$Html$a,
@@ -6095,21 +6488,21 @@ var $author$project$Main$piece = function (item) {
 					]),
 				_List_fromArray(
 					[
-						$author$project$Jorn$Element$text(item.u)
+						$author$project$Jorn$Element$text(item.v)
 					])),
 				A2(
 				$author$project$Jorn$Element$Html$h3,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$author$project$Jorn$Element$text(item.t)
+						$author$project$Jorn$Element$text(item.u)
 					])),
 				A2(
 				$author$project$Jorn$Element$Html$p,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$author$project$Jorn$Element$text(item.e)
+						$author$project$Jorn$Element$text(item.f)
 					])),
 				A2(
 				$author$project$Jorn$Element$Html$a,
@@ -6120,14 +6513,14 @@ var $author$project$Main$piece = function (item) {
 					]),
 				_List_fromArray(
 					[
-						$author$project$Jorn$Element$text(item.v)
+						$author$project$Jorn$Element$text(item.w)
 					]))
 			]));
 };
 var $author$project$Main$podcasts = _List_fromArray(
 	[
-		{e: 'Academic burnout through to running engineering at Arvist. Why ' + ('scrappy beats flashy when you are building a team, and what ' + ('most CTOs get wrong about leadership. The episode title is the ' + 'whole review.')), t: 'Doesn\'t sugarcoat it', a: 'https://youtu.be/mk7CKtatU8U', u: 'software leaders uncensored / with steve taplin', v: 'youtu.be/mk7CKtatU8U'},
-		{e: 'Encord\'s show, hosted by their co-founder. Going deep on AI in ' + ('logistics: what it takes to get a model out of a notebook and ' + ('onto a dock, why the old boring methods still win more often ' + ('than the shiny new thing, and where quality assurance in ' + 'warehousing is heading.'))), t: 'Building Arvist, and what AI actually needs in a warehouse', a: 'https://encord.com/deep-learning-leaders/', u: 'deep learning leaders / with eric landau', v: 'deep learning leaders'}
+		{f: 'Academic burnout through to running engineering at Arvist. Why ' + ('scrappy beats flashy when you are building a team, and what ' + ('most CTOs get wrong about leadership. The episode title is the ' + 'whole review.')), u: 'Doesn\'t sugarcoat it', a: 'https://youtu.be/mk7CKtatU8U', v: 'software leaders uncensored / with steve taplin', w: 'youtu.be/mk7CKtatU8U'},
+		{f: 'Encord\'s show, hosted by their co-founder. Going deep on AI in ' + ('logistics: what it takes to get a model out of a notebook and ' + ('onto a dock, why the old boring methods still win more often ' + ('than the shiny new thing, and where quality assurance in ' + 'warehousing is heading.'))), u: 'Building Arvist, and what AI actually needs in a warehouse', a: 'https://encord.com/deep-learning-leaders/', v: 'deep learning leaders / with eric landau', w: 'deep learning leaders'}
 	]);
 var $author$project$Main$postRow = function (post) {
 	return A2(
@@ -6165,7 +6558,7 @@ var $author$project$Main$postRow = function (post) {
 								_List_Nil,
 								_List_fromArray(
 									[
-										$author$project$Jorn$Element$text(post.x)
+										$author$project$Jorn$Element$text(post.r)
 									]))
 							])),
 						A2(
@@ -6185,7 +6578,7 @@ var $author$project$Main$postRow = function (post) {
 									]),
 								_List_fromArray(
 									[
-										$author$project$Jorn$Element$text(post.g)
+										$author$project$Jorn$Element$text(post.e)
 									])),
 								A2(
 								$author$project$Jorn$Element$Html$span,
@@ -6195,7 +6588,7 @@ var $author$project$Main$postRow = function (post) {
 									]),
 								_List_fromArray(
 									[
-										$author$project$Jorn$Element$text(post.s)
+										$author$project$Jorn$Element$text(post.q)
 									]))
 							])),
 						A2(
@@ -6211,12 +6604,14 @@ var $author$project$Main$postRow = function (post) {
 					]))
 			]));
 };
+var $author$project$Essay$slug = '/writing/distracted-forward-deployed-officer/';
 var $author$project$Main$posts = _List_fromArray(
 	[
-		{p: '2026.08', s: 'Building software got cheap, so small niches pay now. The moat moves ' + 'from owning the platform to adapting fastest to each operation.', a: 'https://arvist.ai/vertical-monopoly/', x: 'arvist blog', g: 'Why vertical monopoly doesn\'t work for warehouse software anymore'},
-		{p: '2026.08', s: 'Quotes price the connection. The time and money go into mapping data ' + 'that doesn\'t line up and the scope nobody wrote down.', a: 'https://arvist.ai/why-your-integration-quote-is-wrong/', x: 'arvist blog', g: 'Why your integration quote is wrong'},
-		{p: '2021.01', s: 'Fresh out of school and building smart lockers at Koloni: hardware, ' + 'firmware and apps that all have to ship together.', a: 'https://bazyl-25260.medium.com/lessons-learned-in-iot-product-development-405b569e5b4c', x: 'medium', g: 'Lessons learned in IoT product development'},
-		{p: '2020.11', s: 'Where shared lockers, scooters and bikes were headed, from inside the business.', a: 'https://bazyl-25260.medium.com/the-future-of-sharing-and-micro-mobility-d63b26fa405', x: 'medium', g: 'The future of sharing and micro-mobility'}
+		{p: $author$project$Essay$dateLabel, q: 'Distracted is what listening looks like when the person you\'re ' + 'listening to isn\'t in the room.', a: $author$project$Essay$slug, r: 'essay', e: $author$project$Essay$title},
+		{p: '2026.08', q: 'Building software got cheap, so small niches pay now. The moat moves ' + 'from owning the platform to adapting fastest to each operation.', a: 'https://arvist.ai/vertical-monopoly/', r: 'arvist blog', e: 'Why vertical monopoly doesn\'t work for warehouse software anymore'},
+		{p: '2026.08', q: 'Quotes price the connection. The time and money go into mapping data ' + 'that doesn\'t line up and the scope nobody wrote down.', a: 'https://arvist.ai/why-your-integration-quote-is-wrong/', r: 'arvist blog', e: 'Why your integration quote is wrong'},
+		{p: '2021.01', q: 'Fresh out of school and building smart lockers at Koloni: hardware, ' + 'firmware and apps that all have to ship together.', a: 'https://bazyl-25260.medium.com/lessons-learned-in-iot-product-development-405b569e5b4c', r: 'medium', e: 'Lessons learned in IoT product development'},
+		{p: '2020.11', q: 'Where shared lockers, scooters and bikes were headed, from inside the business.', a: 'https://bazyl-25260.medium.com/the-future-of-sharing-and-micro-mobility-d63b26fa405', r: 'medium', e: 'The future of sharing and micro-mobility'}
 	]);
 var $author$project$Main$writing = A4(
 	$author$project$Main$section,
@@ -6259,17 +6654,25 @@ var $author$project$Main$view = function (model) {
 				A2(
 				$author$project$Jorn$Element$Html$main_,
 				_List_Nil,
-				_List_fromArray(
-					[
-						$author$project$Main$hero,
-						$author$project$Main$claim,
-						$author$project$Main$said,
-						$author$project$Main$shipped(model),
-						$author$project$Main$path,
-						$author$project$Main$writing,
-						$author$project$Main$band,
-						$author$project$Main$contact
-					])),
+				function () {
+					var _v0 = model.G;
+					if (!_v0) {
+						return _List_fromArray(
+							[
+								$author$project$Main$hero,
+								$author$project$Main$claim,
+								$author$project$Main$said,
+								$author$project$Main$shipped(model),
+								$author$project$Main$path,
+								$author$project$Main$writing,
+								$author$project$Main$band,
+								$author$project$Main$contact
+							]);
+					} else {
+						return _List_fromArray(
+							[$author$project$Essay$view]);
+					}
+				}()),
 				$author$project$Main$foot
 			]));
 };
@@ -6326,7 +6729,7 @@ var $author$project$Main$receive = F2(
 var $elm$core$Platform$worker = _Platform_worker;
 var $author$project$Main$main = $elm$core$Platform$worker(
 	{
-		S: function (flags) {
+		T: function (flags) {
 			var model = $author$project$Main$init(flags);
 			return _Utils_Tuple2(
 				model,
@@ -6336,9 +6739,9 @@ var $author$project$Main$main = $elm$core$Platform$worker(
 					$author$project$Jorn$Patch$encodeHtml(
 						$author$project$Main$view(model))));
 		},
-		T: function (_v0) {
+		U: function (_v0) {
 			return $author$project$Main$fromClient($elm$core$Basics$identity);
 		},
-		U: $author$project$Main$receive
+		V: $author$project$Main$receive
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$value)(0)}});}(this));
