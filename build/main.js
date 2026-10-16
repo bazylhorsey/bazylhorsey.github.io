@@ -3741,7 +3741,7 @@ var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$string = _Json_decodeString;
 var $author$project$Main$init = function (flags) {
 	return {
-		t: $author$project$Main$Everything,
+		v: $author$project$Main$Everything,
 		G: function () {
 			var _v0 = A2(
 				$elm$json$Json$Decode$decodeValue,
@@ -4409,7 +4409,7 @@ var $author$project$Main$update = F2(
 				var filter = msg.a;
 				return _Utils_update(
 					model,
-					{t: filter});
+					{v: filter});
 			default:
 				return model;
 		}
@@ -5230,7 +5230,7 @@ var $author$project$Main$roleItem = function (role) {
 						_List_Nil,
 						_List_fromArray(
 							[
-								$author$project$Jorn$Element$text(role.y)
+								$author$project$Jorn$Element$text(role.A)
 							]))
 					])),
 				A2(
@@ -5246,7 +5246,7 @@ var $author$project$Main$roleItem = function (role) {
 						_List_Nil,
 						_List_fromArray(
 							[
-								$author$project$Jorn$Element$text(role.x),
+								$author$project$Jorn$Element$text(role.z),
 								A2(
 								$author$project$Jorn$Element$Html$span,
 								_List_fromArray(
@@ -5271,7 +5271,7 @@ var $author$project$Main$roleItem = function (role) {
 										]));
 							},
 							role.f),
-						$author$project$Main$figures(role.s))))
+						$author$project$Main$figures(role.u))))
 			]));
 };
 var $author$project$Main$metrics = _List_fromArray(
@@ -5290,36 +5290,36 @@ var $author$project$Main$roles = _List_fromArray(
 		{
 		f: _List_fromArray(
 			['Techstars \'22, then a $4M seed led by Rackhouse. Took the ' + ('platform from first commit to about twenty customer ' + ('deployments across five product lines, then built the ' + ('plug-and-play inspection product behind the pivot: installs ' + ('in a day, works with the cameras and systems a site already ' + 'has.')))), 'Grew engineering from solo to nine across time zones. As CISO, ' + ('built the ISMS from nothing to ISO 27001:2022 and SOC 2 Type I ' + ('readiness. Principal investigator on a $1M+ DoD-funded MxD ' + 'safety AI project.'))]),
-		s: $author$project$Main$metrics,
-		x: 'Arvist',
-		y: 'Chicago, IL',
+		u: $author$project$Main$metrics,
+		z: 'Arvist',
+		A: 'Chicago, IL',
 		B: '2023→now',
 		e: 'Co-founder & CTO, now Technical Advisor'
 	},
 		{
 		f: _List_fromArray(
 			['Smart-locker and mobility IoT, now Accessa, backed by Jason ' + ('Calacanis with a $1M pre-seed. Part-time through college, CTO ' + ('from 2021, leading a team of five. Built the BLE SDKs and mobile ' + ('integrations behind the 2020 Smart Locker launch, which became ' + 'the core business.'))), 'Led the hardware too: our own System on Module with BLE and LTE ' + ('for the lockers, and the APIs that wrapped it. The software ' + 'was the easy half.')]),
-		s: _List_Nil,
-		x: 'Koloni',
-		y: 'Chicago, IL',
+		u: _List_Nil,
+		z: 'Koloni',
+		A: 'Chicago, IL',
 		B: '2019→2022',
 		e: 'Software Manager → Application Manager → CTO'
 	},
 		{
 		f: _List_fromArray(
 			['First startup out of Buena Vista\'s Foundry incubator. Wound it ' + ('down in 2021 and brought two of its engineers to Koloni, which ' + ('I count as the best outcome any of my companies had. Earlier: ' + ('the app for Match-Learn-Launch, a $175,000 Google.org Impact ' + 'Challenge winner.')))]),
-		s: _List_Nil,
-		x: 'Levity',
-		y: 'Storm Lake, IA',
+		u: _List_Nil,
+		z: 'Levity',
+		A: 'Storm Lake, IA',
 		B: '2020→2021',
 		e: 'Co-founder & CEO'
 	},
 		{
 		f: _List_fromArray(
 			['Dean\'s List. President of the Robotics Club. Collegiate wrestler, ' + ('which explains more about how I run engineering than any ' + 'conference talk does.')]),
-		s: _List_Nil,
-		x: 'Buena Vista University',
-		y: 'Storm Lake, IA',
+		u: _List_Nil,
+		z: 'Buena Vista University',
+		A: 'Storm Lake, IA',
 		B: '2016→2020',
 		e: 'BS Computer Science, minor in Communications'
 	}
@@ -5433,7 +5433,7 @@ var $author$project$Main$testimonial = function (t) {
 						_List_Nil,
 						_List_fromArray(
 							[
-								$author$project$Jorn$Element$text(t.z)
+								$author$project$Jorn$Element$text(t.s)
 							]))
 					])),
 				A2(
@@ -5474,7 +5474,7 @@ var $author$project$Main$testimonial = function (t) {
 						_List_Nil,
 						_List_fromArray(
 							[
-								$author$project$Jorn$Element$text(t.A)
+								$author$project$Jorn$Element$text(t.t)
 							]))
 					]))
 			]));
@@ -5482,28 +5482,34 @@ var $author$project$Main$testimonial = function (t) {
 var $author$project$Main$testimonials = _List_fromArray(
 	[
 		{
+		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/luis-condados/'),
+		E: 'Lu\u00EDs Condados',
+		s: 'He helped me design critical parts of Arvist\u2019s MLOps pipeline. ' + ('\u2026 A single engineer can now keep the whole ML lifecycle ' + ('running across hundreds of clients and models with minimal ' + 'maintenance, where a less careful design would have needed a team.')),
+		t: 'ML Engineer'
+	},
+		{
 		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/ACoAADlC9G4Bwlszm246aKubHcdIWI4ymrnp8Y4'),
 		E: 'Sherif Okunade',
-		z: 'Bazyl has a habit of making complicated things look suspiciously ' + ('easy. The kind of person you want around when things break, ' + ('ideas get weird, or someone says, \u201CThat\u2019s probably ' + ('impossible.\u201D He\u2019ll either find a solution or make ' + 'the problem regret showing up.'))),
-		A: 'Web Developer'
+		s: 'Bazyl has a habit of making complicated things look suspiciously ' + ('easy. The kind of person you want around when things break, ' + ('ideas get weird, or someone says, \u201CThat\u2019s probably ' + ('impossible.\u201D He\u2019ll either find a solution or make ' + 'the problem regret showing up.'))),
+		t: 'Web Developer'
 	},
 		{
 		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/matthew-bronstein-a9230462/'),
 		E: 'Matthew Bronstein',
-		z: 'Passionate technology leader who is constantly geeking out over the ' + ('newest tech releases and figuring out how they can solve real ' + 'problems.'),
-		A: 'Head of Engineering'
+		s: 'Passionate technology leader who is constantly geeking out over the ' + ('newest tech releases and figuring out how they can solve real ' + 'problems.'),
+		t: 'Head of Engineering'
 	},
 		{
 		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/ACoAAEM91EABQb_ji6dKGuFDCIYeRoTpS9Pbk_4'),
 		E: 'Jesse Onyekwelu',
-		z: 'A natural mentor who empowers engineers. I started exploring ' + ('systems programming and Rust because of an impressive project ' + 'I saw on his GitHub.'),
-		A: 'Web Developer'
+		s: 'A natural mentor who empowers engineers. I started exploring ' + ('systems programming and Rust because of an impressive project ' + 'I saw on his GitHub.'),
+		t: 'Web Developer'
 	},
 		{
 		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/oshoke-oyati/'),
 		E: 'Oshoke Oyati',
-		z: 'His depth of knowledge, resourcefulness, and unwavering ' + ('commitment to excellence make him \u2026 someone you can ' + 'always count on.'),
-		A: 'Web Development Lead'
+		s: 'His depth of knowledge, resourcefulness, and unwavering ' + ('commitment to excellence make him \u2026 someone you can ' + 'always count on.'),
+		t: 'Web Development Lead'
 	}
 	]);
 var $author$project$Main$said = A2(
@@ -5913,7 +5919,7 @@ var $author$project$Main$shipped = function (model) {
 					]),
 				A2(
 					$elm$core$List$map,
-					$author$project$Main$filterButton(model.t),
+					$author$project$Main$filterButton(model.v),
 					$author$project$Main$filters)),
 				A2(
 				$author$project$Jorn$Element$Html$ul,
@@ -5923,8 +5929,8 @@ var $author$project$Main$shipped = function (model) {
 					]),
 				A2(
 					$elm$core$List$map,
-					$author$project$Main$itemCard(model.t),
-					$author$project$Main$visibleWork(model.t)))
+					$author$project$Main$itemCard(model.v),
+					$author$project$Main$visibleWork(model.v)))
 			]));
 };
 var $author$project$Main$themeName = function (theme) {
@@ -6433,7 +6439,7 @@ var $author$project$Main$groupLabel = function (label) {
 				$author$project$Jorn$Element$text(label)
 			]));
 };
-var $author$project$Main$paper = {f: 'Frontiers in Sustainability 5:1416964. Modeled roughly 50% lower ' + ('emissions by rerouting livestock between brooders and ' + ('finishers with a Gurobi optimization over distance, ' + ('exclusivity, and capacity. The notebook is public, which is ' + 'the point of publishing.'))), u: 'Implementing concepts from green logistics in the turkey production supply chain', a: 'https://doi.org/10.3389/frsus.2024.1416964', v: 'peer reviewed / 2024 / second author', w: 'doi:10.3389/frsus.2024.1416964'};
+var $author$project$Main$paper = {f: 'Frontiers in Sustainability 5:1416964. Modeled roughly 50% lower ' + ('emissions by rerouting livestock between brooders and ' + ('finishers with a Gurobi optimization over distance, ' + ('exclusivity, and capacity. The notebook is public, which is ' + 'the point of publishing.'))), w: 'Implementing concepts from green logistics in the turkey production supply chain', a: 'https://doi.org/10.3389/frsus.2024.1416964', x: 'peer reviewed / 2024 / second author', y: 'doi:10.3389/frsus.2024.1416964'};
 var $author$project$Main$paperCard = A3(
 	$author$project$Jorn$Element$element,
 	'article',
@@ -6451,14 +6457,14 @@ var $author$project$Main$paperCard = A3(
 				]),
 			_List_fromArray(
 				[
-					$author$project$Jorn$Element$text($author$project$Main$paper.v)
+					$author$project$Jorn$Element$text($author$project$Main$paper.x)
 				])),
 			A2(
 			$author$project$Jorn$Element$Html$h3,
 			_List_Nil,
 			_List_fromArray(
 				[
-					$author$project$Jorn$Element$text($author$project$Main$paper.u)
+					$author$project$Jorn$Element$text($author$project$Main$paper.w)
 				])),
 			A2(
 			$author$project$Jorn$Element$Html$p,
@@ -6484,7 +6490,7 @@ var $author$project$Main$paperCard = A3(
 						]),
 					_List_fromArray(
 						[
-							$author$project$Jorn$Element$text($author$project$Main$paper.w)
+							$author$project$Jorn$Element$text($author$project$Main$paper.y)
 						])),
 					A2(
 					$author$project$Jorn$Element$Html$a,
@@ -6517,14 +6523,14 @@ var $author$project$Main$piece = function (item) {
 					]),
 				_List_fromArray(
 					[
-						$author$project$Jorn$Element$text(item.v)
+						$author$project$Jorn$Element$text(item.x)
 					])),
 				A2(
 				$author$project$Jorn$Element$Html$h3,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$author$project$Jorn$Element$text(item.u)
+						$author$project$Jorn$Element$text(item.w)
 					])),
 				A2(
 				$author$project$Jorn$Element$Html$p,
@@ -6542,14 +6548,14 @@ var $author$project$Main$piece = function (item) {
 					]),
 				_List_fromArray(
 					[
-						$author$project$Jorn$Element$text(item.w)
+						$author$project$Jorn$Element$text(item.y)
 					]))
 			]));
 };
 var $author$project$Main$podcasts = _List_fromArray(
 	[
-		{f: 'Academic burnout through to running engineering at Arvist. Why ' + ('scrappy beats flashy when you are building a team, and what ' + ('most CTOs get wrong about leadership. The episode title is the ' + 'whole review.')), u: 'Doesn\'t sugarcoat it', a: 'https://youtu.be/mk7CKtatU8U', v: 'software leaders uncensored / with steve taplin', w: 'youtu.be/mk7CKtatU8U'},
-		{f: 'Encord\'s show, hosted by their co-founder. Going deep on AI in ' + ('logistics: what it takes to get a model out of a notebook and ' + ('onto a dock, why the old boring methods still win more often ' + ('than the shiny new thing, and where quality assurance in ' + 'warehousing is heading.'))), u: 'Building Arvist, and what AI actually needs in a warehouse', a: 'https://encord.com/deep-learning-leaders/', v: 'deep learning leaders / with eric landau', w: 'deep learning leaders'}
+		{f: 'Academic burnout through to running engineering at Arvist. Why ' + ('scrappy beats flashy when you are building a team, and what ' + ('most CTOs get wrong about leadership. The episode title is the ' + 'whole review.')), w: 'Doesn\'t sugarcoat it', a: 'https://youtu.be/mk7CKtatU8U', x: 'software leaders uncensored / with steve taplin', y: 'youtu.be/mk7CKtatU8U'},
+		{f: 'Encord\'s show, hosted by their co-founder. Going deep on AI in ' + ('logistics: what it takes to get a model out of a notebook and ' + ('onto a dock, why the old boring methods still win more often ' + ('than the shiny new thing, and where quality assurance in ' + 'warehousing is heading.'))), w: 'Building Arvist, and what AI actually needs in a warehouse', a: 'https://encord.com/deep-learning-leaders/', x: 'deep learning leaders / with eric landau', y: 'deep learning leaders'}
 	]);
 var $author$project$Main$postRow = function (post) {
 	return A2(

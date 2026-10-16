@@ -768,6 +768,15 @@ type alias Testimonial =
 testimonials : List Testimonial
 testimonials =
     [ { quote =
+            "He helped me design critical parts of Arvist\u{2019}s MLOps pipeline. "
+                ++ "\u{2026} A single engineer can now keep the whole ML lifecycle "
+                ++ "running across hundreds of clients and models with minimal "
+                ++ "maintenance, where a less careful design would have needed a team."
+      , name = "Lu\u{00ED}s Condados"
+      , role = "ML Engineer"
+      , href = Just "https://www.linkedin.com/in/luis-condados/"
+      }
+    , { quote =
             "Bazyl has a habit of making complicated things look suspiciously "
                 ++ "easy. The kind of person you want around when things break, "
                 ++ "ideas get weird, or someone says, \u{201C}That\u{2019}s probably "

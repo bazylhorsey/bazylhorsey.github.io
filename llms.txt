@@ -37,6 +37,7 @@ Contact: bhorsey16@gmail.com
 
 ## What people say
 
+- "He helped me design critical parts of Arvist's MLOps pipeline. ... A single engineer can now keep the whole ML lifecycle running across hundreds of clients and models with minimal maintenance, where a less careful design would have needed a team." Luís Condados, ML Engineer
 - "Bazyl has a habit of making complicated things look suspiciously easy." Sherif Okunade, Web Developer
 - "Passionate technology leader who is constantly geeking out over the newest tech releases and figuring out how they can solve real problems." Matthew Bronstein, Head of Engineering
 - "A natural mentor who empowers engineers." Jesse Onyekwelu, Web Developer

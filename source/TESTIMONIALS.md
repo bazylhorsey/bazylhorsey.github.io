@@ -65,6 +65,33 @@ lives in `src/Main.elm`, and the log at the bottom records each change.
 
 ---
 
+## Luís Condados
+
+- Role and relationship: ML Engineer at Arvist; Bazyl was his CTO
+- LinkedIn: https://www.linkedin.com/in/luis-condados/
+- Date: 2026-10-15
+- OK to quote by name: yes
+
+> I had the pleasure of working with Bazyl as my CTO at Arvist. He is a great
+> problem solver and a fast thinker, with a strong system design mind. What
+> stands out most is how he thinks about impact: he looks for the solution
+> that will still hold up in the mid- and long-term, not only the one that
+> works today.
+>
+> One example: he helped me design critical parts of Arvist's MLOps pipeline.
+> Thanks to his input, we ended up with a system that is simpler and more
+> elegant, and above all scalable. A single engineer can now keep the whole ML
+> lifecycle running across hundreds of clients and models with minimal
+> maintenance, where a less careful design would have needed a team.
+>
+> I learned a lot from him, especially about system design and deployment. He
+> also guides the team toward good engineering practices and keeps people
+> motivated while doing it. He is always available to help and takes the time
+> to teach, and that is one of the things that sets him apart as a technical
+> leader.
+
+---
+
 ## On the site (log)
 
 ### 2026-10-14: "said about working with me" strip, under 01 / the claim
@@ -106,3 +133,14 @@ Order: Sherif, Matthew, Jesse, Oshoke. The originals above are unchanged.
   programming and Rust because of an impressive project I saw on his GitHub."
 - Oshoke: "His depth of knowledge, resourcefulness, and unwavering commitment
   to excellence make him … someone you can always count on."
+
+### 2026-10-15: Luís Condados added, first in the strip
+
+Order: Luís, Sherif, Matthew, Jesse, Oshoke. The originals above are unchanged.
+
+- Luís, trimmed (cut: "One example:" and the middle sentence "Thanks to his
+  input, ..."):
+  > He helped me design critical parts of Arvist's MLOps pipeline. … A single
+  > engineer can now keep the whole ML lifecycle running across hundreds of
+  > clients and models with minimal maintenance, where a less careful design
+  > would have needed a team.
