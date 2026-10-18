@@ -1,0 +1,3 @@
+[submodule "jorn"]
+	path = jorn
+	url = https://github.com/bazylhorsey/jorn.git

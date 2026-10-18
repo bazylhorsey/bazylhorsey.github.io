@@ -1,8 +1,0 @@
-elm-stuff/
-node_modules/
-.DS_Store
-
-# build/ is deliberately NOT ignored.
-# It is the deployable folder: index.html, portfolio.css, favicon.svg,
-# build/main.js and vendor/jorn.js. Committing it means GitHub Pages, or any
-# static host, can serve the repo with nothing else configured.

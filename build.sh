@@ -3,21 +3,21 @@
 #
 #   ./build.sh
 #
-# JORN is not on the Elm package registry yet, so it is consumed from a local
-# clone. Point JORN somewhere else if the clone is not a sibling:
+# JORN is not on the Elm package registry yet, so it comes in as a git
+# submodule at jorn/, pinned to one commit. After cloning this repo:
 #
-#   JORN=~/src/jorn ./build.sh
+#   git submodule update --init
 
 set -euo pipefail
 
 cd "$(dirname "$0")"
 
-JORN="${JORN:-../jorn}"
+JORN="jorn"
 OUT="build"
 
 if [ ! -d "$JORN/client" ]; then
   echo "no JORN checkout at $JORN"
-  echo "clone https://github.com/bazylhorsey/jorn next to this folder, or set JORN=/path/to/jorn"
+  echo "run: git submodule update --init"
   exit 1
 fi
 
@@ -26,8 +26,8 @@ mkdir -p "$OUT/build" "$OUT/vendor"
 # 1. the Elm program: every element on the page
 elm make src/Main.elm --optimize --output="$OUT/build/main.js"
 
-# 2. the browser patcher that applies Jorn's diffs, copied so the
-#    deployed folder does not depend on the clone
+# 2. the browser patcher that applies Jorn's diffs, from the same pinned
+#    commit as the Elm side
 cp "$JORN/client/jorn.js" "$OUT/vendor/jorn.js"
 
 # 3. the page shell and its stylesheet
