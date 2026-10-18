@@ -1,0 +1,60 @@
+# Build the site and deploy it to GitHub Pages.
+#
+# Every push and pull request builds the site and runs the headless check.
+# Only a push to main deploys. Jorn comes from the submodule at jorn/, so the
+# deployed site is built against exactly the commit pinned there.
+
+name: pages
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Elm
+        run: npm install --no-save elm@0.19.1-6
+
+      - name: Build
+        run: PATH="$PWD/node_modules/.bin:$PATH" bash build.sh
+
+      - name: Check
+        run: node run.mjs
+
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name != 'pull_request'
+        with:
+          path: build
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
