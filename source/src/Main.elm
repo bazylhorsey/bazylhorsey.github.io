@@ -15,23 +15,23 @@ and the filter on the work list. Both are plain Elm values.
 import Json.Decode as Decode
 import Json.Encode as Encode exposing (Value)
 
+import Essay
+import Jorn
 import Jorn.Attribute as Attr
+import Jorn.Effect as Effect exposing (Effect)
 import Jorn.Element as Element exposing (Element)
 import Jorn.Element.Html as Html
 import Jorn.Event as Events
-import Jorn.Internal.Event as Routing
-import Jorn.Patch
-import Essay
 
 
 
 -- PORTS
 
 
-port toClient : Value -> Cmd msg
+port toJorn : Value -> Cmd msg
 
 
-port fromClient : (Value -> msg) -> Sub msg
+port fromJorn : (Value -> msg) -> Sub msg
 
 
 
@@ -97,17 +97,32 @@ init flags =
     }
 
 
-update : Msg -> Model -> Model
+{-| Two things on this page belong to the browser, not the tree: the theme
+on `<html>` (body background, browser chrome, the stored choice) and
+scrolling the testimonial strip. Both go out as client effects the shell
+registers.
+-}
+update : Msg -> Model -> ( Model, Effect Msg )
 update msg model =
     case msg of
         ToggleTheme ->
-            { model | theme = if model.theme == Paper then Night else Paper }
+            let
+                theme =
+                    if model.theme == Paper then
+                        Night
+
+                    else
+                        Paper
+            in
+            ( { model | theme = theme }
+            , Effect.client "theme" (Encode.string (themeName theme))
+            )
 
         PickFilter filter ->
-            { model | filter = filter }
+            ( { model | filter = filter }, Effect.none )
 
-        NudgeSaid _ ->
-            model
+        NudgeSaid direction ->
+            ( model, Effect.client "nudgeSaid" (Encode.int direction) )
 
 
 
@@ -176,8 +191,8 @@ jornStages : List Stage
 jornStages =
     [ { number = "1", description = "Pure Elm vdom, diff, wire protocol, event routing", status = Done }
     , { number = "2", description = "Browser patcher, applies patches to the real DOM", status = Done }
-    , { number = "3", description = "Full HTML/SVG/MathML, keyed lists, effects, runtime", status = Next }
-    , { number = "4", description = "Server runtime over a websocket", status = Planned }
+    , { number = "3", description = "Full HTML and SVG, keyed lists, effects, app runtime", status = Done }
+    , { number = "4", description = "Server runtime over a websocket", status = Next }
     , { number = "5", description = "Generated, compiler-checked encoders for shared types", status = Planned }
     , { number = "6", description = "Session snapshots and typed migrations across deploys", status = Planned }
     ]
@@ -199,7 +214,7 @@ metrics =
 work : List Item
 work =
     [ { name = "Jorn"
-      , tags = [ "elm", "v0.0" ]
+      , tags = [ "elm", "v0.1" ]
       , blurb =
             "Write your UI once in Elm and decide at deploy time where each "
                 ++ "piece runs: browser, server, or both. Pure Elm virtual DOM, a "
@@ -438,7 +453,7 @@ tracks =
 
 view : Model -> Element Msg
 view model =
-    Element.element "div"
+    Html.div
         [ Attr.class ("page page--" ++ themeName model.theme) ]
         [ topbar model
         , Html.main_ []
@@ -533,7 +548,7 @@ heroCopy =
             ]
         , Html.h1 [ Attr.class "name" ]
             [ Element.text "Bazyl "
-            , Element.element "br" [] []
+            , Html.br []
             , Element.text "Horsey"
             , Html.span [ Attr.class "caret" ] []
             ]
@@ -829,8 +844,8 @@ said =
             ]
         , Html.ul
             [ Attr.class "said-track"
-            , Attr.attribute "tabindex" "0"
-            , Attr.attribute "aria-label" "Testimonials"
+            , Attr.tabindex 0
+            , Attr.ariaLabel "Testimonials"
             ]
             (List.map testimonial testimonials)
         ]
@@ -841,7 +856,7 @@ nudge direction label glyph =
     Html.button
         [ Attr.class "said-arrow"
         , Attr.type_ "button"
-        , Attr.attribute "aria-label" label
+        , Attr.ariaLabel label
         , Events.onClick (NudgeSaid direction)
         ]
         [ Element.text glyph ]
@@ -850,14 +865,14 @@ nudge direction label glyph =
 testimonial : Testimonial -> Element msg
 testimonial t =
     Html.li [ Attr.class "said-card" ]
-        [ Element.element "blockquote" [] [ Html.p [] [ Element.text t.quote ] ]
+        [ Html.blockquote [] [ Html.p [] [ Element.text t.quote ] ]
         , Html.p [ Attr.class "said-who" ]
             [ case t.href of
                 Just href ->
                     Html.a [ Attr.href href ] [ Element.text t.name ]
 
                 Nothing ->
-                    Element.element "b" [] [ Element.text t.name ]
+                    Html.b [] [ Element.text t.name ]
             , Html.span [] [ Element.text t.role ]
             ]
         ]
@@ -874,7 +889,7 @@ claimItem ( heading, body ) =
 metric : Metric -> Element msg
 metric item =
     Html.div [ Attr.class "num" ]
-        [ Element.element "b" [] [ Element.text item.figure ]
+        [ Html.b [] [ Element.text item.figure ]
         , Html.span [] [ Element.text item.caption ]
         ]
 
@@ -950,7 +965,7 @@ itemCard filter item =
           else
             Html.p [] [ Element.text item.blurb ]
         , if List.isEmpty item.stages then
-            Element.element "span" [] []
+            Html.span [] []
 
           else
             stageTable item.stages
@@ -960,7 +975,7 @@ itemCard filter item =
                     [ Element.text href ]
 
             Nothing ->
-                Element.element "span" [] []
+                Html.span [] []
         ]
 
 
@@ -984,16 +999,16 @@ tag label =
 
 stageTable : List Stage -> Element msg
 stageTable stages =
-    Element.element "table" [ Attr.class "roadmap" ]
-        [ Element.element "tbody" [] (List.map stageRow stages) ]
+    Html.table [ Attr.class "roadmap" ]
+        [ Html.tbody [] (List.map stageRow stages) ]
 
 
 stageRow : Stage -> Element msg
 stageRow stage =
-    Element.element "tr" []
-        [ Element.element "td" [] [ Element.text stage.number ]
-        , Element.element "td" [] [ Element.text stage.description ]
-        , Element.element "td" []
+    Html.tr []
+        [ Html.td [] [ Element.text stage.number ]
+        , Html.td [] [ Element.text stage.description ]
+        , Html.td []
             [ Html.span
                 [ Attr.class ("chip chip-" ++ statusName stage.status) ]
                 [ Element.text (statusLabel stage.status) ]
@@ -1039,7 +1054,7 @@ roleItem : Role -> Element msg
 roleItem role =
     Html.li []
         [ Html.div [ Attr.class "path-when" ]
-            [ Element.element "b" [] [ Element.text role.span ]
+            [ Html.b [] [ Element.text role.span ]
             , Html.span [] [ Element.text role.place ]
             ]
         , Html.div [ Attr.class "path-what" ]
@@ -1092,7 +1107,7 @@ that produced it, because the notebook being public is the point.
 -}
 paperCard : Element msg
 paperCard =
-    Element.element "article" [ Attr.class "write write--paper" ]
+    Html.article [ Attr.class "write write--paper" ]
         [ Html.p [ Attr.class "write-meta" ] [ Element.text paper.kind ]
         , Html.h3 [] [ Element.text paper.heading ]
         , Html.p [] [ Element.text paper.body ]
@@ -1112,11 +1127,11 @@ postRow post =
     Html.li []
         [ Html.a [ Attr.class "post", Attr.href post.href ]
             [ Html.span [ Attr.class "post-meta" ]
-                [ Element.element "b" [] [ Element.text post.date ]
+                [ Html.b [] [ Element.text post.date ]
                 , Html.span [] [ Element.text post.outlet ]
                 ]
             , Html.span [ Attr.class "post-body" ]
-                [ Element.element "b" [ Attr.class "post-title" ] [ Element.text post.title ]
+                [ Html.b [ Attr.class "post-title" ] [ Element.text post.title ]
                 , Html.span [ Attr.class "post-gist" ] [ Element.text post.gist ]
                 ]
             , Html.span [ Attr.class "post-go" ] [ Element.text "→" ]
@@ -1126,7 +1141,7 @@ postRow post =
 
 piece : Piece -> Element msg
 piece item =
-    Element.element "article" [ Attr.class "write" ]
+    Html.article [ Attr.class "write" ]
         [ Html.p [ Attr.class "write-meta" ] [ Element.text item.kind ]
         , Html.h3 [] [ Element.text item.heading ]
         , Html.p [] [ Element.text item.body ]
@@ -1176,7 +1191,7 @@ track : Int -> String -> Element msg
 track index title =
     Html.li
         [ Attr.classes [ ( "col-top", index == 0 || index == trackRows ) ] ]
-        [ Element.element "b" [] [ Element.text title ] ]
+        [ Html.b [] [ Element.text title ] ]
 
 
 contact : Element msg
@@ -1237,61 +1252,20 @@ section anchor eyebrow heading children =
     Html.section [ Attr.class "section wrap", Attr.id anchor ]
         [ Html.p [ Attr.class "eyebrow" ] [ Element.text eyebrow ]
         , Html.h2 [ Attr.class "h2" ] [ Element.text heading ]
-        , Element.element "div" [] children
+        , Html.div [] children
         ]
 
 
 
--- GLUE
--- What a Jorn runtime does for you.
+-- MAIN
 
 
-main : Program Value Model Value
+main : Jorn.Program Value Model Msg
 main =
-    Platform.worker
-        { init =
-            \flags ->
-                let
-                    model =
-                        init flags
-                in
-                ( model, send "mount" (Jorn.Patch.encodeHtml (view model)) )
-        , update = receive
-        , subscriptions = \_ -> fromClient identity
+    Jorn.application
+        { init = \flags -> ( init flags, Effect.none )
+        , update = update
+        , view = view
+        , subscriptions = \_ -> Sub.none
+        , ports = { toJorn = toJorn, fromJorn = fromJorn }
         }
-
-
-receive : Value -> Model -> ( Model, Cmd msg )
-receive raw model =
-    let
-        routed =
-            Decode.decodeValue Routing.decoder raw
-                |> Result.mapError Decode.errorToString
-                |> Result.andThen
-                    (\incoming ->
-                        Routing.route incoming (view model)
-                            |> Result.mapError Routing.errorToString
-                    )
-    in
-    case routed of
-        Ok (NudgeSaid direction) ->
-            -- Scrolling is the browser's job, not the tree's: nothing to diff,
-            -- so tell the shell which way to move the strip.
-            ( model, send "scroll" (Encode.int direction) )
-
-        Ok msg ->
-            let
-                next =
-                    update msg model
-            in
-            ( next
-            , send "patches" (Jorn.Patch.encode (Jorn.Patch.diff (view model) (view next)))
-            )
-
-        Err problem ->
-            ( model, send "error" (Encode.string problem) )
-
-
-send : String -> Value -> Cmd msg
-send kind payload =
-    toClient (Encode.object [ ( kind, payload ) ])

@@ -111,51 +111,40 @@
     <script type="module">
       // Client mode: the Elm program runs right here in the page, and the same
       // patcher a server component would use applies the diffs to the DOM.
-      import { connect } from "/vendor/jorn.js";
+      // `start` is Jorn's runtime glue: mount, events, one render per frame.
+      import { start } from "/vendor/jorn.js";
 
       const root = document.documentElement;
-      const app = Elm.Main.init({
-        flags: { dark: root.dataset.theme === "night" },
-      });
-
-      // The theme lives in Elm. Mirror it onto <html> so the body background,
-      // overscroll and browser chrome match, and remember an explicit toggle.
       const themeColor = document.querySelector('meta[name="theme-color"]');
-      let mountedTheme = null;
-      const syncTheme = () => {
-        const page = document.querySelector("#app > .page");
-        if (!page) return;
-        const theme = page.classList.contains("page--night") ? "night" : "paper";
+      const paintChrome = (theme) => {
         root.dataset.theme = theme;
         themeColor.content = theme === "night" ? "#141210" : "#ebe8df";
-        if (mountedTheme === null) mountedTheme = theme;
-        else if (theme !== mountedTheme) {
-          mountedTheme = theme;
-          try {
-            localStorage.setItem("theme", theme);
-          } catch (e) {}
-        }
       };
+      paintChrome(root.dataset.theme === "night" ? "night" : "paper");
 
-      const jorn = connect(document.getElementById("app"), {
-        send: (event) => app.ports.fromClient.send(event),
-        raw: true,
-      });
-
-      app.ports.toClient.subscribe((message) => {
-        if (message.mount) jorn.mount(message.mount);
-        else if (message.patches) jorn.patch(message.patches);
-        else if (message.scroll) {
-          const track = document.querySelector(".said-track");
-          const card = track && track.querySelector(".said-card");
-          if (card) {
+      start(Elm.Main, document.getElementById("app"), {
+        flags: { dark: root.dataset.theme === "night" },
+        effects: {
+          // The theme lives in Elm. Mirror it onto <html> so the body
+          // background, overscroll and browser chrome match, and remember
+          // the visitor's choice.
+          theme: (theme) => {
+            paintChrome(theme);
+            try {
+              localStorage.setItem("theme", theme);
+            } catch (e) {}
+          },
+          // Scrolling is the browser's job, not the tree's: move the
+          // testimonial strip one card in the direction Elm asked for.
+          nudgeSaid: (direction, { container }) => {
+            const track = container.querySelector(".said-track");
+            const card = track && track.querySelector(".said-card");
+            if (!card) return;
             const step = card.getBoundingClientRect().width + parseFloat(getComputedStyle(track).columnGap || 0);
             const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
-            track.scrollBy({ left: message.scroll * step, behavior: still ? "auto" : "smooth" });
-          }
-        }
-        else if (message.error) console.warn(message.error);
-        syncTheme();
+            track.scrollBy({ left: direction * step, behavior: still ? "auto" : "smooth" });
+          },
+        },
       });
     </script>
   </body>

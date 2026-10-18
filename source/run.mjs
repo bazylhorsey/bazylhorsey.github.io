@@ -21,10 +21,18 @@ let mounted = null;
 let lastPatches = [];
 let problems = 0;
 
-app.ports.toClient.subscribe((message) => {
+// Stand in for client/jorn.js's `start`: answer each frame request at once,
+// collect the patches and client effects that come back.
+let lastEffects = [];
+
+app.ports.toJorn.subscribe((message) => {
   if (message.mount) mounted = message.mount;
-  else if (message.patches) lastPatches = message.patches;
-  else if (message.error) {
+  if (message.frame) setTimeout(() => app.ports.fromJorn.send({ frame: true }), 0);
+  if (message.patches) {
+    lastPatches = message.patches;
+    lastEffects = message.instructions || [];
+  }
+  if (message.error) {
     console.error("  FAIL app reported:", message.error);
     problems++;
   }
@@ -59,6 +67,9 @@ function nodeAt(path) {
   return node;
 }
 
+const click = (path) =>
+  app.ports.fromJorn.send({ event: { path, name: "click", event: {} } });
+
 const filterButton = (text) => (node) =>
   node.tag === "button" && (node.children || []).some((c) => c.text === text);
 
@@ -76,7 +87,7 @@ for (const label of steps) {
   }
 
   lastPatches = [];
-  app.ports.fromClient.send({ path, name: "click", event: {} });
+  click(path);
   await tick();
 
   // Which button did the patches mark active?
@@ -104,11 +115,7 @@ for (const label of steps) {
 // Re-selecting the current filter should be a no-op: nothing changed, so
 // there is nothing to send.
 lastPatches = [];
-app.ports.fromClient.send({
-  path: pathTo(filterButton("experiments")),
-  name: "click",
-  event: {},
-});
+click(pathTo(filterButton("experiments")));
 await tick();
 
 const quiet = lastPatches.length === 0;
@@ -130,7 +137,7 @@ if (!themeButton) {
 } else {
   const before = (mounted.attrs || {}).class;
   lastPatches = [];
-  app.ports.fromClient.send({ path: themeButton, name: "click", event: {} });
+  click(themeButton);
   await tick();
 
   const rootPatch = lastPatches.find(
@@ -144,6 +151,35 @@ if (!themeButton) {
       `"${before}" became "${rootPatch ? rootPatch.value : "unchanged"}"`
   );
 }
+
+// The theme also has to reach <html>, and the testimonial arrows scroll a
+// strip the tree doesn't own. Both leave Elm as client effects the shell
+// registers, so check they go out with the right name and payload.
+function expectEffect(label, path, name, payload) {
+  if (!path) {
+    console.error(`  FAIL no ${label} in the mounted tree`);
+    problems++;
+    return;
+  }
+  lastEffects = [];
+  click(path);
+  return tick().then(() => {
+    const sent = lastEffects.find((e) => e.effect === "client" && e.name === name);
+    const ok = sent && sent.payload === payload;
+    if (!ok) problems++;
+    console.log(
+      `  ${ok ? "ok  " : "FAIL"} ${label} at [${path}] -> client effect ` +
+        `${sent ? `${name}(${JSON.stringify(sent.payload)})` : "none"}`
+    );
+  });
+}
+
+const arrow = (label) => (node) =>
+  node.tag === "button" && (node.attrs || {})["aria-label"] === label;
+
+await expectEffect("theme toggle", themeButton, "theme", "paper");
+await expectEffect("next testimonial", pathTo(arrow("Next")), "nudgeSaid", 1);
+await expectEffect("previous testimonial", pathTo(arrow("Previous")), "nudgeSaid", -1);
 
 console.log(problems ? `\n${problems} check(s) failed` : "\nall checks passed");
 process.exit(problems ? 1 : 0);

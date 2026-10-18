@@ -101,6 +101,8 @@ browser.
    requests the deployed page makes are its own four files.
 4. **No em dashes.** Sentence breaks, colons, commas, or parentheses. This
    applies to the copy in here too.
-5. **JORN is early.** `Html` covers a small set of elements, so `b`, `article`,
-   `table` and friends go through `Element.element "tagname"`. Check the
-   module before assuming something is exported.
+5. **Use the element helpers.** Since Jorn v0.1, `Jorn.Element.Html` has a
+   function for every HTML element, so write `Html.blockquote`, not
+   `Element.element "blockquote"`. Anything that belongs to the browser rather
+   than the tree (the theme on `<html>`, scrolling the testimonial strip) goes
+   out as an `Effect.client` that the shell in `public/index.html` registers.

@@ -164,14 +164,14 @@ sections =
 
 view : Element msg
 view =
-    Element.element "article"
+    Html.article
         [ Attr.class "essay wrap" ]
         [ Html.header [ Attr.class "essay-head" ]
             [ Html.p [ Attr.class "eyebrow" ]
                 [ Element.text ("essay / " ++ dateLabel) ]
             , Html.h1 [ Attr.class "essay-title" ] [ Element.text title ]
             , Html.p [ Attr.class "essay-byline" ]
-                [ Element.element "b" [] [ Element.text "Bazyl Horsey" ]
+                [ Html.b [] [ Element.text "Bazyl Horsey" ]
                 , Html.span [] [ Element.text "Chicago, IL" ]
                 ]
             , Html.a [ Attr.class "link", Attr.href pdf ] [ Element.text "read it as a PDF" ]
@@ -197,7 +197,7 @@ viewBlock block =
             Html.p [] (inline text)
 
         Quote text ->
-            Element.element "blockquote" [ Attr.class "essay-quote" ]
+            Html.blockquote [ Attr.class "essay-quote" ]
                 [ Html.p [] [ Element.text text ] ]
 
         Steps items ->
@@ -218,7 +218,7 @@ inline text =
         |> List.map
             (\( i, piece ) ->
                 if modBy 2 i == 1 then
-                    Element.element "em" [] [ Element.text piece ]
+                    Html.em [] [ Element.text piece ]
 
                 else
                     Element.text piece
@@ -230,7 +230,7 @@ leadItem ( lead, rest ) =
     -- One span, so the numbered list's grid sees a single content cell.
     Html.li []
         [ Html.span []
-            [ Element.element "strong" [] [ Element.text lead ]
+            [ Html.strong [] [ Element.text lead ]
             , Element.text
                 (if String.startsWith "," rest then
                     rest

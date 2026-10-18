@@ -40,7 +40,7 @@ function html(node) {
 function render(flags) {
   return new Promise((resolve, reject) => {
     const app = Elm.Main.init({ flags });
-    app.ports.toClient.subscribe((message) => {
+    app.ports.toJorn.subscribe((message) => {
       if (message.mount) resolve(message.mount);
       else if (message.error) reject(new Error(message.error));
     });

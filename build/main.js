@@ -600,11 +600,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.J.D === region.N.D)
+	if (region._.J === region.ae.J)
 	{
-		return 'on line ' + region.J.D;
+		return 'on line ' + region._.J;
 	}
-	return 'on lines ' + region.J.D + ' through ' + region.N.D;
+	return 'on lines ' + region._.J + ' through ' + region.ae.J;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.T,
-		impl.V,
-		impl.U,
+		impl.H,
+		impl.P,
+		impl.X,
 		function() { return function() {} }
 	);
 });
@@ -2356,6 +2356,43 @@ function _Platform_mergeExportsDebug(moduleName, obj, exports)
 			: (obj[name] = exports[name]);
 	}
 }
+
+
+
+var _Bitwise_and = F2(function(a, b)
+{
+	return a & b;
+});
+
+var _Bitwise_or = F2(function(a, b)
+{
+	return a | b;
+});
+
+var _Bitwise_xor = F2(function(a, b)
+{
+	return a ^ b;
+});
+
+function _Bitwise_complement(a)
+{
+	return ~a;
+};
+
+var _Bitwise_shiftLeftBy = F2(function(offset, a)
+{
+	return a << offset;
+});
+
+var _Bitwise_shiftRightBy = F2(function(offset, a)
+{
+	return a >> offset;
+});
+
+var _Bitwise_shiftRightZfBy = F2(function(offset, a)
+{
+	return a >>> offset;
+});
 var $elm$core$Basics$EQ = 1;
 var $elm$core$Basics$LT = 0;
 var $elm$core$List$cons = _List_cons;
@@ -2436,6 +2473,12 @@ var $elm$core$Set$toList = function (_v0) {
 	return $elm$core$Dict$keys(dict);
 };
 var $elm$core$Basics$GT = 2;
+var $author$project$Jorn$FromClient = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$Jorn$Got = function (a) {
+	return {$: 1, a: a};
+};
 var $elm$core$Result$Err = function (a) {
 	return {$: 1, a: a};
 };
@@ -2831,6 +2874,14 @@ var $elm$core$Result$isOk = function (result) {
 		return false;
 	}
 };
+var $elm$core$Platform$Sub$batch = _Platform_batch;
+var $elm$core$Platform$Sub$map = _Platform_map;
+var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
+var $elm$core$Basics$identity = function (x) {
+	return x;
+};
+var $author$project$Jorn$State = $elm$core$Basics$identity;
+var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Dict$foldl = F3(
 	function (func, acc, dict) {
 		foldl:
@@ -2902,17 +2953,14 @@ var $author$project$Jorn$Internal$Vdom$encodeOptions = function (options) {
 			[
 				_Utils_Tuple2(
 				'preventDefault',
-				$elm$json$Json$Encode$bool(options.I)),
+				$elm$json$Json$Encode$bool(options.Z)),
 				_Utils_Tuple2(
 				'stopPropagation',
-				$elm$json$Json$Encode$bool(options.K)),
+				$elm$json$Json$Encode$bool(options.aa)),
 				_Utils_Tuple2(
 				'include',
-				A2($elm$json$Json$Encode$list, $elm$json$Json$Encode$string, options.H))
+				A2($elm$json$Json$Encode$list, $elm$json$Json$Encode$string, options.Y))
 			]));
-};
-var $elm$core$Basics$identity = function (x) {
-	return x;
 };
 var $author$project$Jorn$Internal$Vdom$encodeNode = function (node) {
 	if (node.$ === 1) {
@@ -2931,22 +2979,22 @@ var $author$project$Jorn$Internal$Vdom$encodeNode = function (node) {
 				[
 					_Utils_Tuple2(
 					'tag',
-					$elm$json$Json$Encode$string(r.R)),
+					$elm$json$Json$Encode$string(r.al)),
 					_Utils_Tuple2(
 					'namespace',
-					$elm$json$Json$Encode$string(r.P)),
+					$elm$json$Json$Encode$string(r.ak)),
 					_Utils_Tuple2(
 					'attrs',
-					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $elm$json$Json$Encode$string, r.L)),
+					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $elm$json$Json$Encode$string, r.ac)),
 					_Utils_Tuple2(
 					'props',
-					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $elm$core$Basics$identity, r.Q)),
+					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $elm$core$Basics$identity, r.ah)),
 					_Utils_Tuple2(
 					'events',
-					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $author$project$Jorn$Internal$Vdom$encodeOptions, r.S)),
+					A3($elm$json$Json$Encode$dict, $elm$core$Basics$identity, $author$project$Jorn$Internal$Vdom$encodeOptions, r.aj)),
 					_Utils_Tuple2(
 					'children',
-					A2($elm$json$Json$Encode$list, $author$project$Jorn$Internal$Vdom$encodeNode, r.M))
+					A2($elm$json$Json$Encode$list, $author$project$Jorn$Internal$Vdom$encodeNode, r.ad))
 				]));
 	}
 };
@@ -2956,6 +3004,21 @@ var $author$project$Jorn$Internal$Vdom$NodeElement = function (a) {
 var $author$project$Jorn$Internal$Vdom$NodeText = function (a) {
 	return {$: 1, a: a};
 };
+var $elm$core$String$isEmpty = function (string) {
+	return string === '';
+};
+var $author$project$Jorn$Internal$Vdom$accumulate = F3(
+	function (separator, value, existing) {
+		if (existing.$ === 1) {
+			return $elm$core$Maybe$Just(value);
+		} else {
+			var previous = existing.a;
+			return $elm$core$String$isEmpty(value) ? $elm$core$Maybe$Just(previous) : ($elm$core$String$isEmpty(previous) ? $elm$core$Maybe$Just(value) : $elm$core$Maybe$Just(
+				_Utils_ap(
+					previous,
+					_Utils_ap(separator, value))));
+		}
+	});
 var $elm$core$Dict$Black = 1;
 var $elm$core$Dict$RBNode_elm_builtin = F5(
 	function (a, b, c, d, e) {
@@ -3066,18 +3129,6 @@ var $elm$core$Dict$insert = F3(
 			return x;
 		}
 	});
-var $elm$core$String$isEmpty = function (string) {
-	return string === '';
-};
-var $author$project$Jorn$Internal$Vdom$mergeClass = F2(
-	function (value, existing) {
-		if (existing.$ === 1) {
-			return $elm$core$Maybe$Just(value);
-		} else {
-			var previous = existing.a;
-			return $elm$core$String$isEmpty(value) ? $elm$core$Maybe$Just(previous) : ($elm$core$String$isEmpty(previous) ? $elm$core$Maybe$Just(value) : $elm$core$Maybe$Just(previous + (' ' + value)));
-		}
-	});
 var $elm$core$List$any = F2(
 	function (isOkay, list) {
 		any:
@@ -3125,12 +3176,12 @@ var $author$project$Jorn$Internal$Vdom$addPaths = F2(
 var $author$project$Jorn$Internal$Vdom$combineOptions = F2(
 	function (added, options) {
 		return {
-			H: A2($author$project$Jorn$Internal$Vdom$addPaths, added.H, options.H),
-			I: added.I || options.I,
-			K: added.K || options.K
+			Y: A2($author$project$Jorn$Internal$Vdom$addPaths, added.Y, options.Y),
+			Z: added.Z || options.Z,
+			aa: added.aa || options.aa
 		};
 	});
-var $author$project$Jorn$Internal$Vdom$defaultOptions = {H: _List_Nil, I: false, K: false};
+var $author$project$Jorn$Internal$Vdom$defaultOptions = {Y: _List_Nil, Z: false, aa: false};
 var $author$project$Jorn$Internal$Vdom$splitOptions = function (attribute) {
 	if (attribute.$ === 3) {
 		var added = attribute.a;
@@ -3556,25 +3607,37 @@ var $author$project$Jorn$Internal$Vdom$addFact = F2(
 		var bare = _v0.b;
 		switch (bare.$) {
 			case 0:
-				if (bare.a === 'class') {
-					var value = bare.b;
-					return _Utils_update(
-						acc,
-						{
-							L: A3(
-								$elm$core$Dict$update,
-								'class',
-								$author$project$Jorn$Internal$Vdom$mergeClass(value),
-								acc.L)
-						});
-				} else {
-					var name = bare.a;
-					var value = bare.b;
-					return _Utils_update(
-						acc,
-						{
-							L: A3($elm$core$Dict$insert, name, value, acc.L)
-						});
+				switch (bare.a) {
+					case 'class':
+						var value = bare.b;
+						return _Utils_update(
+							acc,
+							{
+								ac: A3(
+									$elm$core$Dict$update,
+									'class',
+									A2($author$project$Jorn$Internal$Vdom$accumulate, ' ', value),
+									acc.ac)
+							});
+					case 'style':
+						var value = bare.b;
+						return _Utils_update(
+							acc,
+							{
+								ac: A3(
+									$elm$core$Dict$update,
+									'style',
+									A2($author$project$Jorn$Internal$Vdom$accumulate, '; ', value),
+									acc.ac)
+							});
+					default:
+						var name = bare.a;
+						var value = bare.b;
+						return _Utils_update(
+							acc,
+							{
+								ac: A3($elm$core$Dict$insert, name, value, acc.ac)
+							});
 				}
 			case 1:
 				var name = bare.a;
@@ -3582,7 +3645,7 @@ var $author$project$Jorn$Internal$Vdom$addFact = F2(
 				return _Utils_update(
 					acc,
 					{
-						Q: A3($elm$core$Dict$insert, name, value, acc.Q)
+						ah: A3($elm$core$Dict$insert, name, value, acc.ah)
 					});
 			case 2:
 				var name = bare.a;
@@ -3590,12 +3653,14 @@ var $author$project$Jorn$Internal$Vdom$addFact = F2(
 				return _Utils_update(
 					acc,
 					{
-						S: A3(
+						aj: A3(
 							$elm$core$Dict$insert,
 							name,
 							_Utils_Tuple2(options, decoder),
-							acc.S)
+							acc.aj)
 					});
+			case 3:
+				return acc;
 			default:
 				return acc;
 		}
@@ -3605,28 +3670,9 @@ var $author$project$Jorn$Internal$Vdom$facts = function (attributes) {
 	return A3(
 		$elm$core$List$foldl,
 		$author$project$Jorn$Internal$Vdom$addFact,
-		{L: $elm$core$Dict$empty, S: $elm$core$Dict$empty, Q: $elm$core$Dict$empty},
+		{ac: $elm$core$Dict$empty, aj: $elm$core$Dict$empty, ah: $elm$core$Dict$empty},
 		attributes);
 };
-var $elm$core$Dict$map = F2(
-	function (func, dict) {
-		if (dict.$ === -2) {
-			return $elm$core$Dict$RBEmpty_elm_builtin;
-		} else {
-			var color = dict.a;
-			var key = dict.b;
-			var value = dict.c;
-			var left = dict.d;
-			var right = dict.e;
-			return A5(
-				$elm$core$Dict$RBNode_elm_builtin,
-				color,
-				key,
-				A2(func, key, value),
-				A2($elm$core$Dict$map, func, left),
-				A2($elm$core$Dict$map, func, right));
-		}
-	});
 var $elm$core$List$foldrHelper = F4(
 	function (fn, acc, ctr, ls) {
 		if (!ls.b) {
@@ -3682,6 +3728,103 @@ var $elm$core$List$foldr = F3(
 	function (fn, acc, ls) {
 		return A4($elm$core$List$foldrHelper, fn, acc, 0, ls);
 	});
+var $author$project$Jorn$Internal$Vdom$needsSplicing = function (html) {
+	_v0$3:
+	while (true) {
+		switch (html.$) {
+			case 2:
+				return true;
+			case 3:
+				switch (html.b.$) {
+					case 2:
+						return true;
+					case 3:
+						var _v1 = html.b;
+						return true;
+					default:
+						break _v0$3;
+				}
+			default:
+				break _v0$3;
+		}
+	}
+	return false;
+};
+var $author$project$Jorn$Internal$Vdom$Keyed = F2(
+	function (a, b) {
+		return {$: 3, a: a, b: b};
+	});
+var $elm$core$Maybe$withDefault = F2(
+	function (_default, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return value;
+		} else {
+			return _default;
+		}
+	});
+var $author$project$Jorn$Internal$Vdom$spliceChild = F3(
+	function (key, child, acc) {
+		spliceChild:
+		while (true) {
+			switch (child.$) {
+				case 2:
+					var grandchildren = child.a;
+					return A3(
+						$elm$core$List$foldr,
+						$author$project$Jorn$Internal$Vdom$spliceChild(key),
+						acc,
+						grandchildren);
+				case 3:
+					var inner = child.a;
+					var wrapped = child.b;
+					var $temp$key = $elm$core$Maybe$Just(
+						A2($elm$core$Maybe$withDefault, inner, key)),
+						$temp$child = wrapped,
+						$temp$acc = acc;
+					key = $temp$key;
+					child = $temp$child;
+					acc = $temp$acc;
+					continue spliceChild;
+				default:
+					if (!key.$) {
+						var k = key.a;
+						return A2(
+							$elm$core$List$cons,
+							A2($author$project$Jorn$Internal$Vdom$Keyed, k, child),
+							acc);
+					} else {
+						return A2($elm$core$List$cons, child, acc);
+					}
+			}
+		}
+	});
+var $author$project$Jorn$Internal$Vdom$flatten = function (children) {
+	return A2($elm$core$List$any, $author$project$Jorn$Internal$Vdom$needsSplicing, children) ? A3(
+		$elm$core$List$foldr,
+		$author$project$Jorn$Internal$Vdom$spliceChild($elm$core$Maybe$Nothing),
+		_List_Nil,
+		children) : children;
+};
+var $elm$core$Dict$map = F2(
+	function (func, dict) {
+		if (dict.$ === -2) {
+			return $elm$core$Dict$RBEmpty_elm_builtin;
+		} else {
+			var color = dict.a;
+			var key = dict.b;
+			var value = dict.c;
+			var left = dict.d;
+			var right = dict.e;
+			return A5(
+				$elm$core$Dict$RBNode_elm_builtin,
+				color,
+				key,
+				A2(func, key, value),
+				A2($elm$core$Dict$map, func, left),
+				A2($elm$core$Dict$map, func, right));
+		}
+	});
 var $elm$core$List$map = F2(
 	function (f, xs) {
 		return A3(
@@ -3696,93 +3839,293 @@ var $elm$core$List$map = F2(
 			_List_Nil,
 			xs);
 	});
+var $author$project$Jorn$Internal$Vdom$Attr = F2(
+	function (a, b) {
+		return {$: 0, a: a, b: b};
+	});
+var $author$project$Jorn$Internal$Vdom$Element = F5(
+	function (a, b, c, d, e) {
+		return {$: 0, a: a, b: b, c: c, d: d, e: e};
+	});
+var $author$project$Jorn$Internal$Vdom$Normal = 0;
+var $author$project$Jorn$Internal$Vdom$Text = function (a) {
+	return {$: 1, a: a};
+};
+var $author$project$Jorn$Internal$Vdom$unkey = function (html) {
+	unkey:
+	while (true) {
+		if (html.$ === 3) {
+			var wrapped = html.b;
+			var $temp$html = wrapped;
+			html = $temp$html;
+			continue unkey;
+		} else {
+			return html;
+		}
+	}
+};
+var $author$project$Jorn$Internal$Vdom$root = function (html) {
+	root:
+	while (true) {
+		switch (html.$) {
+			case 2:
+				var children = html.a;
+				var _v1 = $author$project$Jorn$Internal$Vdom$flatten(children);
+				if (!_v1.b) {
+					return $author$project$Jorn$Internal$Vdom$Text('');
+				} else {
+					if (!_v1.b.b) {
+						var only = _v1.a;
+						return $author$project$Jorn$Internal$Vdom$unkey(only);
+					} else {
+						var several = _v1;
+						return A5(
+							$author$project$Jorn$Internal$Vdom$Element,
+							'',
+							'jorn-fragment',
+							0,
+							_List_fromArray(
+								[
+									A2($author$project$Jorn$Internal$Vdom$Attr, 'style', 'display: contents')
+								]),
+							several);
+					}
+				}
+			case 3:
+				var wrapped = html.b;
+				var $temp$html = wrapped;
+				html = $temp$html;
+				continue root;
+			default:
+				return html;
+		}
+	}
+};
 var $author$project$Jorn$Internal$Vdom$toNode = function (html) {
-	if (html.$ === 1) {
-		var content = html.a;
-		return $author$project$Jorn$Internal$Vdom$NodeText(content);
-	} else {
-		var namespace = html.a;
-		var tag = html.b;
-		var attributes = html.c;
-		var children = html.d;
-		var f = $author$project$Jorn$Internal$Vdom$facts(attributes);
-		return $author$project$Jorn$Internal$Vdom$NodeElement(
-			{
-				L: f.L,
-				M: A2($elm$core$List$map, $author$project$Jorn$Internal$Vdom$toNode, children),
-				S: A2(
-					$elm$core$Dict$map,
-					F2(
-						function (_v1, _v2) {
-							var options = _v2.a;
-							return options;
-						}),
-					f.S),
-				P: namespace,
-				Q: f.Q,
-				R: tag
-			});
+	toNode:
+	while (true) {
+		switch (html.$) {
+			case 1:
+				var content = html.a;
+				return $author$project$Jorn$Internal$Vdom$NodeText(content);
+			case 2:
+				var $temp$html = $author$project$Jorn$Internal$Vdom$root(html);
+				html = $temp$html;
+				continue toNode;
+			case 3:
+				var wrapped = html.b;
+				var $temp$html = wrapped;
+				html = $temp$html;
+				continue toNode;
+			default:
+				var namespace = html.a;
+				var tag = html.b;
+				var attributes = html.d;
+				var children = html.e;
+				var f = $author$project$Jorn$Internal$Vdom$facts(attributes);
+				return $author$project$Jorn$Internal$Vdom$NodeElement(
+					{
+						ac: f.ac,
+						ad: A2(
+							$elm$core$List$map,
+							$author$project$Jorn$Internal$Vdom$toNode,
+							$author$project$Jorn$Internal$Vdom$flatten(children)),
+						aj: A2(
+							$elm$core$Dict$map,
+							F2(
+								function (_v1, _v2) {
+									var options = _v2.a;
+									return options;
+								}),
+							f.aj),
+						ak: namespace,
+						ah: f.ah,
+						al: tag
+					});
+		}
 	}
 };
 var $author$project$Jorn$Patch$encodeHtml = function (element) {
 	return $author$project$Jorn$Internal$Vdom$encodeNode(
 		$author$project$Jorn$Internal$Vdom$toNode(element));
 };
-var $elm$json$Json$Decode$value = _Json_decodeValue;
-var $author$project$Main$fromClient = _Platform_incomingPort('fromClient', $elm$json$Json$Decode$value);
-var $author$project$Main$EssayPage = 1;
-var $author$project$Main$Everything = {$: 0};
-var $author$project$Main$Home = 0;
-var $author$project$Main$Night = 1;
-var $author$project$Main$Paper = 0;
-var $elm$json$Json$Decode$bool = _Json_decodeBool;
-var $elm$json$Json$Decode$decodeValue = _Json_run;
-var $elm$json$Json$Decode$field = _Json_decodeField;
-var $elm$json$Json$Decode$string = _Json_decodeString;
-var $author$project$Main$init = function (flags) {
-	return {
-		v: $author$project$Main$Everything,
-		G: function () {
-			var _v0 = A2(
-				$elm$json$Json$Decode$decodeValue,
-				A2($elm$json$Json$Decode$field, 'page', $elm$json$Json$Decode$string),
-				flags);
-			if ((!_v0.$) && (_v0.a === 'essay')) {
-				return 1;
-			} else {
-				return 0;
-			}
-		}(),
-		C: function () {
-			var _v1 = A2(
-				$elm$json$Json$Decode$decodeValue,
-				A2($elm$json$Json$Decode$field, 'dark', $elm$json$Json$Decode$bool),
-				flags);
-			if ((!_v1.$) && _v1.a) {
-				return 1;
-			} else {
-				return 0;
-			}
-		}()
-	};
-};
-var $elm$core$Result$andThen = F2(
-	function (callback, result) {
-		if (!result.$) {
-			var value = result.a;
-			return callback(value);
-		} else {
-			var msg = result.a;
-			return $elm$core$Result$Err(msg);
-		}
+var $elm$core$Platform$Cmd$map = _Platform_map;
+var $elm$core$Tuple$mapSecond = F2(
+	function (func, _v0) {
+		var x = _v0.a;
+		var y = _v0.b;
+		return _Utils_Tuple2(
+			x,
+			func(y));
 	});
+var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
+var $author$project$Jorn$send = F3(
+	function (config, kind, payload) {
+		return config.D.ab(
+			$elm$json$Json$Encode$object(
+				_List_fromArray(
+					[
+						_Utils_Tuple2(kind, payload)
+					])));
+	});
+var $author$project$Jorn$requestFrame = F2(
+	function (config, _v0) {
+		var s = _v0;
+		return s.G ? _Utils_Tuple2(s, $elm$core$Platform$Cmd$none) : _Utils_Tuple2(
+			_Utils_update(
+				s,
+				{G: true}),
+			A3(
+				$author$project$Jorn$send,
+				config,
+				'frame',
+				$elm$json$Json$Encode$bool(true)));
+	});
+var $author$project$Jorn$perform = F3(
+	function (config, _v0, state) {
+		var items = _v0;
+		var _v1 = A3(
+			$elm$core$List$foldl,
+			F2(
+				function (item, _v2) {
+					var acc = _v2.a;
+					var cs = _v2.b;
+					var frame = _v2.c;
+					switch (item.$) {
+						case 0:
+							var cmd = item.a;
+							return _Utils_Tuple3(
+								acc,
+								A2(
+									$elm$core$List$cons,
+									A2($elm$core$Platform$Cmd$map, $author$project$Jorn$Got, cmd),
+									cs),
+								frame);
+						case 1:
+							var instruction = item.a;
+							return _Utils_Tuple3(
+								_Utils_update(
+									acc,
+									{
+										I: A2($elm$core$List$cons, instruction, acc.I)
+									}),
+								cs,
+								true);
+						case 2:
+							var msg = item.a;
+							return _Utils_Tuple3(
+								_Utils_update(
+									acc,
+									{
+										v: A2($elm$core$List$cons, msg, acc.v)
+									}),
+								cs,
+								true);
+						default:
+							var msg = item.a;
+							return _Utils_Tuple3(
+								_Utils_update(
+									acc,
+									{
+										p: A2($elm$core$List$cons, msg, acc.p)
+									}),
+								cs,
+								true);
+					}
+				}),
+			_Utils_Tuple3(state, _List_Nil, false),
+			items);
+		var s = _v1.a;
+		var cmds = _v1.b;
+		var needsFrame = _v1.c;
+		return needsFrame ? A2(
+			$elm$core$Tuple$mapSecond,
+			function (frameCmd) {
+				return $elm$core$Platform$Cmd$batch(
+					A2(
+						$elm$core$List$cons,
+						frameCmd,
+						$elm$core$List$reverse(cmds)));
+			},
+			A2($author$project$Jorn$requestFrame, config, s)) : _Utils_Tuple2(
+			s,
+			$elm$core$Platform$Cmd$batch(
+				$elm$core$List$reverse(cmds)));
+	});
+var $author$project$Jorn$start = F2(
+	function (config, flags) {
+		var _v0 = config.H(flags);
+		var model = _v0.a;
+		var effect = _v0.b;
+		var screen = config.Q(model);
+		var initial = {p: _List_Nil, v: _List_Nil, G: false, I: _List_Nil, K: model, M: _List_Nil, U: true, V: screen};
+		var _v1 = A3($author$project$Jorn$perform, config, effect, initial);
+		var state = _v1.a;
+		var cmd = _v1.b;
+		return _Utils_Tuple2(
+			state,
+			$elm$core$Platform$Cmd$batch(
+				_List_fromArray(
+					[
+						A3(
+						$author$project$Jorn$send,
+						config,
+						'mount',
+						$author$project$Jorn$Patch$encodeHtml(screen)),
+						cmd
+					])));
+	});
+var $author$project$Jorn$andThen = F2(
+	function (f, _v0) {
+		var state = _v0.a;
+		var cmd = _v0.b;
+		var _v1 = f(state);
+		var next = _v1.a;
+		var more = _v1.b;
+		return _Utils_Tuple2(
+			next,
+			$elm$core$Platform$Cmd$batch(
+				_List_fromArray(
+					[cmd, more])));
+	});
+var $elm$json$Json$Decode$decodeValue = _Json_run;
+var $author$project$Jorn$Internal$Event$pathToString = function (path) {
+	return '[' + (A2(
+		$elm$core$String$join,
+		',',
+		A2($elm$core$List$map, $elm$core$String$fromInt, path)) + ']');
+};
+var $author$project$Jorn$Internal$Event$errorToString = function (error) {
+	switch (error.$) {
+		case 0:
+			var path = error.a;
+			return 'No node at path ' + $author$project$Jorn$Internal$Event$pathToString(path);
+		case 1:
+			var path = error.a;
+			var name = error.b;
+			return 'No \"' + (name + ('\" handler at path ' + $author$project$Jorn$Internal$Event$pathToString(path)));
+		default:
+			var name = error.a;
+			var decodeError = error.b;
+			return 'The \"' + (name + ('\" handler failed to decode: ' + $elm$json$Json$Decode$errorToString(decodeError)));
+	}
+};
+var $author$project$Jorn$Event = function (a) {
+	return {$: 0, a: a};
+};
+var $author$project$Jorn$Frame = {$: 1};
+var $author$project$Jorn$Painted = {$: 2};
+var $author$project$Jorn$Shutdown = {$: 3};
 var $author$project$Jorn$Internal$Event$Incoming = F3(
 	function (path, name, event) {
-		return {O: event, E: name, F: path};
+		return {af: event, L: name, N: path};
 	});
+var $elm$json$Json$Decode$field = _Json_decodeField;
 var $elm$json$Json$Decode$int = _Json_decodeInt;
 var $elm$json$Json$Decode$list = _Json_decodeList;
 var $elm$json$Json$Decode$map3 = _Json_map3;
+var $elm$json$Json$Decode$string = _Json_decodeString;
+var $elm$json$Json$Decode$value = _Json_decodeValue;
 var $author$project$Jorn$Internal$Event$decoder = A4(
 	$elm$json$Json$Decode$map3,
 	$author$project$Jorn$Internal$Event$Incoming,
@@ -3792,9 +4135,37 @@ var $author$project$Jorn$Internal$Event$decoder = A4(
 		$elm$json$Json$Decode$list($elm$json$Json$Decode$int)),
 	A2($elm$json$Json$Decode$field, 'name', $elm$json$Json$Decode$string),
 	A2($elm$json$Json$Decode$field, 'event', $elm$json$Json$Decode$value));
+var $elm$json$Json$Decode$map = _Json_map1;
+var $elm$json$Json$Decode$oneOf = _Json_oneOf;
+var $elm$json$Json$Decode$succeed = _Json_succeed;
+var $author$project$Jorn$incoming = $elm$json$Json$Decode$oneOf(
+	_List_fromArray(
+		[
+			A2(
+			$elm$json$Json$Decode$field,
+			'event',
+			A2($elm$json$Json$Decode$map, $author$project$Jorn$Event, $author$project$Jorn$Internal$Event$decoder)),
+			A2(
+			$elm$json$Json$Decode$field,
+			'frame',
+			$elm$json$Json$Decode$succeed($author$project$Jorn$Frame)),
+			A2(
+			$elm$json$Json$Decode$field,
+			'painted',
+			$elm$json$Json$Decode$succeed($author$project$Jorn$Painted)),
+			A2(
+			$elm$json$Json$Decode$field,
+			'shutdown',
+			$elm$json$Json$Decode$succeed($author$project$Jorn$Shutdown))
+		]));
+var $elm$core$Basics$not = _Basics_not;
 var $author$project$Jorn$Internal$Patch$Append = F2(
 	function (a, b) {
 		return {$: 8, a: a, b: b};
+	});
+var $author$project$Jorn$Internal$Patch$Remove = F2(
+	function (a, b) {
+		return {$: 12, a: a, b: b};
 	});
 var $author$project$Jorn$Internal$Patch$Replace = F2(
 	function (a, b) {
@@ -3944,37 +4315,791 @@ var $author$project$Jorn$Internal$Patch$diffFacts = F4(
 					return A3($author$project$Jorn$Internal$Patch$SetEvent, path, name, options);
 				}),
 			$author$project$Jorn$Internal$Patch$RemoveEvent(path),
-			old.S,
-			_new.S,
+			old.aj,
+			_new.aj,
 			A6(
 				$author$project$Jorn$Internal$Patch$diffDict,
 				$author$project$Jorn$Internal$Patch$sameValue,
 				$author$project$Jorn$Internal$Patch$SetProperty(path),
 				$author$project$Jorn$Internal$Patch$RemoveProperty(path),
-				old.Q,
-				_new.Q,
+				old.ah,
+				_new.ah,
 				A6(
 					$author$project$Jorn$Internal$Patch$diffDict,
 					$elm$core$Basics$eq,
 					$author$project$Jorn$Internal$Patch$SetAttribute(path),
 					$author$project$Jorn$Internal$Patch$RemoveAttribute(path),
-					old.L,
-					_new.L,
+					old.ac,
+					_new.ac,
 					acc)));
+	});
+var $elm$core$List$filter = F2(
+	function (isGood, list) {
+		return A3(
+			$elm$core$List$foldr,
+			F2(
+				function (x, xs) {
+					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
+				}),
+			_List_Nil,
+			list);
+	});
+var $elm$core$List$maybeCons = F3(
+	function (f, mx, xs) {
+		var _v0 = f(mx);
+		if (!_v0.$) {
+			var x = _v0.a;
+			return A2($elm$core$List$cons, x, xs);
+		} else {
+			return xs;
+		}
+	});
+var $elm$core$List$filterMap = F2(
+	function (f, xs) {
+		return A3(
+			$elm$core$List$foldr,
+			$elm$core$List$maybeCons(f),
+			_List_Nil,
+			xs);
+	});
+var $elm$core$Dict$fromList = function (assocs) {
+	return A3(
+		$elm$core$List$foldl,
+		F2(
+			function (_v0, dict) {
+				var key = _v0.a;
+				var value = _v0.b;
+				return A3($elm$core$Dict$insert, key, value, dict);
+			}),
+		$elm$core$Dict$empty,
+		assocs);
+};
+var $elm$core$Set$Set_elm_builtin = $elm$core$Basics$identity;
+var $elm$core$Set$empty = $elm$core$Dict$empty;
+var $elm$core$Set$insert = F2(
+	function (key, _v0) {
+		var dict = _v0;
+		return A3($elm$core$Dict$insert, key, 0, dict);
+	});
+var $elm$core$Set$fromList = function (list) {
+	return A3($elm$core$List$foldl, $elm$core$Set$insert, $elm$core$Set$empty, list);
+};
+var $author$project$Jorn$Internal$Patch$isKeyed = function (html) {
+	if (html.$ === 3) {
+		return true;
+	} else {
+		return false;
+	}
+};
+var $elm$core$Dict$member = F2(
+	function (key, dict) {
+		var _v0 = A2($elm$core$Dict$get, key, dict);
+		if (!_v0.$) {
+			return true;
+		} else {
+			return false;
+		}
+	});
+var $elm$core$Set$member = F2(
+	function (key, _v0) {
+		var dict = _v0;
+		return A2($elm$core$Dict$member, key, dict);
+	});
+var $author$project$Jorn$Internal$Vdom$unique = F3(
+	function (seen, raw, occurrence) {
+		unique:
+		while (true) {
+			var candidate = (occurrence === 1) ? raw : (raw + ('\u0001' + $elm$core$String$fromInt(occurrence)));
+			if (A2($elm$core$Set$member, candidate, seen)) {
+				var $temp$seen = seen,
+					$temp$raw = raw,
+					$temp$occurrence = occurrence + 1;
+				seen = $temp$seen;
+				raw = $temp$raw;
+				occurrence = $temp$occurrence;
+				continue unique;
+			} else {
+				return _Utils_Tuple2(candidate, occurrence);
+			}
+		}
+	});
+var $author$project$Jorn$Internal$Vdom$keys = function (children) {
+	var step = F2(
+		function (child, acc) {
+			var _v0 = function () {
+				if (child.$ === 3) {
+					var key = child.a;
+					return _Utils_Tuple2(key, acc.O);
+				} else {
+					return _Utils_Tuple2(
+						'\u0000' + $elm$core$String$fromInt(acc.O),
+						acc.O + 1);
+				}
+			}();
+			var raw = _v0.a;
+			var unkeyed = _v0.b;
+			var _v2 = A3(
+				$author$project$Jorn$Internal$Vdom$unique,
+				acc.W,
+				raw,
+				A2(
+					$elm$core$Maybe$withDefault,
+					1,
+					A2($elm$core$Dict$get, raw, acc.R)));
+			var key_ = _v2.a;
+			var occurrence = _v2.b;
+			return {
+				R: A3($elm$core$Dict$insert, raw, occurrence + 1, acc.R),
+				T: A2(
+					$elm$core$List$cons,
+					_Utils_Tuple2(
+						key_,
+						$author$project$Jorn$Internal$Vdom$unkey(child)),
+					acc.T),
+				W: A2($elm$core$Set$insert, key_, acc.W),
+				O: unkeyed
+			};
+		});
+	return $elm$core$List$reverse(
+		A3(
+			$elm$core$List$foldl,
+			step,
+			{R: $elm$core$Dict$empty, T: _List_Nil, W: $elm$core$Set$empty, O: 0},
+			children).T);
+};
+var $elm$core$Bitwise$and = _Bitwise_and;
+var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
+var $elm$core$Array$bitMask = 4294967295 >>> (32 - $elm$core$Array$shiftStep);
+var $elm$core$Basics$ge = _Utils_ge;
+var $elm$core$Elm$JsArray$unsafeGet = _JsArray_unsafeGet;
+var $elm$core$Array$getHelp = F3(
+	function (shift, index, tree) {
+		getHelp:
+		while (true) {
+			var pos = $elm$core$Array$bitMask & (index >>> shift);
+			var _v0 = A2($elm$core$Elm$JsArray$unsafeGet, pos, tree);
+			if (!_v0.$) {
+				var subTree = _v0.a;
+				var $temp$shift = shift - $elm$core$Array$shiftStep,
+					$temp$index = index,
+					$temp$tree = subTree;
+				shift = $temp$shift;
+				index = $temp$index;
+				tree = $temp$tree;
+				continue getHelp;
+			} else {
+				var values = _v0.a;
+				return A2($elm$core$Elm$JsArray$unsafeGet, $elm$core$Array$bitMask & index, values);
+			}
+		}
+	});
+var $elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
+var $elm$core$Array$tailIndex = function (len) {
+	return (len >>> 5) << 5;
+};
+var $elm$core$Array$get = F2(
+	function (index, _v0) {
+		var len = _v0.a;
+		var startShift = _v0.b;
+		var tree = _v0.c;
+		var tail = _v0.d;
+		return ((index < 0) || (_Utils_cmp(index, len) > -1)) ? $elm$core$Maybe$Nothing : ((_Utils_cmp(
+			index,
+			$elm$core$Array$tailIndex(len)) > -1) ? $elm$core$Maybe$Just(
+			A2($elm$core$Elm$JsArray$unsafeGet, $elm$core$Array$bitMask & index, tail)) : $elm$core$Maybe$Just(
+			A3($elm$core$Array$getHelp, startShift, index, tree)));
+	});
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var $author$project$Jorn$Internal$Patch$collectRun = F4(
+	function (items, links, index, acc) {
+		collectRun:
+		while (true) {
+			var _v0 = A2($elm$core$Array$get, index, items);
+			if (_v0.$ === 1) {
+				return acc;
+			} else {
+				var _v1 = _v0.a;
+				var key = _v1.a;
+				var $temp$items = items,
+					$temp$links = links,
+					$temp$index = A2(
+					$elm$core$Maybe$withDefault,
+					-1,
+					A2($elm$core$Array$get, index, links)),
+					$temp$acc = A2($elm$core$Set$insert, key, acc);
+				items = $temp$items;
+				links = $temp$links;
+				index = $temp$index;
+				acc = $temp$acc;
+				continue collectRun;
+			}
+		}
+	});
+var $author$project$Jorn$Internal$Patch$firstNotBelow = F5(
+	function (valueAt, value, tails, low, high) {
+		firstNotBelow:
+		while (true) {
+			if (_Utils_cmp(low, high) > -1) {
+				return low;
+			} else {
+				var middle = ((low + high) / 2) | 0;
+				if (_Utils_cmp(
+					valueAt(
+						A2(
+							$elm$core$Maybe$withDefault,
+							0,
+							A2($elm$core$Array$get, middle, tails))),
+					value) < 0) {
+					var $temp$valueAt = valueAt,
+						$temp$value = value,
+						$temp$tails = tails,
+						$temp$low = middle + 1,
+						$temp$high = high;
+					valueAt = $temp$valueAt;
+					value = $temp$value;
+					tails = $temp$tails;
+					low = $temp$low;
+					high = $temp$high;
+					continue firstNotBelow;
+				} else {
+					var $temp$valueAt = valueAt,
+						$temp$value = value,
+						$temp$tails = tails,
+						$temp$low = low,
+						$temp$high = middle;
+					valueAt = $temp$valueAt;
+					value = $temp$value;
+					tails = $temp$tails;
+					low = $temp$low;
+					high = $temp$high;
+					continue firstNotBelow;
+				}
+			}
+		}
+	});
+var $elm$core$Elm$JsArray$foldl = _JsArray_foldl;
+var $elm$core$Array$foldl = F3(
+	function (func, baseCase, _v0) {
+		var tree = _v0.c;
+		var tail = _v0.d;
+		var helper = F2(
+			function (node, acc) {
+				if (!node.$) {
+					var subTree = node.a;
+					return A3($elm$core$Elm$JsArray$foldl, helper, acc, subTree);
+				} else {
+					var values = node.a;
+					return A3($elm$core$Elm$JsArray$foldl, func, acc, values);
+				}
+			});
+		return A3(
+			$elm$core$Elm$JsArray$foldl,
+			func,
+			A3($elm$core$Elm$JsArray$foldl, helper, baseCase, tree),
+			tail);
+	});
+var $elm$core$Array$fromListHelp = F3(
+	function (list, nodeList, nodeListSize) {
+		fromListHelp:
+		while (true) {
+			var _v0 = A2($elm$core$Elm$JsArray$initializeFromList, $elm$core$Array$branchFactor, list);
+			var jsArray = _v0.a;
+			var remainingItems = _v0.b;
+			if (_Utils_cmp(
+				$elm$core$Elm$JsArray$length(jsArray),
+				$elm$core$Array$branchFactor) < 0) {
+				return A2(
+					$elm$core$Array$builderToArray,
+					true,
+					{d: nodeList, b: nodeListSize, c: jsArray});
+			} else {
+				var $temp$list = remainingItems,
+					$temp$nodeList = A2(
+					$elm$core$List$cons,
+					$elm$core$Array$Leaf(jsArray),
+					nodeList),
+					$temp$nodeListSize = nodeListSize + 1;
+				list = $temp$list;
+				nodeList = $temp$nodeList;
+				nodeListSize = $temp$nodeListSize;
+				continue fromListHelp;
+			}
+		}
+	});
+var $elm$core$Array$fromList = function (list) {
+	if (!list.b) {
+		return $elm$core$Array$empty;
+	} else {
+		return A3($elm$core$Array$fromListHelp, list, _List_Nil, 0);
+	}
+};
+var $elm$core$Array$length = function (_v0) {
+	var len = _v0.a;
+	return len;
+};
+var $elm$core$Maybe$map = F2(
+	function (f, maybe) {
+		if (!maybe.$) {
+			var value = maybe.a;
+			return $elm$core$Maybe$Just(
+				f(value));
+		} else {
+			return $elm$core$Maybe$Nothing;
+		}
+	});
+var $elm$core$Elm$JsArray$push = _JsArray_push;
+var $elm$core$Elm$JsArray$singleton = _JsArray_singleton;
+var $elm$core$Elm$JsArray$unsafeSet = _JsArray_unsafeSet;
+var $elm$core$Array$insertTailInTree = F4(
+	function (shift, index, tail, tree) {
+		var pos = $elm$core$Array$bitMask & (index >>> shift);
+		if (_Utils_cmp(
+			pos,
+			$elm$core$Elm$JsArray$length(tree)) > -1) {
+			if (shift === 5) {
+				return A2(
+					$elm$core$Elm$JsArray$push,
+					$elm$core$Array$Leaf(tail),
+					tree);
+			} else {
+				var newSub = $elm$core$Array$SubTree(
+					A4($elm$core$Array$insertTailInTree, shift - $elm$core$Array$shiftStep, index, tail, $elm$core$Elm$JsArray$empty));
+				return A2($elm$core$Elm$JsArray$push, newSub, tree);
+			}
+		} else {
+			var value = A2($elm$core$Elm$JsArray$unsafeGet, pos, tree);
+			if (!value.$) {
+				var subTree = value.a;
+				var newSub = $elm$core$Array$SubTree(
+					A4($elm$core$Array$insertTailInTree, shift - $elm$core$Array$shiftStep, index, tail, subTree));
+				return A3($elm$core$Elm$JsArray$unsafeSet, pos, newSub, tree);
+			} else {
+				var newSub = $elm$core$Array$SubTree(
+					A4(
+						$elm$core$Array$insertTailInTree,
+						shift - $elm$core$Array$shiftStep,
+						index,
+						tail,
+						$elm$core$Elm$JsArray$singleton(value)));
+				return A3($elm$core$Elm$JsArray$unsafeSet, pos, newSub, tree);
+			}
+		}
+	});
+var $elm$core$Array$unsafeReplaceTail = F2(
+	function (newTail, _v0) {
+		var len = _v0.a;
+		var startShift = _v0.b;
+		var tree = _v0.c;
+		var tail = _v0.d;
+		var originalTailLen = $elm$core$Elm$JsArray$length(tail);
+		var newTailLen = $elm$core$Elm$JsArray$length(newTail);
+		var newArrayLen = len + (newTailLen - originalTailLen);
+		if (_Utils_eq(newTailLen, $elm$core$Array$branchFactor)) {
+			var overflow = _Utils_cmp(newArrayLen >>> $elm$core$Array$shiftStep, 1 << startShift) > 0;
+			if (overflow) {
+				var newShift = startShift + $elm$core$Array$shiftStep;
+				var newTree = A4(
+					$elm$core$Array$insertTailInTree,
+					newShift,
+					len,
+					newTail,
+					$elm$core$Elm$JsArray$singleton(
+						$elm$core$Array$SubTree(tree)));
+				return A4($elm$core$Array$Array_elm_builtin, newArrayLen, newShift, newTree, $elm$core$Elm$JsArray$empty);
+			} else {
+				return A4(
+					$elm$core$Array$Array_elm_builtin,
+					newArrayLen,
+					startShift,
+					A4($elm$core$Array$insertTailInTree, startShift, len, newTail, tree),
+					$elm$core$Elm$JsArray$empty);
+			}
+		} else {
+			return A4($elm$core$Array$Array_elm_builtin, newArrayLen, startShift, tree, newTail);
+		}
+	});
+var $elm$core$Array$push = F2(
+	function (a, array) {
+		var tail = array.d;
+		return A2(
+			$elm$core$Array$unsafeReplaceTail,
+			A2($elm$core$Elm$JsArray$push, a, tail),
+			array);
+	});
+var $elm$core$Tuple$second = function (_v0) {
+	var y = _v0.b;
+	return y;
+};
+var $elm$core$Array$setHelp = F4(
+	function (shift, index, value, tree) {
+		var pos = $elm$core$Array$bitMask & (index >>> shift);
+		var _v0 = A2($elm$core$Elm$JsArray$unsafeGet, pos, tree);
+		if (!_v0.$) {
+			var subTree = _v0.a;
+			var newSub = A4($elm$core$Array$setHelp, shift - $elm$core$Array$shiftStep, index, value, subTree);
+			return A3(
+				$elm$core$Elm$JsArray$unsafeSet,
+				pos,
+				$elm$core$Array$SubTree(newSub),
+				tree);
+		} else {
+			var values = _v0.a;
+			var newLeaf = A3($elm$core$Elm$JsArray$unsafeSet, $elm$core$Array$bitMask & index, value, values);
+			return A3(
+				$elm$core$Elm$JsArray$unsafeSet,
+				pos,
+				$elm$core$Array$Leaf(newLeaf),
+				tree);
+		}
+	});
+var $elm$core$Array$set = F3(
+	function (index, value, array) {
+		var len = array.a;
+		var startShift = array.b;
+		var tree = array.c;
+		var tail = array.d;
+		return ((index < 0) || (_Utils_cmp(index, len) > -1)) ? array : ((_Utils_cmp(
+			index,
+			$elm$core$Array$tailIndex(len)) > -1) ? A4(
+			$elm$core$Array$Array_elm_builtin,
+			len,
+			startShift,
+			tree,
+			A3($elm$core$Elm$JsArray$unsafeSet, $elm$core$Array$bitMask & index, value, tail)) : A4(
+			$elm$core$Array$Array_elm_builtin,
+			len,
+			startShift,
+			A4($elm$core$Array$setHelp, startShift, index, value, tree),
+			tail));
+	});
+var $author$project$Jorn$Internal$Patch$longestIncreasing = function (pairs) {
+	var items = $elm$core$Array$fromList(pairs);
+	var valueAt = function (index) {
+		return A2(
+			$elm$core$Maybe$withDefault,
+			0,
+			A2(
+				$elm$core$Maybe$map,
+				$elm$core$Tuple$second,
+				A2($elm$core$Array$get, index, items)));
+	};
+	var step = F3(
+		function (index, _v3, _v4) {
+			var value = _v3.b;
+			var tails = _v4.a;
+			var previous = _v4.b;
+			var length = A5(
+				$author$project$Jorn$Internal$Patch$firstNotBelow,
+				valueAt,
+				value,
+				tails,
+				0,
+				$elm$core$Array$length(tails));
+			var before = (!length) ? (-1) : A2(
+				$elm$core$Maybe$withDefault,
+				-1,
+				A2($elm$core$Array$get, length - 1, tails));
+			return _Utils_Tuple2(
+				_Utils_eq(
+					length,
+					$elm$core$Array$length(tails)) ? A2($elm$core$Array$push, index, tails) : A3($elm$core$Array$set, length, index, tails),
+				A2($elm$core$Array$push, before, previous));
+		});
+	var _v0 = A3(
+		$elm$core$Array$foldl,
+		F2(
+			function (pair, _v1) {
+				var acc = _v1.a;
+				var index = _v1.b;
+				return _Utils_Tuple2(
+					A3(step, index, pair, acc),
+					index + 1);
+			}),
+		_Utils_Tuple2(
+			_Utils_Tuple2($elm$core$Array$empty, $elm$core$Array$empty),
+			0),
+		items).a;
+	var finalTails = _v0.a;
+	var links = _v0.b;
+	var _v2 = A2(
+		$elm$core$Array$get,
+		$elm$core$Array$length(finalTails) - 1,
+		finalTails);
+	if (_v2.$ === 1) {
+		return $elm$core$Set$empty;
+	} else {
+		var last = _v2.a;
+		return A4($author$project$Jorn$Internal$Patch$collectRun, items, links, last, $elm$core$Set$empty);
+	}
+};
+var $elm$core$Tuple$pair = F2(
+	function (a, b) {
+		return _Utils_Tuple2(a, b);
+	});
+var $author$project$Jorn$Internal$Patch$Insert = F3(
+	function (a, b, c) {
+		return {$: 10, a: a, b: b, c: c};
+	});
+var $author$project$Jorn$Internal$Patch$Move = F3(
+	function (a, b, c) {
+		return {$: 11, a: a, b: b, c: c};
+	});
+var $author$project$Jorn$Internal$Patch$indexOfHelp = F3(
+	function (key, index, items) {
+		indexOfHelp:
+		while (true) {
+			if (!items.b) {
+				return index;
+			} else {
+				var item = items.a;
+				var rest = items.b;
+				if (_Utils_eq(item, key)) {
+					return index;
+				} else {
+					var $temp$key = key,
+						$temp$index = index + 1,
+						$temp$items = rest;
+					key = $temp$key;
+					index = $temp$index;
+					items = $temp$items;
+					continue indexOfHelp;
+				}
+			}
+		}
+	});
+var $author$project$Jorn$Internal$Patch$indexOf = F2(
+	function (key, items) {
+		return A3($author$project$Jorn$Internal$Patch$indexOfHelp, key, 0, items);
+	});
+var $author$project$Jorn$Internal$Patch$anchorIndex = F2(
+	function (anchor, current) {
+		if (!anchor.$) {
+			var key = anchor.a;
+			return A2($author$project$Jorn$Internal$Patch$indexOf, key, current);
+		} else {
+			return $elm$core$List$length(current);
+		}
+	});
+var $elm$core$List$drop = F2(
+	function (n, list) {
+		drop:
+		while (true) {
+			if (n <= 0) {
+				return list;
+			} else {
+				if (!list.b) {
+					return list;
+				} else {
+					var x = list.a;
+					var xs = list.b;
+					var $temp$n = n - 1,
+						$temp$list = xs;
+					n = $temp$n;
+					list = $temp$list;
+					continue drop;
+				}
+			}
+		}
+	});
+var $elm$core$List$takeReverse = F3(
+	function (n, list, kept) {
+		takeReverse:
+		while (true) {
+			if (n <= 0) {
+				return kept;
+			} else {
+				if (!list.b) {
+					return kept;
+				} else {
+					var x = list.a;
+					var xs = list.b;
+					var $temp$n = n - 1,
+						$temp$list = xs,
+						$temp$kept = A2($elm$core$List$cons, x, kept);
+					n = $temp$n;
+					list = $temp$list;
+					kept = $temp$kept;
+					continue takeReverse;
+				}
+			}
+		}
+	});
+var $elm$core$List$takeTailRec = F2(
+	function (n, list) {
+		return $elm$core$List$reverse(
+			A3($elm$core$List$takeReverse, n, list, _List_Nil));
+	});
+var $elm$core$List$takeFast = F3(
+	function (ctr, n, list) {
+		if (n <= 0) {
+			return _List_Nil;
+		} else {
+			var _v0 = _Utils_Tuple2(n, list);
+			_v0$1:
+			while (true) {
+				_v0$5:
+				while (true) {
+					if (!_v0.b.b) {
+						return list;
+					} else {
+						if (_v0.b.b.b) {
+							switch (_v0.a) {
+								case 1:
+									break _v0$1;
+								case 2:
+									var _v2 = _v0.b;
+									var x = _v2.a;
+									var _v3 = _v2.b;
+									var y = _v3.a;
+									return _List_fromArray(
+										[x, y]);
+								case 3:
+									if (_v0.b.b.b.b) {
+										var _v4 = _v0.b;
+										var x = _v4.a;
+										var _v5 = _v4.b;
+										var y = _v5.a;
+										var _v6 = _v5.b;
+										var z = _v6.a;
+										return _List_fromArray(
+											[x, y, z]);
+									} else {
+										break _v0$5;
+									}
+								default:
+									if (_v0.b.b.b.b && _v0.b.b.b.b.b) {
+										var _v7 = _v0.b;
+										var x = _v7.a;
+										var _v8 = _v7.b;
+										var y = _v8.a;
+										var _v9 = _v8.b;
+										var z = _v9.a;
+										var _v10 = _v9.b;
+										var w = _v10.a;
+										var tl = _v10.b;
+										return (ctr > 1000) ? A2(
+											$elm$core$List$cons,
+											x,
+											A2(
+												$elm$core$List$cons,
+												y,
+												A2(
+													$elm$core$List$cons,
+													z,
+													A2(
+														$elm$core$List$cons,
+														w,
+														A2($elm$core$List$takeTailRec, n - 4, tl))))) : A2(
+											$elm$core$List$cons,
+											x,
+											A2(
+												$elm$core$List$cons,
+												y,
+												A2(
+													$elm$core$List$cons,
+													z,
+													A2(
+														$elm$core$List$cons,
+														w,
+														A3($elm$core$List$takeFast, ctr + 1, n - 4, tl)))));
+									} else {
+										break _v0$5;
+									}
+							}
+						} else {
+							if (_v0.a === 1) {
+								break _v0$1;
+							} else {
+								break _v0$5;
+							}
+						}
+					}
+				}
+				return list;
+			}
+			var _v1 = _v0.b;
+			var x = _v1.a;
+			return _List_fromArray(
+				[x]);
+		}
+	});
+var $elm$core$List$take = F2(
+	function (n, list) {
+		return A3($elm$core$List$takeFast, 0, n, list);
+	});
+var $author$project$Jorn$Internal$Patch$insertAt = F3(
+	function (index, item, items) {
+		return _Utils_ap(
+			A2($elm$core$List$take, index, items),
+			A2(
+				$elm$core$List$cons,
+				item,
+				A2($elm$core$List$drop, index, items)));
+	});
+var $author$project$Jorn$Internal$Patch$removeAt = F2(
+	function (index, items) {
+		return _Utils_ap(
+			A2($elm$core$List$take, index, items),
+			A2($elm$core$List$drop, index + 1, items));
+	});
+var $author$project$Jorn$Internal$Patch$place = F5(
+	function (path, oldByKey, stable, _v0, _v1) {
+		var key = _v0.a;
+		var _new = _v0.b;
+		var acc = _v1.a;
+		var current = _v1.b;
+		var anchor = _v1.c;
+		if (!A2($elm$core$Dict$member, key, oldByKey)) {
+			var index = A2($author$project$Jorn$Internal$Patch$anchorIndex, anchor, current);
+			return _Utils_Tuple3(
+				A2(
+					$elm$core$List$cons,
+					A3(
+						$author$project$Jorn$Internal$Patch$Insert,
+						path,
+						index,
+						$author$project$Jorn$Internal$Vdom$toNode(_new)),
+					acc),
+				A3($author$project$Jorn$Internal$Patch$insertAt, index, key, current),
+				$elm$core$Maybe$Just(key));
+		} else {
+			if (A2($elm$core$Set$member, key, stable)) {
+				return _Utils_Tuple3(
+					acc,
+					current,
+					$elm$core$Maybe$Just(key));
+			} else {
+				var from = A2($author$project$Jorn$Internal$Patch$indexOf, key, current);
+				var without = A2($author$project$Jorn$Internal$Patch$removeAt, from, current);
+				var to = A2($author$project$Jorn$Internal$Patch$anchorIndex, anchor, without);
+				return _Utils_eq(from, to) ? _Utils_Tuple3(
+					acc,
+					current,
+					$elm$core$Maybe$Just(key)) : _Utils_Tuple3(
+					A2(
+						$elm$core$List$cons,
+						A3($author$project$Jorn$Internal$Patch$Move, path, from, to),
+						acc),
+					A3($author$project$Jorn$Internal$Patch$insertAt, to, key, without),
+					$elm$core$Maybe$Just(key));
+			}
+		}
 	});
 var $author$project$Jorn$Internal$Patch$diffChildren = F5(
 	function (reversedPath, index, olds, news, acc) {
 		diffChildren:
 		while (true) {
-			var _v4 = _Utils_Tuple2(olds, news);
-			if (_v4.a.b) {
-				if (_v4.b.b) {
-					var _v5 = _v4.a;
-					var o = _v5.a;
-					var os = _v5.b;
-					var _v6 = _v4.b;
-					var n = _v6.a;
-					var ns = _v6.b;
+			var _v11 = _Utils_Tuple2(olds, news);
+			if (_v11.a.b) {
+				if (_v11.b.b) {
+					var _v12 = _v11.a;
+					var o = _v12.a;
+					var os = _v12.b;
+					var _v13 = _v11.b;
+					var n = _v13.a;
+					var ns = _v13.b;
 					var $temp$reversedPath = reversedPath,
 						$temp$index = index + 1,
 						$temp$olds = os,
@@ -4001,7 +5126,7 @@ var $author$project$Jorn$Internal$Patch$diffChildren = F5(
 						acc);
 				}
 			} else {
-				if (!_v4.b.b) {
+				if (!_v11.b.b) {
 					return acc;
 				} else {
 					return A2(
@@ -4017,63 +5142,65 @@ var $author$project$Jorn$Internal$Patch$diffChildren = F5(
 	});
 var $author$project$Jorn$Internal$Patch$diffHelp = F4(
 	function (reversedPath, old, _new, acc) {
-		var _v0 = _Utils_Tuple2(old, _new);
-		_v0$2:
+		var _v7 = _Utils_Tuple2(old, _new);
+		_v7$2:
 		while (true) {
-			if (_v0.a.$ === 1) {
-				if (_v0.b.$ === 1) {
-					var a = _v0.a.a;
-					var b = _v0.b.a;
-					return _Utils_eq(a, b) ? acc : A2(
-						$elm$core$List$cons,
-						A2(
-							$author$project$Jorn$Internal$Patch$SetText,
-							$elm$core$List$reverse(reversedPath),
-							b),
-						acc);
-				} else {
-					break _v0$2;
-				}
-			} else {
-				if (!_v0.b.$) {
-					var _v1 = _v0.a;
-					var oldNs = _v1.a;
-					var oldTag = _v1.b;
-					var oldAttrs = _v1.c;
-					var oldKids = _v1.d;
-					var _v2 = _v0.b;
-					var newNs = _v2.a;
-					var newTag = _v2.b;
-					var newAttrs = _v2.c;
-					var newKids = _v2.d;
-					return (_Utils_eq(oldNs, newNs) && _Utils_eq(oldTag, newTag)) ? A5(
-						$author$project$Jorn$Internal$Patch$diffChildren,
-						reversedPath,
-						0,
-						oldKids,
-						newKids,
-						function () {
-							var _v3 = _Utils_Tuple2(oldAttrs, newAttrs);
-							if ((!_v3.a.b) && (!_v3.b.b)) {
-								return acc;
-							} else {
-								return A4(
-									$author$project$Jorn$Internal$Patch$diffFacts,
-									$elm$core$List$reverse(reversedPath),
-									$author$project$Jorn$Internal$Vdom$facts(oldAttrs),
-									$author$project$Jorn$Internal$Vdom$facts(newAttrs),
-									acc);
-							}
-						}()) : A2(
-						$elm$core$List$cons,
-						A2(
-							$author$project$Jorn$Internal$Patch$Replace,
-							$elm$core$List$reverse(reversedPath),
-							$author$project$Jorn$Internal$Vdom$toNode(_new)),
-						acc);
-				} else {
-					break _v0$2;
-				}
+			switch (_v7.a.$) {
+				case 1:
+					if (_v7.b.$ === 1) {
+						var a = _v7.a.a;
+						var b = _v7.b.a;
+						return _Utils_eq(a, b) ? acc : A2(
+							$elm$core$List$cons,
+							A2(
+								$author$project$Jorn$Internal$Patch$SetText,
+								$elm$core$List$reverse(reversedPath),
+								b),
+							acc);
+					} else {
+						break _v7$2;
+					}
+				case 0:
+					if (!_v7.b.$) {
+						var _v8 = _v7.a;
+						var oldNs = _v8.a;
+						var oldTag = _v8.b;
+						var oldAttrs = _v8.d;
+						var oldKids = _v8.e;
+						var _v9 = _v7.b;
+						var newNs = _v9.a;
+						var newTag = _v9.b;
+						var newAttrs = _v9.d;
+						var newKids = _v9.e;
+						return (_Utils_eq(oldNs, newNs) && _Utils_eq(oldTag, newTag)) ? A4(
+							$author$project$Jorn$Internal$Patch$diffList,
+							reversedPath,
+							$author$project$Jorn$Internal$Vdom$flatten(oldKids),
+							$author$project$Jorn$Internal$Vdom$flatten(newKids),
+							function () {
+								var _v10 = _Utils_Tuple2(oldAttrs, newAttrs);
+								if ((!_v10.a.b) && (!_v10.b.b)) {
+									return acc;
+								} else {
+									return A4(
+										$author$project$Jorn$Internal$Patch$diffFacts,
+										$elm$core$List$reverse(reversedPath),
+										$author$project$Jorn$Internal$Vdom$facts(oldAttrs),
+										$author$project$Jorn$Internal$Vdom$facts(newAttrs),
+										acc);
+								}
+							}()) : A2(
+							$elm$core$List$cons,
+							A2(
+								$author$project$Jorn$Internal$Patch$Replace,
+								$elm$core$List$reverse(reversedPath),
+								$author$project$Jorn$Internal$Vdom$toNode(_new)),
+							acc);
+					} else {
+						break _v7$2;
+					}
+				default:
+					break _v7$2;
 			}
 		}
 		return A2(
@@ -4084,10 +5211,110 @@ var $author$project$Jorn$Internal$Patch$diffHelp = F4(
 				$author$project$Jorn$Internal$Vdom$toNode(_new)),
 			acc);
 	});
+var $author$project$Jorn$Internal$Patch$diffKeyed = F4(
+	function (reversedPath, olds, news, acc) {
+		var path = $elm$core$List$reverse(reversedPath);
+		var oldPairs = $author$project$Jorn$Internal$Vdom$keys(olds);
+		var oldByKey = $elm$core$Dict$fromList(oldPairs);
+		var newPairs = $author$project$Jorn$Internal$Vdom$keys(news);
+		var newKeys = $elm$core$Set$fromList(
+			A2($elm$core$List$map, $elm$core$Tuple$first, newPairs));
+		var removed = A2(
+			$elm$core$List$map,
+			$elm$core$Tuple$first,
+			A2(
+				$elm$core$List$filter,
+				function (_v6) {
+					var key = _v6.b;
+					return !A2($elm$core$Set$member, key, newKeys);
+				},
+				A2(
+					$elm$core$List$indexedMap,
+					F2(
+						function (index, _v5) {
+							var key = _v5.a;
+							return _Utils_Tuple2(index, key);
+						}),
+					oldPairs)));
+		var kept = A2(
+			$elm$core$List$filter,
+			function (key) {
+				return A2($elm$core$Set$member, key, newKeys);
+			},
+			A2($elm$core$List$map, $elm$core$Tuple$first, oldPairs));
+		var keptPosition = $elm$core$Dict$fromList(
+			A2(
+				$elm$core$List$indexedMap,
+				F2(
+					function (index, key) {
+						return _Utils_Tuple2(key, index);
+					}),
+				kept));
+		var stable = $author$project$Jorn$Internal$Patch$longestIncreasing(
+			A2(
+				$elm$core$List$filterMap,
+				function (_v4) {
+					var key = _v4.a;
+					return A2(
+						$elm$core$Maybe$map,
+						$elm$core$Tuple$pair(key),
+						A2($elm$core$Dict$get, key, keptPosition));
+				},
+				newPairs));
+		var afterRemovals = A3(
+			$elm$core$List$foldr,
+			F2(
+				function (index, a) {
+					return A2(
+						$elm$core$List$cons,
+						A2($author$project$Jorn$Internal$Patch$Remove, path, index),
+						a);
+				}),
+			acc,
+			removed);
+		var _v0 = A3(
+			$elm$core$List$foldr,
+			A3($author$project$Jorn$Internal$Patch$place, path, oldByKey, stable),
+			_Utils_Tuple3(afterRemovals, kept, $elm$core$Maybe$Nothing),
+			newPairs);
+		var afterMoves = _v0.a;
+		return A3(
+			$elm$core$List$foldl,
+			F2(
+				function (_v1, a) {
+					var index = _v1.a;
+					var _v2 = _v1.b;
+					var key = _v2.a;
+					var _new = _v2.b;
+					var _v3 = A2($elm$core$Dict$get, key, oldByKey);
+					if (!_v3.$) {
+						var old = _v3.a;
+						return A4(
+							$author$project$Jorn$Internal$Patch$diffHelp,
+							A2($elm$core$List$cons, index, reversedPath),
+							old,
+							_new,
+							a);
+					} else {
+						return a;
+					}
+				}),
+			afterMoves,
+			A2($elm$core$List$indexedMap, $elm$core$Tuple$pair, newPairs));
+	});
+var $author$project$Jorn$Internal$Patch$diffList = F4(
+	function (reversedPath, olds, news, acc) {
+		return (A2($elm$core$List$any, $author$project$Jorn$Internal$Patch$isKeyed, olds) || A2($elm$core$List$any, $author$project$Jorn$Internal$Patch$isKeyed, news)) ? A4($author$project$Jorn$Internal$Patch$diffKeyed, reversedPath, olds, news, acc) : A5($author$project$Jorn$Internal$Patch$diffChildren, reversedPath, 0, olds, news, acc);
+	});
 var $author$project$Jorn$Internal$Patch$diff = F2(
 	function (old, _new) {
 		return $elm$core$List$reverse(
-			A4($author$project$Jorn$Internal$Patch$diffHelp, _List_Nil, old, _new, _List_Nil));
+			A4(
+				$author$project$Jorn$Internal$Patch$diffHelp,
+				_List_Nil,
+				$author$project$Jorn$Internal$Vdom$root(old),
+				$author$project$Jorn$Internal$Vdom$root(_new),
+				_List_Nil));
 	});
 var $author$project$Jorn$Patch$diff = $author$project$Jorn$Internal$Patch$diff;
 var $elm$json$Json$Encode$int = _Json_wrap;
@@ -4235,7 +5462,7 @@ var $author$project$Jorn$Internal$Patch$encodePatch = function (patch) {
 						'nodes',
 						A2($elm$json$Json$Encode$list, $author$project$Jorn$Internal$Vdom$encodeNode, nodes))
 					]));
-		default:
+		case 9:
 			var path = patch.a;
 			var length = patch.b;
 			return A3(
@@ -4248,43 +5475,147 @@ var $author$project$Jorn$Internal$Patch$encodePatch = function (patch) {
 						'length',
 						$elm$json$Json$Encode$int(length))
 					]));
+		case 10:
+			var path = patch.a;
+			var index = patch.b;
+			var node = patch.c;
+			return A3(
+				$author$project$Jorn$Internal$Patch$op,
+				'insert',
+				path,
+				_List_fromArray(
+					[
+						_Utils_Tuple2(
+						'index',
+						$elm$json$Json$Encode$int(index)),
+						_Utils_Tuple2(
+						'node',
+						$author$project$Jorn$Internal$Vdom$encodeNode(node))
+					]));
+		case 11:
+			var path = patch.a;
+			var from = patch.b;
+			var to = patch.c;
+			return A3(
+				$author$project$Jorn$Internal$Patch$op,
+				'move',
+				path,
+				_List_fromArray(
+					[
+						_Utils_Tuple2(
+						'from',
+						$elm$json$Json$Encode$int(from)),
+						_Utils_Tuple2(
+						'to',
+						$elm$json$Json$Encode$int(to))
+					]));
+		default:
+			var path = patch.a;
+			var index = patch.b;
+			return A3(
+				$author$project$Jorn$Internal$Patch$op,
+				'remove',
+				path,
+				_List_fromArray(
+					[
+						_Utils_Tuple2(
+						'index',
+						$elm$json$Json$Encode$int(index))
+					]));
 	}
 };
 var $author$project$Jorn$Internal$Patch$encode = function (patches) {
 	return A2($elm$json$Json$Encode$list, $author$project$Jorn$Internal$Patch$encodePatch, patches);
 };
 var $author$project$Jorn$Patch$encode = $author$project$Jorn$Internal$Patch$encode;
-var $author$project$Jorn$Internal$Event$pathToString = function (path) {
-	return '[' + (A2(
-		$elm$core$String$join,
-		',',
-		A2($elm$core$List$map, $elm$core$String$fromInt, path)) + ']');
-};
-var $author$project$Jorn$Internal$Event$errorToString = function (error) {
-	switch (error.$) {
-		case 0:
-			var path = error.a;
-			return 'No node at path ' + $author$project$Jorn$Internal$Event$pathToString(path);
-		case 1:
-			var path = error.a;
-			var name = error.b;
-			return 'No \"' + (name + ('\" handler at path ' + $author$project$Jorn$Internal$Event$pathToString(path)));
-		default:
-			var name = error.a;
-			var decodeError = error.b;
-			return 'The \"' + (name + ('\" handler failed to decode: ' + $elm$json$Json$Decode$errorToString(decodeError)));
+var $elm$core$List$isEmpty = function (xs) {
+	if (!xs.b) {
+		return true;
+	} else {
+		return false;
 	}
 };
-var $elm$core$Result$mapError = F2(
-	function (f, result) {
-		if (!result.$) {
-			var v = result.a;
-			return $elm$core$Result$Ok(v);
-		} else {
-			var e = result.a;
-			return $elm$core$Result$Err(
-				f(e));
-		}
+var $author$project$Jorn$updateWith = F3(
+	function (config, msg, _v0) {
+		var s = _v0;
+		var _v1 = A2(config.P, msg, s.K);
+		var model = _v1.a;
+		var effect = _v1.b;
+		var _v2 = A3(
+			$author$project$Jorn$perform,
+			config,
+			effect,
+			_Utils_update(
+				s,
+				{K: model}));
+		var state = _v2.a;
+		var cmd = _v2.b;
+		var _v3 = A2($author$project$Jorn$requestFrame, config, state);
+		var requested = _v3.a;
+		var frameCmd = _v3.b;
+		return _Utils_Tuple2(
+			requested,
+			$elm$core$Platform$Cmd$batch(
+				_List_fromArray(
+					[cmd, frameCmd])));
+	});
+var $author$project$Jorn$render = F2(
+	function (config, _v0) {
+		var s = _v0;
+		var _v1 = A3(
+			$elm$core$List$foldr,
+			F2(
+				function (msg, acc) {
+					return A2(
+						$author$project$Jorn$andThen,
+						A2($author$project$Jorn$updateWith, config, msg),
+						acc);
+				}),
+			_Utils_Tuple2(
+				_Utils_update(
+					s,
+					{v: _List_Nil, G: true}),
+				$elm$core$Platform$Cmd$none),
+			s.v);
+		var ready = _v1.a;
+		var beforeCmds = _v1.b;
+		var instructions = $elm$core$List$reverse(ready.I);
+		var next = config.Q(ready.K);
+		var painted = _Utils_update(
+			ready,
+			{
+				p: _List_Nil,
+				G: false,
+				I: _List_Nil,
+				M: _Utils_ap(
+					ready.M,
+					$elm$core$List$reverse(ready.p)),
+				V: next
+			});
+		var _v2 = $elm$core$List$isEmpty(ready.v) ? _Utils_Tuple2(painted, $elm$core$Platform$Cmd$none) : A2($author$project$Jorn$requestFrame, config, painted);
+		var after = _v2.a;
+		var nextFrame = _v2.b;
+		var patches = A2($author$project$Jorn$Patch$diff, ready.V, next);
+		var sendCmd = ($elm$core$List$isEmpty(patches) && ($elm$core$List$isEmpty(instructions) && $elm$core$List$isEmpty(ready.p))) ? $elm$core$Platform$Cmd$none : config.D.ab(
+			$elm$json$Json$Encode$object(
+				_List_fromArray(
+					[
+						_Utils_Tuple2(
+						'patches',
+						$author$project$Jorn$Patch$encode(patches)),
+						_Utils_Tuple2(
+						'instructions',
+						A2($elm$json$Json$Encode$list, $elm$core$Basics$identity, instructions)),
+						_Utils_Tuple2(
+						'painted',
+						$elm$json$Json$Encode$bool(
+							!$elm$core$List$isEmpty(ready.p)))
+					])));
+		return _Utils_Tuple2(
+			after,
+			$elm$core$Platform$Cmd$batch(
+				_List_fromArray(
+					[beforeCmds, sendCmd, nextFrame])));
 	});
 var $author$project$Jorn$Internal$Event$DecodeFailed = F2(
 	function (a, b) {
@@ -4306,27 +5637,6 @@ var $elm$core$Maybe$andThen = F2(
 			return $elm$core$Maybe$Nothing;
 		}
 	});
-var $elm$core$List$drop = F2(
-	function (n, list) {
-		drop:
-		while (true) {
-			if (n <= 0) {
-				return list;
-			} else {
-				if (!list.b) {
-					return list;
-				} else {
-					var x = list.a;
-					var xs = list.b;
-					var $temp$n = n - 1,
-						$temp$list = xs;
-					n = $temp$n;
-					list = $temp$list;
-					continue drop;
-				}
-			}
-		}
-	});
 var $elm$core$List$head = function (list) {
 	if (list.b) {
 		var x = list.a;
@@ -4344,89 +5654,273 @@ var $author$project$Jorn$Internal$Event$find = F2(
 			var index = path.a;
 			var rest = path.b;
 			if (!element.$) {
-				var children = element.d;
+				var children = element.e;
 				return (index < 0) ? $elm$core$Maybe$Nothing : A2(
 					$elm$core$Maybe$andThen,
 					$author$project$Jorn$Internal$Event$find(rest),
-					$elm$core$List$head(
-						A2($elm$core$List$drop, index, children)));
+					A2(
+						$elm$core$Maybe$map,
+						$author$project$Jorn$Internal$Vdom$unkey,
+						$elm$core$List$head(
+							A2(
+								$elm$core$List$drop,
+								index,
+								$author$project$Jorn$Internal$Vdom$flatten(children)))));
 			} else {
 				return $elm$core$Maybe$Nothing;
 			}
 		}
 	});
+var $elm$core$Result$mapError = F2(
+	function (f, result) {
+		if (!result.$) {
+			var v = result.a;
+			return $elm$core$Result$Ok(v);
+		} else {
+			var e = result.a;
+			return $elm$core$Result$Err(
+				f(e));
+		}
+	});
 var $author$project$Jorn$Internal$Event$route = F2(
 	function (incoming, element) {
-		var _v0 = A2($author$project$Jorn$Internal$Event$find, incoming.F, element);
+		var _v0 = A2(
+			$author$project$Jorn$Internal$Event$find,
+			incoming.N,
+			$author$project$Jorn$Internal$Vdom$root(element));
 		if (_v0.$ === 1) {
 			return $elm$core$Result$Err(
-				$author$project$Jorn$Internal$Event$NodeNotFound(incoming.F));
+				$author$project$Jorn$Internal$Event$NodeNotFound(incoming.N));
 		} else {
-			if (_v0.a.$ === 1) {
-				return $elm$core$Result$Err(
-					A2($author$project$Jorn$Internal$Event$NoHandler, incoming.F, incoming.E));
-			} else {
+			if (!_v0.a.$) {
 				var _v1 = _v0.a;
-				var attributes = _v1.c;
+				var attributes = _v1.d;
 				var _v2 = A2(
 					$elm$core$Dict$get,
-					incoming.E,
-					$author$project$Jorn$Internal$Vdom$facts(attributes).S);
+					incoming.L,
+					$author$project$Jorn$Internal$Vdom$facts(attributes).aj);
 				if (_v2.$ === 1) {
 					return $elm$core$Result$Err(
-						A2($author$project$Jorn$Internal$Event$NoHandler, incoming.F, incoming.E));
+						A2($author$project$Jorn$Internal$Event$NoHandler, incoming.N, incoming.L));
 				} else {
 					var _v3 = _v2.a;
 					var handler = _v3.b;
 					return A2(
 						$elm$core$Result$mapError,
-						$author$project$Jorn$Internal$Event$DecodeFailed(incoming.E),
-						A2($elm$json$Json$Decode$decodeValue, handler, incoming.O));
+						$author$project$Jorn$Internal$Event$DecodeFailed(incoming.L),
+						A2($elm$json$Json$Decode$decodeValue, handler, incoming.af));
+				}
+			} else {
+				return $elm$core$Result$Err(
+					A2($author$project$Jorn$Internal$Event$NoHandler, incoming.N, incoming.L));
+			}
+		}
+	});
+var $author$project$Jorn$step = F3(
+	function (config, message, state) {
+		var s = state;
+		if (!s.U) {
+			return _Utils_Tuple2(state, $elm$core$Platform$Cmd$none);
+		} else {
+			if (message.$ === 1) {
+				var msg = message.a;
+				return A3($author$project$Jorn$updateWith, config, msg, state);
+			} else {
+				var value = message.a;
+				var _v1 = A2($elm$json$Json$Decode$decodeValue, $author$project$Jorn$incoming, value);
+				if (!_v1.$) {
+					switch (_v1.a.$) {
+						case 0:
+							var event = _v1.a.a;
+							var _v2 = A2($author$project$Jorn$Internal$Event$route, event, s.V);
+							if (!_v2.$) {
+								var msg = _v2.a;
+								return A3($author$project$Jorn$updateWith, config, msg, state);
+							} else {
+								var problem = _v2.a;
+								return _Utils_Tuple2(
+									state,
+									A3(
+										$author$project$Jorn$send,
+										config,
+										'error',
+										$elm$json$Json$Encode$string(
+											$author$project$Jorn$Internal$Event$errorToString(problem))));
+							}
+						case 1:
+							var _v3 = _v1.a;
+							return A2($author$project$Jorn$render, config, state);
+						case 2:
+							var _v4 = _v1.a;
+							return A3(
+								$elm$core$List$foldl,
+								F2(
+									function (msg, acc) {
+										return A2(
+											$author$project$Jorn$andThen,
+											A2($author$project$Jorn$updateWith, config, msg),
+											acc);
+									}),
+								_Utils_Tuple2(
+									_Utils_update(
+										s,
+										{M: _List_Nil}),
+									$elm$core$Platform$Cmd$none),
+								s.M);
+						default:
+							var _v5 = _v1.a;
+							return _Utils_Tuple2(
+								_Utils_update(
+									s,
+									{U: false}),
+								$elm$core$Platform$Cmd$none);
+					}
+				} else {
+					var problem = _v1.a;
+					return _Utils_Tuple2(
+						state,
+						A3(
+							$author$project$Jorn$send,
+							config,
+							'error',
+							$elm$json$Json$Encode$string(
+								$elm$json$Json$Decode$errorToString(problem))));
 				}
 			}
 		}
 	});
-var $author$project$Main$toClient = _Platform_outgoingPort('toClient', $elm$core$Basics$identity);
-var $author$project$Main$send = F2(
-	function (kind, payload) {
-		return $author$project$Main$toClient(
-			$elm$json$Json$Encode$object(
-				_List_fromArray(
-					[
-						_Utils_Tuple2(kind, payload)
-					])));
+var $elm$core$Platform$worker = _Platform_worker;
+var $author$project$Jorn$application = function (config) {
+	return $elm$core$Platform$worker(
+		{
+			H: function (flags) {
+				return A2($author$project$Jorn$start, config, flags);
+			},
+			X: function (_v0) {
+				var state = _v0;
+				return state.U ? $elm$core$Platform$Sub$batch(
+					_List_fromArray(
+						[
+							config.D.ag($author$project$Jorn$FromClient),
+							A2(
+							$elm$core$Platform$Sub$map,
+							$author$project$Jorn$Got,
+							config.X(state.K))
+						])) : $elm$core$Platform$Sub$none;
+			},
+			P: $author$project$Jorn$step(config)
+		});
+};
+var $author$project$Main$fromJorn = _Platform_incomingPort('fromJorn', $elm$json$Json$Decode$value);
+var $author$project$Main$EssayPage = 1;
+var $author$project$Main$Everything = {$: 0};
+var $author$project$Main$Home = 0;
+var $author$project$Main$Night = 1;
+var $author$project$Main$Paper = 0;
+var $elm$json$Json$Decode$bool = _Json_decodeBool;
+var $author$project$Main$init = function (flags) {
+	return {
+		x: $author$project$Main$Everything,
+		S: function () {
+			var _v0 = A2(
+				$elm$json$Json$Decode$decodeValue,
+				A2($elm$json$Json$Decode$field, 'page', $elm$json$Json$Decode$string),
+				flags);
+			if ((!_v0.$) && (_v0.a === 'essay')) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}(),
+		F: function () {
+			var _v1 = A2(
+				$elm$json$Json$Decode$decodeValue,
+				A2($elm$json$Json$Decode$field, 'dark', $elm$json$Json$Decode$bool),
+				flags);
+			if ((!_v1.$) && _v1.a) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}()
+	};
+};
+var $author$project$Jorn$Internal$Effect$Effect = $elm$core$Basics$identity;
+var $author$project$Jorn$Effect$none = _List_Nil;
+var $author$project$Main$toJorn = _Platform_outgoingPort('toJorn', $elm$core$Basics$identity);
+var $author$project$Jorn$Internal$Effect$Client = function (a) {
+	return {$: 1, a: a};
+};
+var $author$project$Jorn$Effect$instruction = F2(
+	function (kind, fields) {
+		return _List_fromArray(
+			[
+				$author$project$Jorn$Internal$Effect$Client(
+				$elm$json$Json$Encode$object(
+					A2(
+						$elm$core$List$cons,
+						_Utils_Tuple2(
+							'effect',
+							$elm$json$Json$Encode$string(kind)),
+						fields)))
+			]);
 	});
+var $author$project$Jorn$Effect$client = F2(
+	function (name, payload) {
+		return A2(
+			$author$project$Jorn$Effect$instruction,
+			'client',
+			_List_fromArray(
+				[
+					_Utils_Tuple2(
+					'name',
+					$elm$json$Json$Encode$string(name)),
+					_Utils_Tuple2('payload', payload)
+				]));
+	});
+var $author$project$Main$themeName = function (theme) {
+	if (!theme) {
+		return 'paper';
+	} else {
+		return 'night';
+	}
+};
 var $author$project$Main$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
 			case 0:
-				return _Utils_update(
-					model,
-					{
-						C: (!model.C) ? 1 : 0
-					});
+				var theme = (!model.F) ? 1 : 0;
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{F: theme}),
+					A2(
+						$author$project$Jorn$Effect$client,
+						'theme',
+						$elm$json$Json$Encode$string(
+							$author$project$Main$themeName(theme))));
 			case 1:
 				var filter = msg.a;
-				return _Utils_update(
-					model,
-					{v: filter});
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{x: filter}),
+					$author$project$Jorn$Effect$none);
 			default:
-				return model;
+				var direction = msg.a;
+				return _Utils_Tuple2(
+					model,
+					A2(
+						$author$project$Jorn$Effect$client,
+						'nudgeSaid',
+						$elm$json$Json$Encode$int(direction)));
 		}
-	});
-var $author$project$Jorn$Internal$Vdom$Attr = F2(
-	function (a, b) {
-		return {$: 0, a: a, b: b};
 	});
 var $author$project$Jorn$Attribute$attribute = $author$project$Jorn$Internal$Vdom$Attr;
 var $author$project$Jorn$Attribute$class = $author$project$Jorn$Attribute$attribute('class');
-var $author$project$Jorn$Internal$Vdom$Element = F4(
-	function (a, b, c, d) {
-		return {$: 0, a: a, b: b, c: c, d: d};
-	});
 var $author$project$Jorn$Element$element = F3(
 	function (tag, attributes, children) {
-		return A4($author$project$Jorn$Internal$Vdom$Element, '', tag, attributes, children);
+		return A5($author$project$Jorn$Internal$Vdom$Element, '', tag, 0, attributes, children);
 	});
 var $author$project$Jorn$Element$Html$div = $author$project$Jorn$Element$element('div');
 var $author$project$Jorn$Element$Html$h2 = $author$project$Jorn$Element$element('h2');
@@ -4434,25 +5928,8 @@ var $author$project$Jorn$Attribute$id = $author$project$Jorn$Attribute$attribute
 var $author$project$Jorn$Element$Html$ol = $author$project$Jorn$Element$element('ol');
 var $author$project$Jorn$Element$Html$p = $author$project$Jorn$Element$element('p');
 var $author$project$Jorn$Element$Html$section = $author$project$Jorn$Element$element('section');
-var $author$project$Jorn$Internal$Vdom$Text = function (a) {
-	return {$: 1, a: a};
-};
 var $author$project$Jorn$Element$text = $author$project$Jorn$Internal$Vdom$Text;
-var $elm$core$List$filter = F2(
-	function (isGood, list) {
-		return A3(
-			$elm$core$List$foldr,
-			F2(
-				function (x, xs) {
-					return isGood(x) ? A2($elm$core$List$cons, x, xs) : xs;
-				}),
-			_List_Nil,
-			list);
-	});
-var $elm$core$Tuple$second = function (_v0) {
-	var y = _v0.b;
-	return y;
-};
+var $author$project$Jorn$Element$Html$b = $author$project$Jorn$Element$element('b');
 var $author$project$Jorn$Attribute$classes = function (classList) {
 	return $author$project$Jorn$Attribute$class(
 		A2(
@@ -4483,9 +5960,8 @@ var $author$project$Main$track = F2(
 				]),
 			_List_fromArray(
 				[
-					A3(
-					$author$project$Jorn$Element$element,
-					'b',
+					A2(
+					$author$project$Jorn$Element$Html$b,
 					_List_Nil,
 					_List_fromArray(
 						[
@@ -4782,7 +6258,7 @@ var $elm$core$String$fromFloat = _String_fromNumber;
 var $author$project$Main$num = $elm$core$String$fromFloat;
 var $author$project$Jorn$Element$namespaced = F4(
 	function (namespace, tag, attributes, children) {
-		return A4($author$project$Jorn$Internal$Vdom$Element, namespace, tag, attributes, children);
+		return A5($author$project$Jorn$Internal$Vdom$Element, namespace, tag, 0, attributes, children);
 	});
 var $author$project$Main$svgNs = 'http://www.w3.org/2000/svg';
 var $author$project$Main$svg = $author$project$Jorn$Element$namespaced($author$project$Main$svgNs);
@@ -5048,6 +6524,12 @@ var $author$project$Main$diagram = A3(
 												$author$project$Main$plain('agents draft, a human approves')
 											])),
 									$author$project$Main$dgLoop)))))))));
+var $author$project$Jorn$Internal$Vdom$Void = 1;
+var $author$project$Jorn$Element$Html$void = F2(
+	function (tag, attributes) {
+		return A5($author$project$Jorn$Internal$Vdom$Element, '', tag, 1, attributes, _List_Nil);
+	});
+var $author$project$Jorn$Element$Html$br = $author$project$Jorn$Element$Html$void('br');
 var $author$project$Jorn$Element$Html$h1 = $author$project$Jorn$Element$element('h1');
 var $author$project$Main$heroCopy = _List_fromArray(
 	[
@@ -5078,7 +6560,7 @@ var $author$project$Main$heroCopy = _List_fromArray(
 		_List_fromArray(
 			[
 				$author$project$Jorn$Element$text('Bazyl '),
-				A3($author$project$Jorn$Element$element, 'br', _List_Nil, _List_Nil),
+				$author$project$Jorn$Element$Html$br(_List_Nil),
 				$author$project$Jorn$Element$text('Horsey'),
 				A2(
 				$author$project$Jorn$Element$Html$span,
@@ -5158,13 +6640,6 @@ var $author$project$Main$hero = A2(
 			$author$project$Main$diagram
 		]));
 var $author$project$Jorn$Element$Html$main_ = $author$project$Jorn$Element$element('main');
-var $elm$core$List$isEmpty = function (xs) {
-	if (!xs.b) {
-		return true;
-	} else {
-		return false;
-	}
-};
 var $author$project$Main$metric = function (item) {
 	return A2(
 		$author$project$Jorn$Element$Html$div,
@@ -5174,9 +6649,8 @@ var $author$project$Main$metric = function (item) {
 			]),
 		_List_fromArray(
 			[
-				A3(
-				$author$project$Jorn$Element$element,
-				'b',
+				A2(
+				$author$project$Jorn$Element$Html$b,
 				_List_Nil,
 				_List_fromArray(
 					[
@@ -5217,20 +6691,19 @@ var $author$project$Main$roleItem = function (role) {
 					]),
 				_List_fromArray(
 					[
-						A3(
-						$author$project$Jorn$Element$element,
-						'b',
+						A2(
+						$author$project$Jorn$Element$Html$b,
 						_List_Nil,
 						_List_fromArray(
 							[
-								$author$project$Jorn$Element$text(role.B)
+								$author$project$Jorn$Element$text(role.E)
 							])),
 						A2(
 						$author$project$Jorn$Element$Html$span,
 						_List_Nil,
 						_List_fromArray(
 							[
-								$author$project$Jorn$Element$text(role.A)
+								$author$project$Jorn$Element$text(role.C)
 							]))
 					])),
 				A2(
@@ -5246,7 +6719,7 @@ var $author$project$Main$roleItem = function (role) {
 						_List_Nil,
 						_List_fromArray(
 							[
-								$author$project$Jorn$Element$text(role.z),
+								$author$project$Jorn$Element$text(role.B),
 								A2(
 								$author$project$Jorn$Element$Html$span,
 								_List_fromArray(
@@ -5271,7 +6744,7 @@ var $author$project$Main$roleItem = function (role) {
 										]));
 							},
 							role.f),
-						$author$project$Main$figures(role.u))))
+						$author$project$Main$figures(role.w))))
 			]));
 };
 var $author$project$Main$metrics = _List_fromArray(
@@ -5290,37 +6763,37 @@ var $author$project$Main$roles = _List_fromArray(
 		{
 		f: _List_fromArray(
 			['Techstars \'22, then a $4M seed led by Rackhouse. Took the ' + ('platform from first commit to about twenty customer ' + ('deployments across five product lines, then built the ' + ('plug-and-play inspection product behind the pivot: installs ' + ('in a day, works with the cameras and systems a site already ' + 'has.')))), 'Grew engineering from solo to nine across time zones. As CISO, ' + ('built the ISMS from nothing to ISO 27001:2022 and SOC 2 Type I ' + ('readiness. Principal investigator on a $1M+ DoD-funded MxD ' + 'safety AI project.'))]),
-		u: $author$project$Main$metrics,
-		z: 'Arvist',
-		A: 'Chicago, IL',
-		B: '2023→now',
+		w: $author$project$Main$metrics,
+		B: 'Arvist',
+		C: 'Chicago, IL',
+		E: '2023→now',
 		e: 'Co-founder & CTO, now Technical Advisor'
 	},
 		{
 		f: _List_fromArray(
 			['Smart-locker and mobility IoT, now Accessa, backed by Jason ' + ('Calacanis with a $1M pre-seed. Part-time through college, CTO ' + ('from 2021, leading a team of five. Built the BLE SDKs and mobile ' + ('integrations behind the 2020 Smart Locker launch, which became ' + 'the core business.'))), 'Led the hardware too: our own System on Module with BLE and LTE ' + ('for the lockers, and the APIs that wrapped it. The software ' + 'was the easy half.')]),
-		u: _List_Nil,
-		z: 'Koloni',
-		A: 'Chicago, IL',
-		B: '2019→2022',
+		w: _List_Nil,
+		B: 'Koloni',
+		C: 'Chicago, IL',
+		E: '2019→2022',
 		e: 'Software Manager → Application Manager → CTO'
 	},
 		{
 		f: _List_fromArray(
 			['First startup out of Buena Vista\'s Foundry incubator. Wound it ' + ('down in 2021 and brought two of its engineers to Koloni, which ' + ('I count as the best outcome any of my companies had. Earlier: ' + ('the app for Match-Learn-Launch, a $175,000 Google.org Impact ' + 'Challenge winner.')))]),
-		u: _List_Nil,
-		z: 'Levity',
-		A: 'Storm Lake, IA',
-		B: '2020→2021',
+		w: _List_Nil,
+		B: 'Levity',
+		C: 'Storm Lake, IA',
+		E: '2020→2021',
 		e: 'Co-founder & CEO'
 	},
 		{
 		f: _List_fromArray(
 			['Dean\'s List. President of the Robotics Club. Collegiate wrestler, ' + ('which explains more about how I run engineering than any ' + 'conference talk does.')]),
-		u: _List_Nil,
-		z: 'Buena Vista University',
-		A: 'Storm Lake, IA',
-		B: '2016→2020',
+		w: _List_Nil,
+		B: 'Buena Vista University',
+		C: 'Storm Lake, IA',
+		E: '2016→2020',
 		e: 'BS Computer Science, minor in Communications'
 	}
 	]);
@@ -5355,7 +6828,7 @@ var $author$project$Main$section = F4(
 						[
 							$author$project$Jorn$Element$text(heading)
 						])),
-					A3($author$project$Jorn$Element$element, 'div', _List_Nil, children)
+					A2($author$project$Jorn$Element$Html$div, _List_Nil, children)
 				]));
 	});
 var $author$project$Main$path = A4(
@@ -5373,9 +6846,10 @@ var $author$project$Main$path = A4(
 				]),
 			A2($elm$core$List$map, $author$project$Main$roleItem, $author$project$Main$roles))
 		]));
-var $elm$core$Basics$negate = function (n) {
-	return -n;
+var $author$project$Jorn$Attribute$aria = function (name_) {
+	return $author$project$Jorn$Attribute$attribute('aria-' + name_);
 };
+var $author$project$Jorn$Attribute$ariaLabel = $author$project$Jorn$Attribute$aria('label');
 var $author$project$Main$NudgeSaid = function (a) {
 	return {$: 2, a: a};
 };
@@ -5388,7 +6862,6 @@ var $author$project$Jorn$Event$on = F2(
 	function (name, decoder) {
 		return A2($author$project$Jorn$Internal$Vdom$On, name, decoder);
 	});
-var $elm$json$Json$Decode$succeed = _Json_succeed;
 var $author$project$Jorn$Event$onClick = function (msg) {
 	return A2(
 		$author$project$Jorn$Event$on,
@@ -5404,7 +6877,7 @@ var $author$project$Main$nudge = F3(
 				[
 					$author$project$Jorn$Attribute$class('said-arrow'),
 					$author$project$Jorn$Attribute$type_('button'),
-					A2($author$project$Jorn$Attribute$attribute, 'aria-label', label),
+					$author$project$Jorn$Attribute$ariaLabel(label),
 					$author$project$Jorn$Event$onClick(
 					$author$project$Main$NudgeSaid(direction))
 				]),
@@ -5413,6 +6886,13 @@ var $author$project$Main$nudge = F3(
 					$author$project$Jorn$Element$text(glyph)
 				]));
 	});
+var $author$project$Jorn$Attribute$tabindex = function (index) {
+	return A2(
+		$author$project$Jorn$Attribute$attribute,
+		'tabindex',
+		$elm$core$String$fromInt(index));
+};
+var $author$project$Jorn$Element$Html$blockquote = $author$project$Jorn$Element$element('blockquote');
 var $author$project$Main$testimonial = function (t) {
 	return A2(
 		$author$project$Jorn$Element$Html$li,
@@ -5422,9 +6902,8 @@ var $author$project$Main$testimonial = function (t) {
 			]),
 		_List_fromArray(
 			[
-				A3(
-				$author$project$Jorn$Element$element,
-				'blockquote',
+				A2(
+				$author$project$Jorn$Element$Html$blockquote,
 				_List_Nil,
 				_List_fromArray(
 					[
@@ -5433,7 +6912,7 @@ var $author$project$Main$testimonial = function (t) {
 						_List_Nil,
 						_List_fromArray(
 							[
-								$author$project$Jorn$Element$text(t.s)
+								$author$project$Jorn$Element$text(t.t)
 							]))
 					])),
 				A2(
@@ -5456,16 +6935,15 @@ var $author$project$Main$testimonial = function (t) {
 									]),
 								_List_fromArray(
 									[
-										$author$project$Jorn$Element$text(t.E)
+										$author$project$Jorn$Element$text(t.L)
 									]));
 						} else {
-							return A3(
-								$author$project$Jorn$Element$element,
-								'b',
+							return A2(
+								$author$project$Jorn$Element$Html$b,
 								_List_Nil,
 								_List_fromArray(
 									[
-										$author$project$Jorn$Element$text(t.E)
+										$author$project$Jorn$Element$text(t.L)
 									]));
 						}
 					}(),
@@ -5474,7 +6952,7 @@ var $author$project$Main$testimonial = function (t) {
 						_List_Nil,
 						_List_fromArray(
 							[
-								$author$project$Jorn$Element$text(t.t)
+								$author$project$Jorn$Element$text(t.u)
 							]))
 					]))
 			]));
@@ -5483,33 +6961,33 @@ var $author$project$Main$testimonials = _List_fromArray(
 	[
 		{
 		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/luis-condados/'),
-		E: 'Lu\u00EDs Condados',
-		s: 'He helped me design critical parts of Arvist\u2019s MLOps pipeline. ' + ('\u2026 A single engineer can now keep the whole ML lifecycle ' + ('running across hundreds of clients and models with minimal ' + 'maintenance, where a less careful design would have needed a team.')),
-		t: 'ML Engineer'
+		L: 'Lu\u00EDs Condados',
+		t: 'He helped me design critical parts of Arvist\u2019s MLOps pipeline. ' + ('\u2026 A single engineer can now keep the whole ML lifecycle ' + ('running across hundreds of clients and models with minimal ' + 'maintenance, where a less careful design would have needed a team.')),
+		u: 'ML Engineer'
 	},
 		{
 		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/ACoAADlC9G4Bwlszm246aKubHcdIWI4ymrnp8Y4'),
-		E: 'Sherif Okunade',
-		s: 'Bazyl has a habit of making complicated things look suspiciously ' + ('easy. The kind of person you want around when things break, ' + ('ideas get weird, or someone says, \u201CThat\u2019s probably ' + ('impossible.\u201D He\u2019ll either find a solution or make ' + 'the problem regret showing up.'))),
-		t: 'Web Developer'
+		L: 'Sherif Okunade',
+		t: 'Bazyl has a habit of making complicated things look suspiciously ' + ('easy. The kind of person you want around when things break, ' + ('ideas get weird, or someone says, \u201CThat\u2019s probably ' + ('impossible.\u201D He\u2019ll either find a solution or make ' + 'the problem regret showing up.'))),
+		u: 'Web Developer'
 	},
 		{
 		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/matthew-bronstein-a9230462/'),
-		E: 'Matthew Bronstein',
-		s: 'Passionate technology leader who is constantly geeking out over the ' + ('newest tech releases and figuring out how they can solve real ' + 'problems.'),
-		t: 'Head of Engineering'
+		L: 'Matthew Bronstein',
+		t: 'Passionate technology leader who is constantly geeking out over the ' + ('newest tech releases and figuring out how they can solve real ' + 'problems.'),
+		u: 'Head of Engineering'
 	},
 		{
 		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/ACoAAEM91EABQb_ji6dKGuFDCIYeRoTpS9Pbk_4'),
-		E: 'Jesse Onyekwelu',
-		s: 'A natural mentor who empowers engineers. I started exploring ' + ('systems programming and Rust because of an impressive project ' + 'I saw on his GitHub.'),
-		t: 'Web Developer'
+		L: 'Jesse Onyekwelu',
+		t: 'A natural mentor who empowers engineers. I started exploring ' + ('systems programming and Rust because of an impressive project ' + 'I saw on his GitHub.'),
+		u: 'Web Developer'
 	},
 		{
 		a: $elm$core$Maybe$Just('https://www.linkedin.com/in/oshoke-oyati/'),
-		E: 'Oshoke Oyati',
-		s: 'His depth of knowledge, resourcefulness, and unwavering ' + ('commitment to excellence make him \u2026 someone you can ' + 'always count on.'),
-		t: 'Web Development Lead'
+		L: 'Oshoke Oyati',
+		t: 'His depth of knowledge, resourcefulness, and unwavering ' + ('commitment to excellence make him \u2026 someone you can ' + 'always count on.'),
+		u: 'Web Development Lead'
 	}
 	]);
 var $author$project$Main$said = A2(
@@ -5555,8 +7033,8 @@ var $author$project$Main$said = A2(
 			_List_fromArray(
 				[
 					$author$project$Jorn$Attribute$class('said-track'),
-					A2($author$project$Jorn$Attribute$attribute, 'tabindex', '0'),
-					A2($author$project$Jorn$Attribute$attribute, 'aria-label', 'Testimonials')
+					$author$project$Jorn$Attribute$tabindex(0),
+					$author$project$Jorn$Attribute$ariaLabel('Testimonials')
 				]),
 			A2($elm$core$List$map, $author$project$Main$testimonial, $author$project$Main$testimonials))
 		]));
@@ -5625,32 +7103,30 @@ var $author$project$Main$statusName = function (status) {
 			return 'plan';
 	}
 };
+var $author$project$Jorn$Element$Html$td = $author$project$Jorn$Element$element('td');
+var $author$project$Jorn$Element$Html$tr = $author$project$Jorn$Element$element('tr');
 var $author$project$Main$stageRow = function (stage) {
-	return A3(
-		$author$project$Jorn$Element$element,
-		'tr',
+	return A2(
+		$author$project$Jorn$Element$Html$tr,
 		_List_Nil,
 		_List_fromArray(
 			[
-				A3(
-				$author$project$Jorn$Element$element,
-				'td',
+				A2(
+				$author$project$Jorn$Element$Html$td,
 				_List_Nil,
 				_List_fromArray(
 					[
 						$author$project$Jorn$Element$text(stage.o)
 					])),
-				A3(
-				$author$project$Jorn$Element$element,
-				'td',
+				A2(
+				$author$project$Jorn$Element$Html$td,
 				_List_Nil,
 				_List_fromArray(
 					[
 						$author$project$Jorn$Element$text(stage.n)
 					])),
-				A3(
-				$author$project$Jorn$Element$element,
-				'td',
+				A2(
+				$author$project$Jorn$Element$Html$td,
 				_List_Nil,
 				_List_fromArray(
 					[
@@ -5669,19 +7145,19 @@ var $author$project$Main$stageRow = function (stage) {
 					]))
 			]));
 };
+var $author$project$Jorn$Element$Html$table = $author$project$Jorn$Element$element('table');
+var $author$project$Jorn$Element$Html$tbody = $author$project$Jorn$Element$element('tbody');
 var $author$project$Main$stageTable = function (stages) {
-	return A3(
-		$author$project$Jorn$Element$element,
-		'table',
+	return A2(
+		$author$project$Jorn$Element$Html$table,
 		_List_fromArray(
 			[
 				$author$project$Jorn$Attribute$class('roadmap')
 			]),
 		_List_fromArray(
 			[
-				A3(
-				$author$project$Jorn$Element$element,
-				'tbody',
+				A2(
+				$author$project$Jorn$Element$Html$tbody,
 				_List_Nil,
 				A2($elm$core$List$map, $author$project$Main$stageRow, stages))
 			]));
@@ -5740,7 +7216,7 @@ var $author$project$Main$itemCard = F2(
 							_List_Nil,
 							_List_fromArray(
 								[
-									$author$project$Jorn$Element$text(item.E)
+									$author$project$Jorn$Element$text(item.L)
 								])),
 						A2(
 							$elm$core$List$map,
@@ -5764,7 +7240,7 @@ var $author$project$Main$itemCard = F2(
 						[
 							$author$project$Jorn$Element$text(item.h)
 						])),
-					$elm$core$List$isEmpty(item.k) ? A3($author$project$Jorn$Element$element, 'span', _List_Nil, _List_Nil) : $author$project$Main$stageTable(item.k),
+					$elm$core$List$isEmpty(item.k) ? A2($author$project$Jorn$Element$Html$span, _List_Nil, _List_Nil) : $author$project$Main$stageTable(item.k),
 					function () {
 					var _v0 = item.a;
 					if (!_v0.$) {
@@ -5781,7 +7257,7 @@ var $author$project$Main$itemCard = F2(
 									$author$project$Jorn$Element$text(href)
 								]));
 					} else {
-						return A3($author$project$Jorn$Element$element, 'span', _List_Nil, _List_Nil);
+						return A2($author$project$Jorn$Element$Html$span, _List_Nil, _List_Nil);
 					}
 				}()
 				]));
@@ -5802,8 +7278,8 @@ var $author$project$Main$jornStages = _List_fromArray(
 	[
 		{n: 'Pure Elm vdom, diff, wire protocol, event routing', o: '1', l: 0},
 		{n: 'Browser patcher, applies patches to the real DOM', o: '2', l: 0},
-		{n: 'Full HTML/SVG/MathML, keyed lists, effects, runtime', o: '3', l: 1},
-		{n: 'Server runtime over a websocket', o: '4', l: 2},
+		{n: 'Full HTML and SVG, keyed lists, effects, app runtime', o: '3', l: 0},
+		{n: 'Server runtime over a websocket', o: '4', l: 1},
 		{n: 'Generated, compiler-checked encoders for shared types', o: '5', l: 2},
 		{n: 'Session snapshots and typed migrations across deploys', o: '6', l: 2}
 	]);
@@ -5813,16 +7289,16 @@ var $author$project$Main$work = _List_fromArray(
 		h: 'Write your UI once in Elm and decide at deploy time where each ' + ('piece runs: browser, server, or both. Pure Elm virtual DOM, a ' + ('diff that runs anywhere, a JSON wire protocol and a ' + ('dependency-free browser patcher. No kernel code, no fork. This ' + 'page runs on it.'))),
 		g: 0,
 		a: $elm$core$Maybe$Just('https://github.com/bazylhorsey/jorn'),
-		E: 'Jorn',
+		L: 'Jorn',
 		k: $author$project$Main$jornStages,
 		m: _List_fromArray(
-			['elm', 'v0.0'])
+			['elm', 'v0.1'])
 	},
 		{
 		h: 'An MCP server that connects local and remote Obsidian vaults to ' + ('desktop AI tools: multi-vault switching, graph analysis, hybrid ' + 'search and backlinks.'),
 		g: 1,
 		a: $elm$core$Maybe$Just('https://github.com/bazylhorsey/obsidian-mcp-server'),
-		E: 'obsidian-mcp-server',
+		L: 'obsidian-mcp-server',
 		k: _List_Nil,
 		m: _List_fromArray(
 			['typescript', '22 stars'])
@@ -5831,7 +7307,7 @@ var $author$project$Main$work = _List_fromArray(
 		h: 'A proposal to add typed stdin prompts to the Rust standard ' + ('library (rust-lang/rust#117852, RFC 3196). What upstream ' + 'actually feels like from the outside.'),
 		g: 2,
 		a: $elm$core$Maybe$Just('https://github.com/bazylhorsey/prompt-rust'),
-		E: 'prompt-rust',
+		L: 'prompt-rust',
 		k: _List_Nil,
 		m: _List_fromArray(
 			['rust'])
@@ -5840,7 +7316,7 @@ var $author$project$Main$work = _List_fromArray(
 		h: 'A Rust take on Phoenix LiveView, built to learn the ' + ('browser-versus-server trade-off from the implementer\'s side. ' + 'The only way to have an opinion about it.'),
 		g: 1,
 		a: $elm$core$Maybe$Nothing,
-		E: 'Aethos',
+		L: 'Aethos',
 		k: _List_Nil,
 		m: _List_fromArray(
 			['rust'])
@@ -5849,7 +7325,7 @@ var $author$project$Main$work = _List_fromArray(
 		h: 'Hayleigh Thompson\'s Gleam web framework. Four open PRs, including ' + ('a 337-line fix for server component context subscriptions and ' + ('a CI workflow for main. Upkeep is hard. Apparently I do it ' + 'anyway.')),
 		g: 2,
 		a: $elm$core$Maybe$Just('https://github.com/lustre-labs/lustre/pulls?q=is%3Apr+author%3Abazylhorsey'),
-		E: 'Lustre',
+		L: 'Lustre',
 		k: _List_Nil,
 		m: _List_fromArray(
 			['gleam'])
@@ -5858,7 +7334,7 @@ var $author$project$Main$work = _List_fromArray(
 		h: 'The open-source NVR. A merged fix to its auth cookie pattern and ' + ('an open one for a shared-memory leak on skipped frames. Same ' + 'class of bug as the day job, in someone else\'s codebase.'),
 		g: 2,
 		a: $elm$core$Maybe$Just('https://github.com/blakeblackshear/frigate/pulls?q=is%3Apr+author%3Abazylhorsey'),
-		E: 'Frigate',
+		L: 'Frigate',
 		k: _List_Nil,
 		m: _List_fromArray(
 			['python'])
@@ -5867,7 +7343,7 @@ var $author$project$Main$work = _List_fromArray(
 		h: 'A ChatGPT 3.0-era Lovable, presented at the OpenAI Hackathon in ' + 'Chicago, 2022. Kept because it is funny and it was early.',
 		g: 3,
 		a: $elm$core$Maybe$Just('https://github.com/bazylhorsey/astonish'),
-		E: 'astonish',
+		L: 'astonish',
 		k: _List_Nil,
 		m: _List_fromArray(
 			['python'])
@@ -5919,7 +7395,7 @@ var $author$project$Main$shipped = function (model) {
 					]),
 				A2(
 					$elm$core$List$map,
-					$author$project$Main$filterButton(model.v),
+					$author$project$Main$filterButton(model.x),
 					$author$project$Main$filters)),
 				A2(
 				$author$project$Jorn$Element$Html$ul,
@@ -5929,16 +7405,9 @@ var $author$project$Main$shipped = function (model) {
 					]),
 				A2(
 					$elm$core$List$map,
-					$author$project$Main$itemCard(model.v),
-					$author$project$Main$visibleWork(model.v)))
+					$author$project$Main$itemCard(model.x),
+					$author$project$Main$visibleWork(model.x)))
 			]));
-};
-var $author$project$Main$themeName = function (theme) {
-	if (!theme) {
-		return 'paper';
-	} else {
-		return 'night';
-	}
 };
 var $author$project$Main$ToggleTheme = {$: 0};
 var $author$project$Jorn$Element$Html$header = $author$project$Jorn$Element$element('header');
@@ -5996,7 +7465,7 @@ var $author$project$Main$topbar = function (model) {
 						A2(
 							$elm$core$List$map,
 							$author$project$Main$navLink(
-								(!model.G) ? '' : '/'),
+								(!model.S) ? '' : '/'),
 							_List_fromArray(
 								[
 									_Utils_Tuple2('#claim', 'claim'),
@@ -6017,11 +7486,12 @@ var $author$project$Main$topbar = function (model) {
 						_List_fromArray(
 							[
 								$author$project$Jorn$Element$text(
-								(!model.C) ? 'night' : 'day')
+								(!model.F) ? 'night' : 'day')
 							]))
 					]))
 			]));
 };
+var $author$project$Jorn$Element$Html$article = $author$project$Jorn$Element$element('article');
 var $elm$core$List$append = F2(
 	function (xs, ys) {
 		if (!ys.b) {
@@ -6195,21 +7665,17 @@ var $author$project$Essay$sections = _List_fromArray(
 			]))
 	]);
 var $author$project$Essay$title = 'The Distracted Forward Deployed Officer';
+var $author$project$Jorn$Element$Html$em = $author$project$Jorn$Element$element('em');
 var $elm$core$Basics$modBy = _Basics_modBy;
 var $elm$core$Basics$neq = _Utils_notEqual;
-var $elm$core$Tuple$pair = F2(
-	function (a, b) {
-		return _Utils_Tuple2(a, b);
-	});
 var $author$project$Essay$inline = function (text) {
 	return A2(
 		$elm$core$List$map,
 		function (_v1) {
 			var i = _v1.a;
 			var piece = _v1.b;
-			return (A2($elm$core$Basics$modBy, 2, i) === 1) ? A3(
-				$author$project$Jorn$Element$element,
-				'em',
+			return (A2($elm$core$Basics$modBy, 2, i) === 1) ? A2(
+				$author$project$Jorn$Element$Html$em,
 				_List_Nil,
 				_List_fromArray(
 					[
@@ -6228,6 +7694,7 @@ var $author$project$Essay$inline = function (text) {
 				A2($elm$core$String$split, '*', text))));
 };
 var $elm$core$String$startsWith = _String_startsWith;
+var $author$project$Jorn$Element$Html$strong = $author$project$Jorn$Element$element('strong');
 var $author$project$Essay$leadItem = function (_v0) {
 	var lead = _v0.a;
 	var rest = _v0.b;
@@ -6241,9 +7708,8 @@ var $author$project$Essay$leadItem = function (_v0) {
 				_List_Nil,
 				_List_fromArray(
 					[
-						A3(
-						$author$project$Jorn$Element$element,
-						'strong',
+						A2(
+						$author$project$Jorn$Element$Html$strong,
 						_List_Nil,
 						_List_fromArray(
 							[
@@ -6264,9 +7730,8 @@ var $author$project$Essay$viewBlock = function (block) {
 				$author$project$Essay$inline(text));
 		case 1:
 			var text = block.a;
-			return A3(
-				$author$project$Jorn$Element$element,
-				'blockquote',
+			return A2(
+				$author$project$Jorn$Element$Html$blockquote,
 				_List_fromArray(
 					[
 						$author$project$Jorn$Attribute$class('essay-quote')
@@ -6315,9 +7780,8 @@ var $author$project$Essay$viewSection = function (_v0) {
 				])),
 		A2($elm$core$List$map, $author$project$Essay$viewBlock, blocks));
 };
-var $author$project$Essay$view = A3(
-	$author$project$Jorn$Element$element,
-	'article',
+var $author$project$Essay$view = A2(
+	$author$project$Jorn$Element$Html$article,
 	_List_fromArray(
 		[
 			$author$project$Jorn$Attribute$class('essay wrap')
@@ -6360,9 +7824,8 @@ var $author$project$Essay$view = A3(
 						]),
 					_List_fromArray(
 						[
-							A3(
-							$author$project$Jorn$Element$element,
-							'b',
+							A2(
+							$author$project$Jorn$Element$Html$b,
 							_List_Nil,
 							_List_fromArray(
 								[
@@ -6439,10 +7902,9 @@ var $author$project$Main$groupLabel = function (label) {
 				$author$project$Jorn$Element$text(label)
 			]));
 };
-var $author$project$Main$paper = {f: 'Frontiers in Sustainability 5:1416964. Modeled roughly 50% lower ' + ('emissions by rerouting livestock between brooders and ' + ('finishers with a Gurobi optimization over distance, ' + ('exclusivity, and capacity. The notebook is public, which is ' + 'the point of publishing.'))), w: 'Implementing concepts from green logistics in the turkey production supply chain', a: 'https://doi.org/10.3389/frsus.2024.1416964', x: 'peer reviewed / 2024 / second author', y: 'doi:10.3389/frsus.2024.1416964'};
-var $author$project$Main$paperCard = A3(
-	$author$project$Jorn$Element$element,
-	'article',
+var $author$project$Main$paper = {f: 'Frontiers in Sustainability 5:1416964. Modeled roughly 50% lower ' + ('emissions by rerouting livestock between brooders and ' + ('finishers with a Gurobi optimization over distance, ' + ('exclusivity, and capacity. The notebook is public, which is ' + 'the point of publishing.'))), y: 'Implementing concepts from green logistics in the turkey production supply chain', a: 'https://doi.org/10.3389/frsus.2024.1416964', z: 'peer reviewed / 2024 / second author', A: 'doi:10.3389/frsus.2024.1416964'};
+var $author$project$Main$paperCard = A2(
+	$author$project$Jorn$Element$Html$article,
 	_List_fromArray(
 		[
 			$author$project$Jorn$Attribute$class('write write--paper')
@@ -6457,14 +7919,14 @@ var $author$project$Main$paperCard = A3(
 				]),
 			_List_fromArray(
 				[
-					$author$project$Jorn$Element$text($author$project$Main$paper.x)
+					$author$project$Jorn$Element$text($author$project$Main$paper.z)
 				])),
 			A2(
 			$author$project$Jorn$Element$Html$h3,
 			_List_Nil,
 			_List_fromArray(
 				[
-					$author$project$Jorn$Element$text($author$project$Main$paper.w)
+					$author$project$Jorn$Element$text($author$project$Main$paper.y)
 				])),
 			A2(
 			$author$project$Jorn$Element$Html$p,
@@ -6490,7 +7952,7 @@ var $author$project$Main$paperCard = A3(
 						]),
 					_List_fromArray(
 						[
-							$author$project$Jorn$Element$text($author$project$Main$paper.y)
+							$author$project$Jorn$Element$text($author$project$Main$paper.A)
 						])),
 					A2(
 					$author$project$Jorn$Element$Html$a,
@@ -6506,9 +7968,8 @@ var $author$project$Main$paperCard = A3(
 				]))
 		]));
 var $author$project$Main$piece = function (item) {
-	return A3(
-		$author$project$Jorn$Element$element,
-		'article',
+	return A2(
+		$author$project$Jorn$Element$Html$article,
 		_List_fromArray(
 			[
 				$author$project$Jorn$Attribute$class('write')
@@ -6523,14 +7984,14 @@ var $author$project$Main$piece = function (item) {
 					]),
 				_List_fromArray(
 					[
-						$author$project$Jorn$Element$text(item.x)
+						$author$project$Jorn$Element$text(item.z)
 					])),
 				A2(
 				$author$project$Jorn$Element$Html$h3,
 				_List_Nil,
 				_List_fromArray(
 					[
-						$author$project$Jorn$Element$text(item.w)
+						$author$project$Jorn$Element$text(item.y)
 					])),
 				A2(
 				$author$project$Jorn$Element$Html$p,
@@ -6548,14 +8009,14 @@ var $author$project$Main$piece = function (item) {
 					]),
 				_List_fromArray(
 					[
-						$author$project$Jorn$Element$text(item.y)
+						$author$project$Jorn$Element$text(item.A)
 					]))
 			]));
 };
 var $author$project$Main$podcasts = _List_fromArray(
 	[
-		{f: 'Academic burnout through to running engineering at Arvist. Why ' + ('scrappy beats flashy when you are building a team, and what ' + ('most CTOs get wrong about leadership. The episode title is the ' + 'whole review.')), w: 'Doesn\'t sugarcoat it', a: 'https://youtu.be/mk7CKtatU8U', x: 'software leaders uncensored / with steve taplin', y: 'youtu.be/mk7CKtatU8U'},
-		{f: 'Encord\'s show, hosted by their co-founder. Going deep on AI in ' + ('logistics: what it takes to get a model out of a notebook and ' + ('onto a dock, why the old boring methods still win more often ' + ('than the shiny new thing, and where quality assurance in ' + 'warehousing is heading.'))), w: 'Building Arvist, and what AI actually needs in a warehouse', a: 'https://encord.com/deep-learning-leaders/', x: 'deep learning leaders / with eric landau', y: 'deep learning leaders'}
+		{f: 'Academic burnout through to running engineering at Arvist. Why ' + ('scrappy beats flashy when you are building a team, and what ' + ('most CTOs get wrong about leadership. The episode title is the ' + 'whole review.')), y: 'Doesn\'t sugarcoat it', a: 'https://youtu.be/mk7CKtatU8U', z: 'software leaders uncensored / with steve taplin', A: 'youtu.be/mk7CKtatU8U'},
+		{f: 'Encord\'s show, hosted by their co-founder. Going deep on AI in ' + ('logistics: what it takes to get a model out of a notebook and ' + ('onto a dock, why the old boring methods still win more often ' + ('than the shiny new thing, and where quality assurance in ' + 'warehousing is heading.'))), y: 'Building Arvist, and what AI actually needs in a warehouse', a: 'https://encord.com/deep-learning-leaders/', z: 'deep learning leaders / with eric landau', A: 'deep learning leaders'}
 	]);
 var $author$project$Main$postRow = function (post) {
 	return A2(
@@ -6580,20 +8041,19 @@ var $author$project$Main$postRow = function (post) {
 							]),
 						_List_fromArray(
 							[
-								A3(
-								$author$project$Jorn$Element$element,
-								'b',
+								A2(
+								$author$project$Jorn$Element$Html$b,
 								_List_Nil,
 								_List_fromArray(
 									[
-										$author$project$Jorn$Element$text(post.p)
+										$author$project$Jorn$Element$text(post.q)
 									])),
 								A2(
 								$author$project$Jorn$Element$Html$span,
 								_List_Nil,
 								_List_fromArray(
 									[
-										$author$project$Jorn$Element$text(post.r)
+										$author$project$Jorn$Element$text(post.s)
 									]))
 							])),
 						A2(
@@ -6604,9 +8064,8 @@ var $author$project$Main$postRow = function (post) {
 							]),
 						_List_fromArray(
 							[
-								A3(
-								$author$project$Jorn$Element$element,
-								'b',
+								A2(
+								$author$project$Jorn$Element$Html$b,
 								_List_fromArray(
 									[
 										$author$project$Jorn$Attribute$class('post-title')
@@ -6623,7 +8082,7 @@ var $author$project$Main$postRow = function (post) {
 									]),
 								_List_fromArray(
 									[
-										$author$project$Jorn$Element$text(post.q)
+										$author$project$Jorn$Element$text(post.r)
 									]))
 							])),
 						A2(
@@ -6642,11 +8101,11 @@ var $author$project$Main$postRow = function (post) {
 var $author$project$Essay$slug = '/writing/distracted-forward-deployed-officer/';
 var $author$project$Main$posts = _List_fromArray(
 	[
-		{p: $author$project$Essay$dateLabel, q: 'Distracted is what listening looks like when the person you\'re ' + 'listening to isn\'t in the room.', a: $author$project$Essay$slug, r: 'essay', e: $author$project$Essay$title},
-		{p: '2026.08', q: 'Building software got cheap, so small niches pay now. The moat moves ' + 'from owning the platform to adapting fastest to each operation.', a: 'https://arvist.ai/vertical-monopoly/', r: 'arvist blog', e: 'Why vertical monopoly doesn\'t work for warehouse software anymore'},
-		{p: '2026.08', q: 'Quotes price the connection. The time and money go into mapping data ' + 'that doesn\'t line up and the scope nobody wrote down.', a: 'https://arvist.ai/why-your-integration-quote-is-wrong/', r: 'arvist blog', e: 'Why your integration quote is wrong'},
-		{p: '2021.01', q: 'Fresh out of school and building smart lockers at Koloni: hardware, ' + 'firmware and apps that all have to ship together.', a: 'https://bazyl-25260.medium.com/lessons-learned-in-iot-product-development-405b569e5b4c', r: 'medium', e: 'Lessons learned in IoT product development'},
-		{p: '2020.11', q: 'Where shared lockers, scooters and bikes were headed, from inside the business.', a: 'https://bazyl-25260.medium.com/the-future-of-sharing-and-micro-mobility-d63b26fa405', r: 'medium', e: 'The future of sharing and micro-mobility'}
+		{q: $author$project$Essay$dateLabel, r: 'Distracted is what listening looks like when the person you\'re ' + 'listening to isn\'t in the room.', a: $author$project$Essay$slug, s: 'essay', e: $author$project$Essay$title},
+		{q: '2026.08', r: 'Building software got cheap, so small niches pay now. The moat moves ' + 'from owning the platform to adapting fastest to each operation.', a: 'https://arvist.ai/vertical-monopoly/', s: 'arvist blog', e: 'Why vertical monopoly doesn\'t work for warehouse software anymore'},
+		{q: '2026.08', r: 'Quotes price the connection. The time and money go into mapping data ' + 'that doesn\'t line up and the scope nobody wrote down.', a: 'https://arvist.ai/why-your-integration-quote-is-wrong/', s: 'arvist blog', e: 'Why your integration quote is wrong'},
+		{q: '2021.01', r: 'Fresh out of school and building smart lockers at Koloni: hardware, ' + 'firmware and apps that all have to ship together.', a: 'https://bazyl-25260.medium.com/lessons-learned-in-iot-product-development-405b569e5b4c', s: 'medium', e: 'Lessons learned in IoT product development'},
+		{q: '2020.11', r: 'Where shared lockers, scooters and bikes were headed, from inside the business.', a: 'https://bazyl-25260.medium.com/the-future-of-sharing-and-micro-mobility-d63b26fa405', s: 'medium', e: 'The future of sharing and micro-mobility'}
 	]);
 var $author$project$Main$writing = A4(
 	$author$project$Main$section,
@@ -6675,13 +8134,12 @@ var $author$project$Main$writing = A4(
 			A2($elm$core$List$map, $author$project$Main$postRow, $author$project$Main$posts))
 		]));
 var $author$project$Main$view = function (model) {
-	return A3(
-		$author$project$Jorn$Element$element,
-		'div',
+	return A2(
+		$author$project$Jorn$Element$Html$div,
 		_List_fromArray(
 			[
 				$author$project$Jorn$Attribute$class(
-				'page page--' + $author$project$Main$themeName(model.C))
+				'page page--' + $author$project$Main$themeName(model.F))
 			]),
 		_List_fromArray(
 			[
@@ -6690,7 +8148,7 @@ var $author$project$Main$view = function (model) {
 				$author$project$Jorn$Element$Html$main_,
 				_List_Nil,
 				function () {
-					var _v0 = model.G;
+					var _v0 = model.S;
 					if (!_v0) {
 						return _List_fromArray(
 							[
@@ -6711,72 +8169,18 @@ var $author$project$Main$view = function (model) {
 				$author$project$Main$foot
 			]));
 };
-var $author$project$Main$receive = F2(
-	function (raw, model) {
-		var routed = A2(
-			$elm$core$Result$andThen,
-			function (incoming) {
-				return A2(
-					$elm$core$Result$mapError,
-					$author$project$Jorn$Internal$Event$errorToString,
-					A2(
-						$author$project$Jorn$Internal$Event$route,
-						incoming,
-						$author$project$Main$view(model)));
-			},
-			A2(
-				$elm$core$Result$mapError,
-				$elm$json$Json$Decode$errorToString,
-				A2($elm$json$Json$Decode$decodeValue, $author$project$Jorn$Internal$Event$decoder, raw)));
-		if (!routed.$) {
-			if (routed.a.$ === 2) {
-				var direction = routed.a.a;
-				return _Utils_Tuple2(
-					model,
-					A2(
-						$author$project$Main$send,
-						'scroll',
-						$elm$json$Json$Encode$int(direction)));
-			} else {
-				var msg = routed.a;
-				var next = A2($author$project$Main$update, msg, model);
-				return _Utils_Tuple2(
-					next,
-					A2(
-						$author$project$Main$send,
-						'patches',
-						$author$project$Jorn$Patch$encode(
-							A2(
-								$author$project$Jorn$Patch$diff,
-								$author$project$Main$view(model),
-								$author$project$Main$view(next)))));
-			}
-		} else {
-			var problem = routed.a;
-			return _Utils_Tuple2(
-				model,
-				A2(
-					$author$project$Main$send,
-					'error',
-					$elm$json$Json$Encode$string(problem)));
-		}
-	});
-var $elm$core$Platform$worker = _Platform_worker;
-var $author$project$Main$main = $elm$core$Platform$worker(
+var $author$project$Main$main = $author$project$Jorn$application(
 	{
-		T: function (flags) {
-			var model = $author$project$Main$init(flags);
+		H: function (flags) {
 			return _Utils_Tuple2(
-				model,
-				A2(
-					$author$project$Main$send,
-					'mount',
-					$author$project$Jorn$Patch$encodeHtml(
-						$author$project$Main$view(model))));
+				$author$project$Main$init(flags),
+				$author$project$Jorn$Effect$none);
 		},
-		U: function (_v0) {
-			return $author$project$Main$fromClient($elm$core$Basics$identity);
+		D: {ag: $author$project$Main$fromJorn, ab: $author$project$Main$toJorn},
+		X: function (_v0) {
+			return $elm$core$Platform$Sub$none;
 		},
-		V: $author$project$Main$receive
+		P: $author$project$Main$update,
+		Q: $author$project$Main$view
 	});
 _Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$value)(0)}});}(this));

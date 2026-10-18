@@ -15,8 +15,8 @@
 #   vendor/jorn.js     -> <script>   (the patcher, with "export" stripped)
 #   the glue           -> <script>
 #
-# The patcher is an ES module with a single export and no imports, so dropping
-# the keyword turns it into a classic script and the three tags can live in one
+# The patcher is an ES module with plain exports and no imports, so dropping
+# the keywords turns it into a classic script and the three tags can live in one
 # file in the original order.
 
 set -euo pipefail
@@ -56,9 +56,9 @@ icon = read("favicon.svg").strip()
 # The patcher is an ES module. Inline as a classic script it has to stop being
 # one, so drop the export keyword. It has no imports, so nothing else is needed.
 jorn, exports = re.subn(r"^export\s+", "", jorn, flags=re.M)
-if exports != 1:
+if exports < 1:
     print(
-        f"expected exactly 1 export in vendor/jorn.js, found {exports}",
+        "expected at least 1 export in vendor/jorn.js, found none",
         file=sys.stderr,
     )
     sys.exit(1)
