@@ -189,12 +189,14 @@ type alias Piece =
 
 jornStages : List Stage
 jornStages =
-    [ { number = "1", description = "Pure Elm vdom, diff, wire protocol, event routing", status = Done }
-    , { number = "2", description = "Browser patcher, applies patches to the real DOM", status = Done }
-    , { number = "3", description = "Full HTML and SVG, keyed lists, effects, app runtime", status = Done }
-    , { number = "4", description = "Server runtime over a websocket", status = Next }
-    , { number = "5", description = "Generated, compiler-checked encoders for shared types", status = Planned }
-    , { number = "6", description = "Session snapshots and typed migrations across deploys", status = Planned }
+    [ { number = "v0.0", description = "Pure Elm vdom, diff, wire protocol, browser patcher", status = Done }
+    , { number = "v0.1", description = "Full HTML and SVG, keyed lists, effects, app runtime", status = Done }
+    , { number = "v0.2", description = "Server components over a websocket, with reconnects", status = Done }
+    , { number = "v0.3", description = "The rest of the view layer: memoized subtrees, raw HTML, MathML", status = Next }
+    , { number = "v0.4", description = "Server-side rendering, hydration, URL routing", status = Planned }
+    , { number = "v0.5", description = "Components as custom elements: shadow DOM, slots, forms", status = Planned }
+    , { number = "v0.6", description = "A dev server, a build command, and test utilities", status = Planned }
+    , { number = "v1.0", description = "The full feature set, on the Elm package registry", status = Planned }
     ]
 
 
@@ -214,7 +216,7 @@ metrics =
 work : List Item
 work =
     [ { name = "Jorn"
-      , tags = [ "elm", "v0.1" ]
+      , tags = [ "elm", "v0.2" ]
       , blurb =
             "Write your UI once in Elm and decide at deploy time where each "
                 ++ "piece runs: browser, server, or both. Pure Elm virtual DOM, a "

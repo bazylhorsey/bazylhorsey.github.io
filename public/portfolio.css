@@ -1061,7 +1061,7 @@ html[data-theme="night"] .diagram .dg-shadow {
 }
 
 .roadmap td:first-child {
-  width: 2.4rem;
+  width: 3.6rem;
   font-family: var(--mono);
   color: var(--muted);
   text-align: center;
