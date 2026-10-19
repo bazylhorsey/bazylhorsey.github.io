@@ -48,7 +48,8 @@ type alias Model =
     , coverage : Float
     , recall : Float
     , rho : Float
-    , audit : Float
+    , claims : Float
+    , fix : Float
     , useMeasured : Bool
     , measured : Float
     , cost : Float
@@ -67,7 +68,8 @@ init =
     , coverage = 1
     , recall = 0.91
     , rho = 0.15
-    , audit = 0.8
+    , claims = 0.5
+    , fix = 20
     , useMeasured = False
     , measured = 0.95
     , cost = 150
@@ -84,7 +86,8 @@ type Field
     | Coverage
     | Recall
     | Rho
-    | Audit
+    | Claims
+    | Fix
     | Measured
     | Cost
     | Volume
@@ -140,8 +143,11 @@ get field m =
         Rho ->
             m.rho
 
-        Audit ->
-            m.audit
+        Claims ->
+            m.claims
+
+        Fix ->
+            m.fix
 
         Measured ->
             m.measured
@@ -177,8 +183,11 @@ put field v m =
         Rho ->
             { m | rho = v }
 
-        Audit ->
-            { m | audit = v }
+        Claims ->
+            { m | claims = v }
+
+        Fix ->
+            { m | fix = v }
 
         Measured ->
             { m | measured = v }
@@ -201,7 +210,8 @@ put field v m =
 
 
 -- THE MATH
--- Same formulas as the spreadsheet, cell for cell.
+-- The spreadsheet's model, with two corrections: miss overlap stays inside
+-- what the two recalls allow, and footage recovers money, not defects.
 
 
 {-| Human recall at prevalence d, fitted to the Wolfe anchor points:
@@ -218,20 +228,43 @@ humanEscape d =
     d * (1 - humanRecall d)
 
 
-{-| Share of human misses the vision layer catches: c R (1 - rho). -}
-catch : Model -> Float
-catch m =
-    m.coverage * m.recall * (1 - m.rho)
+{-| Share of the defects people miss that the vision layer catches, given
+people's miss rate m.
+
+The model's miss rate on those defects, mu, runs from 1 - R when the two
+fail independently (rho = 0) to the most overlap the recalls allow
+(rho = 1): every model miss is also a human miss, so the pair is no better
+than the model alone. Discounting recall by (1 - rho) instead goes past that
+bound, and at high rho made people plus model worse than the model alone.
+-}
+catchWith : Float -> Float -> Float -> Float -> Float
+catchWith coverage recall rho m =
+    let
+        nested =
+            if m <= 0 then
+                1
+
+            else
+                min 1 ((1 - recall) / m)
+
+        mu =
+            (1 - rho) * (1 - recall) + rho * nested
+    in
+    coverage * (1 - mu)
+
+
+catch : Model -> Float -> Float
+catch model m =
+    catchWith model.coverage model.recall model.rho m
 
 
 type alias Result =
     { e0 : Float
     , e1 : Float
-    , e2 : Float
     , reduction : Float
     , prevented : Float
     , avoided : Float
-    , avoidedWithAudit : Float
+    , recovered : Float
     , tp : Float
     , fp : Float
     , precision : Float
@@ -252,17 +285,20 @@ results m =
             else
                 humanEscape m.d0
 
+        -- People's miss rate. With a measured baseline it comes from the
+        -- measured escapes over d0, capped at missing everything.
+        miss =
+            clamp 0 1 (safeDiv e0 m.d0)
+
         k =
-            catch m
+            catch m miss
 
         e1 =
             e0 * (1 - k)
 
-        e2 =
-            e1 * (1 - m.audit)
-
+        -- A caught defect still costs a re-pick or repack.
         avoided =
-            (e0 - e1) * m.volume * m.cost
+            (e0 - e1) * m.volume * (m.cost - m.fix)
 
         tp =
             e0 * m.volume * k
@@ -278,11 +314,10 @@ results m =
     in
     { e0 = e0
     , e1 = e1
-    , e2 = e2
     , reduction = safeDiv (e0 - e1) e0
     , prevented = (e0 - e1) * 10000
     , avoided = avoided
-    , avoidedWithAudit = (e0 - e2) * m.volume * m.cost
+    , recovered = m.coverage * e1 * m.volume * m.cost * m.claims
     , tp = tp
     , fp = fp
     , precision = safeDiv tp (tp + fp)
@@ -337,21 +372,20 @@ sections =
         -- MATHML (Jorn v0.3): render as one display equation, e.g.
         --   <math display="block">
         --     <mi>e</mi><mo>=</mo><msub><mi>d</mi><mn>0</mn></msub>
-        --     <mo>[</mo><mn>1</mn><mo>-</mo><msub><mi>E</mi><mi>h</mi></msub>
-        --       <mo>(</mo><msub><mi>d</mi><mn>0</mn></msub><mo>)</mo><mo>]</mo>
-        --     <mo>[</mo><mn>1</mn><mo>-</mo><mi>c</mi><mi>R</mi>
-        --       <mo>(</mo><mn>1</mn><mo>-</mo><mi>ρ</mi><mo>)</mo><mo>]</mo>
-        --     <mo>(</mo><mn>1</mn><mo>-</mo><mi>a</mi><mo>)</mo>
+        --     <mi>m</mi>
+        --     <mo>[</mo><mn>1</mn><mo>-</mo><mi>c</mi>
+        --       <mo>(</mo><mn>1</mn><mo>-</mo><mi>μ</mi><mo>)</mo><mo>]</mo>
         --   </math>
-        -- followed by a second <math> for Q = 1 - e.
-        , Eq "e = d₀ · [1 − Eₕ(d₀)] · [1 − c·R·(1 − ρ)] · (1 − a)        Q = 1 − e"
+        -- followed by m = 1 - E_h(d0) and Q = 1 - e as two more short rows,
+        -- ideally one <mtable> so the equals signs line up.
+        , Eq "e = d₀ · m · [1 − c·(1 − μ)]        m = 1 − Eₕ(d₀)        Q = 1 − e"
         , Defs
             [ ( "d₀", "upstream defect rate: the share of shipments with any defect before anyone looks." )
             , ( "Eₕ(d₀)", "human recall at that prevalence. Not a constant, more on that below." )
+            , ( "m", "the share of defects people miss." )
             , ( "c", "coverage: the share of shipments the cameras actually see." )
-            , ( "R", "model recall: the share of present defects the model catches." )
-            , ( "ρ", "miss overlap. 0 means people and the model fail on different things. 1 means the model only misses what people already miss." )
-            , ( "a", "audit recovery: the share of what's left that gets caught on review, before it ships or when a claim comes in." )
+            , ( "R", "model recall: the share of present defects the model catches, measured in the field." )
+            , ( "μ", "how often the model misses a defect people already missed. It depends on R and on ρ, below." )
             , ( "Q", "outbound accuracy, the number that ends up on a slide." )
             ]
         , P "If you averaged, a 91% model and a team that catches 83% would land somewhere in the high eighties. Multiply instead and the picture changes. People let some defects through, the model catches most of those, and what's left is small. Push the inputs around and watch where the defects go."
@@ -373,53 +407,69 @@ sections =
         , P "Machine recall has no prevalence term. A model looks at the ten thousandth clean pallet with the same attention it gave the first one. That asymmetry is the whole argument for putting the two together."
         , Figure Ceiling
         , P "Here's the result that surprised me. Across a 5x swing in upstream defect rate, from 10% to 50%, human-only outbound accuracy barely moves. It stays between about 96.2% and 97.5%. As an operation gets cleaner, people get proportionally worse at catching what's left. The layer limits itself."
-        , P "That's a candidate explanation, not a proof, for why perfect order rate medians sit around 93 to 96% no matter who you benchmark. Perfect order counts more kinds of failure than damage and mispicks, so the two numbers aren't the same thing. But a ceiling that holds across very different operations deserves a hard look."
+        , P "It's tempting to read that band as the reason perfect order rate medians sit around 93 to 96%. The model doesn't support it. Its floor is about 96.2%, above most of that range, and perfect order also counts late shipments, paperwork and other failures a dock inspection never sees. The band is a claim about the inspection layer, not about the whole order."
         , Note "Below 10% the curve looks better for a boring reason: there are almost no defects to escape in the first place. The ceiling claim is about the realistic operating range. One more caveat: Wolfe's 2005 single-prevalence study put misses near 30% at 1% prevalence. The fit uses the mixed-prevalence numbers, which is the harsher read on people."
         ]
       )
     , ( "The number nobody has measured"
       , [ P "ρ is the most important input in the model and the one with the least evidence behind it. It asks a simple question. When the model misses something, is it the same thing a person would have missed?"
-        , P "If the model and your people fail on different things, the model's recall counts in full. If the model mostly misses the same hard cases your people miss, it adds a lot less. At ρ = 0.5 the model adds half of what it looks like it adds."
+        , P "If the model and your people fail on different things, the model's recall counts in full. If every miss the model makes is one your people made too, the pair is no better than the model alone. ρ slides between those two ends."
+
+        -- MATHML (Jorn v0.3):
+        --   <math display="block">
+        --     <mi>μ</mi><mo>=</mo>
+        --     <mo>(</mo><mn>1</mn><mo>-</mo><mi>ρ</mi><mo>)</mo>
+        --     <mo>(</mo><mn>1</mn><mo>-</mo><mi>R</mi><mo>)</mo>
+        --     <mo>+</mo><mi>ρ</mi><mo>&#x2062;</mo><mi>min</mi>
+        --     <mo>(</mo><mn>1</mn><mo>,</mo>
+        --       <mfrac><mrow><mn>1</mn><mo>-</mo><mi>R</mi></mrow><mi>m</mi></mfrac>
+        --     <mo>)</mo>
+        --   </math>
+        , Eq "μ = (1 − ρ) · (1 − R) + ρ · min(1, (1 − R) / m)"
         , Figure Overlap
-        , P "The good news is you can measure it with data most sites already have. Take the shipments where a person flagged nothing and the model flagged something, and the reverse. The overlap between those two sets is ρ. It's one query. The 15% default here is a placeholder until somebody runs it."
+        , P "You can't measure ρ from flags alone. The defects both layers miss are exactly the ones nobody flagged, so they never show up in a query. It takes ground truth: pull a random sample of shipments that passed both layers, inspect them carefully, and count the real defects people missed and how many of those the model missed too. That share is μ, and the equation above gives you ρ. The 15% default here is a placeholder until somebody does that."
         ]
       )
     , ( "Coverage beats recall"
-      , [ P "Coverage and recall trade almost one for one, because they multiply. A model that sees every shipment at 88% recall catches more than a model that sees 80% of shipments at 99%: 0.88 against 0.79."
+      , [ P "Coverage and recall trade almost one for one, because they multiply. A model that sees every shipment at 88% recall catches more than a model that sees 80% of shipments at 99%: 0.88 against 0.79 when misses are independent. Overlap narrows that gap, because it eats into the weaker model more, but at the base case coverage still comes out ahead."
         , P "For an ROI case that changes where the effort goes. Getting every dock door covered, with camera angles that actually see the freight, is usually worth more than the last few points of model accuracy. It's also the less glamorous work, which is why it gets skipped."
         ]
       )
-    , ( "Good operations get the same relative gain"
-      , [ P "If you plug in a site's measured accuracy instead of the curve, something useful falls out. The escape reduction doesn't depend on the baseline at all."
+    , ( "Good operations gain less, and that's fine"
+      , [ P "If you plug in a site's measured accuracy instead of the curve, the share of escapes removed is easy to read off."
 
         -- MATHML (Jorn v0.3):
         --   <math display="block">
         --     <mn>1</mn><mo>-</mo>
         --     <mfrac><msub><mi>e</mi><mn>1</mn></msub><msub><mi>e</mi><mn>0</mn></msub></mfrac>
-        --     <mo>=</mo><mi>c</mi><mi>R</mi><mo>(</mo><mn>1</mn><mo>-</mo><mi>ρ</mi><mo>)</mo>
+        --     <mo>=</mo><mi>c</mi><mo>(</mo><mn>1</mn><mo>-</mo><mi>μ</mi><mo>)</mo>
         --   </math>
-        , Eq "1 − e₁ / e₀ = c · R · (1 − ρ)"
-        , P "A site at 90% and a site at 99% cut escapes by the same share. The absolute gain shrinks as the baseline improves, but the relative gain doesn't. So an operation that's already good isn't a bad fit for this kind of system. Turn on the measured baseline switch in the first figure and try a few."
+        -- with "c R when rho = 0" as a caption.
+        , Eq "1 − e₁ / e₀ = c · (1 − μ)        which is c · R when ρ = 0"
+        , P "With no overlap the baseline drops out: a site at 90% and a site at 99% cut escapes by the same share. Overlap changes that. A team that already catches most defects is left with the hard ones, and those are the ones a model is most likely to miss too. So the honest pitch to a strong operation is a smaller relative gain, not the same one. Turn on the measured baseline switch in the first figure, leave ρ above zero, and watch the reduction shrink as the baseline climbs."
         ]
       )
     , ( "False positives move labor, not quality"
-      , [ P "This is the objection an ops lead raises the second you show them 99.2%. What does it cost my people to clear the flags?"
+      , [ P "This is the objection an ops lead raises the second you show them 99.5%. What does it cost my people to clear the flags?"
         , P "False positives don't change what ships. They change how many minutes somebody spends looking at a clean pallet. So I track them on their own line."
 
         -- MATHML (Jorn v0.3): three rows, best as one <math display="block">
         -- holding an <mtable> so the equals signs line up:
         --   FP = (1 - d0) N c FPR
-        --   TP = e0 N c R (1 - rho)
+        --   TP = e0 N c (1 - mu)
         --   precision = TP / (TP + FP), with <mfrac>
-        , Eq "FP = (1 − d₀) · N · c · FPR        TP = e₀ · N · c·R·(1 − ρ)        precision = TP / (TP + FP)"
+        , Eq "FP = (1 − d₀) · N · c · FPR        TP = e₀ · N · c·(1 − μ)        precision = TP / (TP + FP)"
         , Figure Burden
+        , P "That assumes the model's flags only get reviewed on shipments your people passed. If every model flag goes to review, including defects people already caught, the queue is bigger. Price the workflow you'll actually run."
         , P "At the defaults, about half the flags are real. That sounds bad until you price it. Clearing every flag costs a small fraction of what the prevented escapes are worth. Having that number ready is stronger than having the story ready."
         , Note "People raise false alarms too: about 2% in classic visual inspection studies, and 15 to 25% in some manufacturing settings. The fair comparison is against that, not against zero."
         ]
       )
     , ( "Putting a dollar on an escape"
       , [ P "An escaped defect costs labor, return freight and goodwill. Published estimates put one shipping error somewhere between $50 and $250. The default here is $150. Use the site's own number when they have one. They usually do."
-        , P "The audit loop is the last layer, and it's easy to oversell. It resolves things that were flagged. It doesn't go back and find escapes nobody saw. What it does is turn an escape into a claim you can defend with timestamped footage, and that matters, because concealed damage claims get denied far more often and the burden of proof shifts to the receiver. So I count the audit loop as financial exposure, not dock accuracy, and I report the two separately."
+        , P "Catching a defect isn't free either. Somebody re-picks or repacks it, so the saving per catch is the escape cost minus the cost to fix it in house. The $20 default is a placeholder."
+        , P "Footage is the last layer, and it's easy to oversell. It doesn't stop an escape or find one nobody flagged. What it does is help you get money back on the escapes you do ship, because concealed damage claims get denied far more often and the burden of proof shifts to the receiver. So I count claim recovery as money, not accuracy, and only on shipments the cameras covered."
+        , P "One more thing to keep in front of you: the dollars scale with d₀. At 20% upstream defects the base case stops about 287 escapes per 10,000 shipments. At 2% it stops about 76. Same relative gain, a quarter of the money. Use the site's real defect rate before you quote a number."
         , Figure Dollars
         ]
       )
@@ -427,16 +477,18 @@ sections =
       , [ Steps
             [ ( "Pick one denominator.", "Pick-line, order and retail-compliance accuracy are three different numbers. Agree on one before you measure anything." )
             , ( "Measure the baseline at two prevalences.", "The human curve comes from lab studies. Check it against one site at two different defect rates before it goes in a deck." )
-            , ( "Measure ρ.", "One query over shipments flagged by one layer and not the other." )
+            , ( "Measure ρ.", "Ground truth on a random sample of shipments both layers passed. Flags alone can't show it." )
             , ( "Count coverage honestly.", "The shipments the cameras actually see, not the doors that have cameras." )
             , ( "Count false positives and the minutes to clear one.", "That's the labor line, and it's the first thing an ops lead will ask about." )
-            , ( "Price an escape with the site's numbers.", "Then report quality and financial exposure as two lines, not one." )
+            , ( "Price an escape with the site's numbers.", "Net of the cost to fix a catch. Then report quality and claim recovery as two lines, not one." )
             ]
         ]
       )
     , ( "What this doesn't claim"
       , [ P "It doesn't say any particular model hits 91%. That's a conservative starting figure for the math, not a measured result. Published vision benchmarks run from 97 to 99.5%, and I'd still assume less until a site proves otherwise."
         , P "It doesn't say the human curve is a measurement of your floor. It's lab data, extrapolated to dock work. Directionally sound, worth validating."
+        , P "It treats every defect as one kind. On a real dock people and models look for several kinds at once, each rarer than the total, so the prevalence each search runs at is lower than d₀. Run it per defect class when you have the data."
+        , P "It gives point estimates. Every input here has a range, and the overlap table is the quickest way to see how much the answer moves."
         , P "And it doesn't say AI replaces inspectors. The whole point of the math is that two different kinds of failure, stacked, beat either one alone. The best number on this page needs both."
         ]
       )
@@ -455,7 +507,7 @@ sources =
     , ( "Cost of one shipping mistake, $50 to $250", "https://wisys.com/blog/warehouse-scanner-roi-what-the-data-actually-shows" )
     , ( "Human false positive rates in visual inspection", "https://en.wikipedia.org/wiki/Visual_inspection" )
     , ( "Computer vision detection accuracy and false positive rates", "https://oxmaint.com/industries/steel-plant/computer-vision-vs-manual-inspection-in-manufacturing" )
-    , ( "US warehouse wages, 2023", "https://gitnux.org/warehouse-statistics/" )
+    , ( "US wages for hand laborers and material movers, BLS occupational data", "https://www.bls.gov/oes/current/oes537062.htm" )
     , ( "Concealed damage claims and burden of proof", "https://armstrongtransport.com/blog/what-is-a-concealed-damage-claim-and-how-can-it-be-resolved" )
     ]
 
@@ -553,7 +605,7 @@ viewFigure model fig =
     case fig of
         Funnel ->
             figure "fig 01 / where the defects go, per 10,000 shipments"
-                [ controls model [ D0, Coverage, Recall, Rho, Audit ]
+                [ controls model [ D0, Coverage, Recall, Rho ]
                 , measuredSwitch model
                 , funnel model r
                 , tiles
@@ -591,15 +643,15 @@ viewFigure model fig =
 
         Dollars ->
             figure "fig 05 / what it's worth per year"
-                [ controls model [ Cost, Volume ]
+                [ controls model [ Cost, Fix, Volume, Claims ]
                 , tiles
-                    [ ( money r.avoided, "escapes avoided, dock only" )
-                    , ( money r.avoidedWithAudit, "including the audit loop" )
+                    [ ( money r.avoided, "escapes avoided, net of fixing them" )
+                    , ( money r.recovered, "recovered on claims with footage" )
                     , ( money r.net, "net of review labor" )
                     , ( fixed 0 r.ratio ++ "x", "benefit to review cost" )
                     ]
                 , Html.p [ Attr.class "study-caption" ]
-                    [ Element.text "The first and third figures leave the audit loop out on purpose. Read the middle one as financial exposure, not dock accuracy." ]
+                    [ Element.text "Net and ratio leave claim recovery out on purpose. It's money back on escapes that still happened, not fewer escapes." ]
                 ]
 
 
@@ -648,10 +700,13 @@ spec field =
             Spec "model recall" "R" 0.5 0.99 0.01 (pct 0)
 
         Rho ->
-            Spec "miss overlap" "ρ" 0 0.9 0.01 (fixed 2)
+            Spec "miss overlap" "ρ" 0 1 0.01 (fixed 2)
 
-        Audit ->
-            Spec "audit recovery" "a" 0 0.95 0.05 (pct 0)
+        Claims ->
+            Spec "escape cost recovered on claims" "a" 0 0.95 0.05 (pct 0)
+
+        Fix ->
+            Spec "cost to fix a caught defect" "$" 0 100 5 money
 
         Measured ->
             Spec "measured baseline accuracy" "Q₀" 0.85 0.995 0.005 (pct 1)
@@ -738,7 +793,6 @@ funnel model r =
             )
                 ++ [ ( "missed by people", r.e0 )
                    , ( "also missed by the vision layer", r.e1 )
-                   , ( "left after review", r.e2 )
                    ]
 
         top =
@@ -830,14 +884,11 @@ yOf q =
 ceiling : Model -> Element Msg
 ceiling model =
     let
-        k =
-            catch model
-
         human d =
             1 - humanEscape d
 
         combined d =
-            1 - humanEscape d * (1 - k)
+            1 - humanEscape d * (1 - catch model (1 - humanRecall d))
 
         line cls f =
             svg "path"
@@ -1010,7 +1061,10 @@ overlapTable model r =
             [ 0.8, 0.85, 0.88, 0.91, 0.94, 0.97, 0.99 ]
 
         rhos =
-            [ 0, 0.1, 0.15, 0.2, 0.3, 0.4, 0.5 ]
+            [ 0, 0.1, 0.15, 0.2, 0.3, 0.5, 0.8 ]
+
+        miss =
+            clamp 0 1 (safeDiv r.e0 model.d0)
 
         -- The grid is coarse, so mark the row and column closest to the
         -- current inputs, not only an exact match.
@@ -1034,7 +1088,7 @@ overlapTable model r =
                     , ( "in-col", rec == colAt )
                     ]
                 ]
-                [ Element.text (pct 2 (1 - r.e0 * (1 - model.coverage * rec * (1 - rho)))) ]
+                [ Element.text (pct 2 (1 - r.e0 * (1 - catchWith model.coverage rec rho miss))) ]
     in
     Html.div [ Attr.class "study-table" ]
         [ Html.table []
