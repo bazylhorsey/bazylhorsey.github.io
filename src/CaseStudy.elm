@@ -64,14 +64,14 @@ type alias Model =
 {-| Round, illustrative defaults. -}
 init : Model
 init =
-    { d0 = 0.2
+    { d0 = 0.02
     , coverage = 1
     , recall = 0.9
     , rho = 0.2
     , claims = 0.5
     , fix = 20
     , useMeasured = False
-    , measured = 0.95
+    , measured = 0.994
     , cost = 150
     , volume = 250000
     , fpr = 0.03
@@ -214,12 +214,15 @@ put field v m =
 -- footage recovers money, not defects.
 
 
-{-| Human recall at prevalence d, fitted to the Wolfe anchor points:
-7% missed at 50%, 25% at 10%, 52% at 1%. Valid roughly 0.5% to 50%.
+{-| Human recall at prevalence d, fitted to Wolfe's 2005 single-target
+experiment: 7% missed at 50%, 16% at 10%, 30% at 1%. The mixed experiment's
+25% and 52% are per-type rates inside a design where some target showed on
+half the trials, so they don't map onto one defect rate. Below 1% it's an
+extrapolation.
 -}
 humanRecall : Float -> Float
 humanRecall d =
-    clamp 0 1 (1.01 + 0.112 * logBase e d)
+    clamp 0 1 (0.973 + 0.0589 * logBase e d)
 
 
 {-| Escape rate with people only, at prevalence d. -}
@@ -361,8 +364,9 @@ type Fig
 sections : List ( String, List Block )
 sections =
     [ ( "The question every ops lead asks"
-      , [ P "Every operations lead I've sat across from asks some version of the same thing. My people already check every shipment. What does a camera add?"
-        , P "The honest answer isn't a percentage. It's a model. This page is that model. It's an open assessment built only on published research and public benchmarks, each with its source at the bottom. Every other number is a round, illustrative assumption, and you can drag it."
+      , [ Note "An independent case study, built only from peer-reviewed research and public industry sources, to show how you might estimate the ROI of pairing people with computer vision. It contains no proprietary data and doesn't describe any company's product, customers or results."
+        , P "Every operations lead I've sat across from asks some version of the same thing. My people already check every shipment. What does a camera add?"
+        , P "The honest answer isn't a percentage. It's a model. This page is that model. Every outside number has its source at the bottom. Every other number is a round, illustrative assumption, and you can drag it."
         , P "The short version: people and machines fail in different ways, and on a dock that difference is where the money is."
         ]
       )
@@ -383,21 +387,23 @@ sections =
             , ( "μ", "how often the model misses a defect people already missed. It depends on R and on ρ, below." )
             , ( "Q", "outbound accuracy, the number that ends up on a slide." )
             ]
-        , P "If you averaged, a 90% model and a team that catches 83% would land somewhere in the high eighties. Multiply instead and the picture changes. People let some defects through, the model catches most of those, and what's left is small. Push the inputs around and watch where the defects go."
+        , P "If you averaged, a 90% model and a team that catches about three quarters of defects would land around 82%. Multiply instead and the picture changes. People let about a quarter of defects through, the model catches most of those, and what's left is small. Push the inputs around and watch where the defects go."
         , Figure Funnel
         ]
       )
     , ( "People get worse as the floor gets cleaner"
       , [ P "The big assumption in the model is that human recall isn't a constant. It falls as defects get rarer. Researchers call it the low prevalence effect, and it's one of the most replicated results in visual search."
-        , P "In Jeremy Wolfe's lab, observers missed about 7% of targets when half the displays had one. In a mixed-prevalence study the miss rate climbed to 25% for targets that showed up 10% of the time, and 52% for targets that showed up 1% of the time. It isn't laziness. The cause is a shift in criterion, not a loss of sensitivity: when something is rare, people want more evidence before they call it. Trained airport screeners show it too."
+        , P "In Jeremy Wolfe's lab, observers searching for one kind of target missed about 7% of them when half the displays had one, 16% when one in ten did, and 30% when one in a hundred did. It isn't laziness. The cause is a shift in criterion, not a loss of sensitivity: when something is rare, people want more evidence before they call it. Trained airport screeners show it too, and procedural fixes only partly help. Even letting people take back their last answer leaves some kinds of rare targets missed often."
         , Eq
-            [ eq [ eh, paren [ mi "d" ], mo "=", mn "1.01", mo "+", mn "0.112", fn "ln", mi "d" ] ]
-            "fitted for 0.5% ≤ d ≤ 50%"
+            [ eq [ eh, paren [ mi "d" ], mo "=", mn "0.973", mo "+", mn "0.0589", fn "ln", mi "d" ] ]
+            "fitted to 1%, 10% and 50% prevalence"
+        , P "Lab numbers vary a lot by task. At 1 to 2% prevalence, other experiments put misses anywhere from about a quarter to a half. I fit the curve to the single-target experiment because it matches this model's one-kind-of-defect setup, and because it sits closest to factory inspection studies, where people catch around 80% of defects. If your people miss more than that, the vision layer is worth more than this page says."
         , P "Machine recall has no prevalence term. A model looks at the ten thousandth clean pallet with the same attention it gave the first one. That asymmetry is the whole argument for putting the two together."
         , Figure Ceiling
-        , P "Here's the result that surprised me. Across a 5x swing in upstream defect rate, from 10% to 50%, human-only outbound accuracy barely moves. It stays between about 96.2% and 97.5%. As an operation gets cleaner, people get proportionally worse at catching what's left. The layer limits itself."
-        , P "It's tempting to read that band as the reason perfect order rate medians sit around 93 to 96%. The model doesn't support it. Its floor is about 96.2%, above most of that range, and perfect order also counts late shipments, paperwork and other failures a dock inspection never sees. The band is a claim about the inspection layer, not about the whole order."
-        , Note "Below 10% the curve looks better for a boring reason: there are almost no defects to escape in the first place. The ceiling claim is about the realistic operating range. One more caveat: Wolfe's 2005 single-prevalence study put misses near 30% at 1% prevalence. The fit uses the mixed-prevalence numbers, which is the harsher read on people."
+        , P "Here's the check I'd want before trusting the curve on a dock. WERC's DC Measures benchmark puts order picking accuracy at about 99.4% on average, between 99.0% and 99.6% for most companies, and 99.89% or better for the best. Give the curve an upstream defect rate between about 1.5% and 4.5%, and people-only accuracy lands in that same band. That's a consistency check, not proof. Nobody publishes upstream defect rates, so I can't confirm the 2% default, and a different curve with a different defect rate could land in the same place. What it does show is that the curve and a plausible defect rate end up where real warehouses report."
+        , P "It also shows why the last half a percent is so hard. As an operation gets cleaner, people catch a smaller share of what's left: about 84% of defects at 10% upstream, 74% at 2%, and 66% at 0.5%. Getting from the median to best in class takes either a much cleaner process upstream or a second layer whose attention doesn't depend on how rare the defect is."
+        , P "Perfect order rate is a different number. Its medians sit lower, around 93 to 96%, because it also counts late shipments, paperwork and damage in transit, which a dock inspection never sees. Picking accuracy is a slightly different denominator too. This model is about the inspection layer only."
+        , Note "Above about 5% upstream defects, people-only accuracy drops below 99%: 98.4% at 10% and 97.6% at 20%. That's a site with a real upstream problem, and it's where a vision layer pays back fastest. One more caveat: in a mixed experiment from the same 2005 paper, where some target showed up on half the trials, a target type that showed up 1% of the time was missed 52% of the time. That design doesn't map onto a single defect rate, so the fit leaves it out."
         ]
       )
     , ( "The number nobody has measured"
@@ -422,7 +428,7 @@ sections =
       )
     , ( "Coverage or recall"
       , [ P "Coverage and recall multiply, so they trade almost one for one. When misses are independent, a model that sees every shipment at 88% recall catches more than one that sees 80% of shipments at 99%: 0.88 against 0.79."
-        , P "Overlap changes that, because it hits the weaker model harder. At this page's default ρ of 0.2 the order flips, 0.76 against 0.78. So the rule of thumb only holds when misses are close to independent, which is one more reason to measure ρ before you pick where to spend."
+        , P "Overlap changes that, because it hits the weaker model harder, and it hits harder the more defects people already catch. At this page's defaults the order holds, 0.81 against 0.79. Push upstream defects past about 5%, where people catch more of them, and the same ρ of 0.2 flips it: at 20% it's 0.71 against 0.78. So the rule of thumb only holds when misses are close to independent or people miss a lot, which is one more reason to measure ρ before you pick where to spend."
         , P "Coverage is still the first thing I'd check. It's the one you can count today, and an uncovered dock door catches nothing no matter how good the model is."
         ]
       )
@@ -435,7 +441,7 @@ sections =
         ]
       )
     , ( "False positives move labor, not quality"
-      , [ P "This is the objection an ops lead raises the second you show them 99.3%. What does it cost my people to clear the flags?"
+      , [ P "This is the objection an ops lead raises the second you show them 99.9%. What does it cost my people to clear the flags?"
         , P "False positives don't change what ships. They change how many minutes somebody spends looking at a clean pallet. So I track them on their own line."
         , Eq
             [ eq [ mi "FP", mo "=", paren [ mn "1", mo "−", d0 ], mi "N", mi "c", mi "FPR" ]
@@ -445,15 +451,15 @@ sections =
             ""
         , Figure Burden
         , P "That assumes the model's flags only get reviewed on shipments your people passed. If every model flag goes to review, including defects people already caught, the queue is bigger. Price the workflow you'll actually run."
-        , P "At the defaults, about half the flags are real. That sounds bad until you price it. Clearing every flag costs a small fraction of what the prevented escapes are worth. Having that number ready is stronger than having the story ready."
-        , Note "People raise false alarms too: about 2% in classic visual inspection studies, and 15 to 25% in some manufacturing settings. The fair comparison is against that, not against zero."
+        , P "At the defaults, only about one flag in eight is real, because clean shipments outnumber defective ones 49 to 1. That sounds bad until you price it. Clearing every flag still costs about a twelfth of what the prevented escapes are worth. Having that number ready is stronger than having the story ready. The $28 an hour default is the BLS median for hand laborers and material movers, $18.38 in May 2025, with benefits and overhead on top."
+        , Note "People raise false alarms too: 2% in a classic study of circuit inspection, and 35% of good parts in a recent study of precision manufactured parts, where the same inspectors caught 85% of defects. The fair comparison is against that, not against zero."
         ]
       )
     , ( "Putting a dollar on an escape"
-      , [ P "An escaped defect costs labor, return freight and goodwill. Published estimates put one shipping error somewhere between $50 and $250. The default here is $150. Use the site's own number when they have one. They usually do."
+      , [ P "An escaped defect costs labor, return freight and goodwill. Vendor estimates put one shipping error somewhere between $50 and $250, without saying where the range comes from. The default here is $150. Use the site's own number when they have one. They usually do."
         , P "Catching a defect isn't free either. Somebody re-picks or repacks it, so the saving per catch is the escape cost minus the cost to fix it in house. The $20 default is a placeholder."
-        , P "Footage is the last layer, and it's easy to oversell. It doesn't stop an escape or find one nobody flagged. What it does is help you get money back on the escapes you do ship, because concealed damage claims get denied far more often and the burden of proof shifts to the receiver. So I count claim recovery as money, not accuracy, and only on shipments the cameras covered."
-        , P "One more thing to keep in front of you: the dollars scale with d₀. At 20% upstream defects the base case stops about 273 escapes per 10,000 shipments. At 2% it stops about 75. Roughly the same relative gain, about a quarter of the money. Use the site's real defect rate before you quote a number."
+        , P "Footage is the last layer, and it's easy to oversell. It doesn't stop an escape or find one nobody flagged. What it does is help you get money back on the escapes you do ship, because concealed damage claims are among the hardest freight claims to resolve, and the burden of proof shifts to the receiver. So I count claim recovery as money, not accuracy, and only on shipments the cameras covered."
+        , P "One more thing to keep in front of you: the dollars scale with d₀. At 2% upstream defects the base case stops about 43 escapes per 10,000 shipments. At 10% it stops about 130. A slightly smaller relative gain, three times the money. Use the site's real defect rate before you quote a number."
         , Figure Dollars
         ]
       )
@@ -469,8 +475,8 @@ sections =
         ]
       )
     , ( "What this doesn't claim"
-      , [ P "It doesn't say any particular model hits 90%. That's a round figure for the math, not a measured result. Published vision benchmarks run from 97 to 99.5%, and I'd still assume less until a site proves otherwise."
-        , P "It doesn't say the human curve is a measurement of your floor. It's lab data, extrapolated to dock work. Directionally sound, worth validating."
+      , [ P "It doesn't say any particular model hits 90%. That's a round figure for the math, not a measured result. Vendors claim 97 to 99.5% for vision inspection without publishing the data behind it, and I'd assume less until a site proves otherwise."
+        , P "It doesn't say the human curve is a measurement of your floor. It's lab data, checked against factory studies and warehouse benchmarks but never measured on a dock. Directionally sound, worth validating."
         , P "It treats every defect as one kind. On a real dock people and models look for several kinds at once, each rarer than the total, so the prevalence each search runs at is lower than d₀. Run it per defect class when you have the data."
         , P "It gives point estimates. Every input here has a range, and the overlap table is the quickest way to see how much the answer moves."
         , P "And it doesn't say AI replaces inspectors. The whole point of the math is that two different kinds of failure, stacked, beat either one alone. The best number on this page needs both."
@@ -482,16 +488,18 @@ sections =
 sources : List ( String, String )
 sources =
     [ ( "Wolfe, Horowitz and Kenner, \"Rare items often missed in visual searches,\" Nature 2005, supplement", "https://search.bwh.harvard.edu/new/pubs/Nature_suppl.pdf" )
-    , ( "Wolfe et al. 2005, low prevalence miss rates, Journal of Vision", "https://jov.arvojournals.org/article.aspx?articleid=2193138" )
-    , ( "Criterion shift as the cause of the prevalence effect", "https://pmc.ncbi.nlm.nih.gov/articles/PMC2662480/" )
-    , ( "Wolfe, Brunelli, Rubinstein and Horowitz, prevalence effects in airport screeners", "https://pubmed.ncbi.nlm.nih.gov/24297778/" )
-    , ( "Fleck and Mitroff 2007, correcting the last response", "https://link.springer.com/article/10.3758/APP.71.3.541" )
-    , ( "Perfect order rate medians and top quartile, Modern Materials Handling", "https://www.modernmaterialshandling.com/warehouse-mgmt/warehouse-kpis/" )
+    , ( "Rich, Kunar, Van Wert, Hidalgo-Sotelo, Horowitz and Wolfe, \"Why do we miss rare targets?\" Journal of Vision 2008", "https://jov.arvojournals.org/article.aspx?articleid=2193138" )
+    , ( "Wolfe, Horowitz, Van Wert, Kenner, Place and Kibbi, \"Low target prevalence is a stubborn source of errors in visual search tasks,\" Journal of Experimental Psychology: General 2007", "https://pmc.ncbi.nlm.nih.gov/articles/PMC2662480/" )
+    , ( "Wolfe, Brunelli, Rubinstein and Horowitz, \"Prevalence effects in newly trained airport checkpoint screeners,\" Journal of Vision 2013", "https://pubmed.ncbi.nlm.nih.gov/24297778/" )
+    , ( "Van Wert, Horowitz and Wolfe, \"Even in correctable search, some types of rare targets are frequently missed,\" Attention, Perception & Psychophysics 2009", "https://link.springer.com/article/10.3758/APP.71.3.541" )
+    , ( "See, \"Visual inspection reliability for precision manufactured parts,\" Human Factors 2015", "https://www.sandia.gov/research/publications/details/visual-inspection-reliability-for-precision-manufactured-parts-2015-12-01/" )
+    , ( "Schoonard, Gould and Miller, \"Studies of visual inspection,\" Ergonomics 1973, as summarized on Wikipedia", "https://en.wikipedia.org/wiki/Visual_inspection" )
+    , ( "Perfect order rate median and top quartile, Warehouse Revolution, citing CSCMP", "https://warehouserevolution.net/warehouse-kpis/" )
+    , ( "WERC DC Measures order picking accuracy, as summarized by RF-SMART", "https://www.rfsmart.com/blog/warehouse-metrics-that-matter-for-netsuite-customers" )
     , ( "Pick-line, order and compliance accuracy as different denominators", "https://openskygroup.com/warehouse-kpis/" )
-    , ( "Cost of one shipping mistake, $50 to $250", "https://wisys.com/blog/warehouse-scanner-roi-what-the-data-actually-shows" )
-    , ( "Human false positive rates in visual inspection", "https://en.wikipedia.org/wiki/Visual_inspection" )
-    , ( "Computer vision detection accuracy and false positive rates", "https://oxmaint.com/industries/steel-plant/computer-vision-vs-manual-inspection-in-manufacturing" )
-    , ( "US wages for hand laborers and material movers, BLS occupational data", "https://www.bls.gov/oes/current/oes537062.htm" )
+    , ( "Cost of one shipping mistake, $50 to $250, a vendor estimate from Wisys", "https://wisys.com/blog/warehouse-scanner-roi-what-the-data-actually-shows" )
+    , ( "Vision inspection accuracy and false positive claims, a vendor page from OXmaint", "https://oxmaint.com/industries/steel-plant/computer-vision-vs-manual-inspection-in-manufacturing" )
+    , ( "Median pay for hand laborers and material movers, BLS Occupational Outlook Handbook", "https://www.bls.gov/ooh/transportation-and-material-moving/hand-laborers-and-material-movers.htm" )
     , ( "Concealed damage claims and burden of proof", "https://armstrongtransport.com/blog/what-is-a-concealed-damage-claim-and-how-can-it-be-resolved" )
     ]
 
@@ -738,7 +746,7 @@ spec : Field -> Spec
 spec field =
     case field of
         D0 ->
-            Spec "upstream defect rate" "d₀" 0.005 0.5 0.005 (pct 1)
+            Spec "upstream defect rate" "d₀" 0.005 0.5 0.001 (pct 1)
 
         Coverage ->
             Spec "coverage" "c" 0.3 1 0.01 (pct 0)
@@ -756,7 +764,7 @@ spec field =
             Spec "cost to fix a caught defect" "$" 0 100 5 money
 
         Measured ->
-            Spec "measured baseline accuracy" "Q₀" 0.85 0.995 0.005 (pct 1)
+            Spec "measured baseline accuracy" "Q₀" 0.85 0.999 0.001 (pct 1)
 
         Cost ->
             Spec "cost per escape" "$" 25 400 5 money
@@ -979,10 +987,10 @@ ceiling model =
         band =
             svg "rect"
                 [ Attr.class "ch-band"
-                , Attr.attribute "x" (n (xOf 0.1))
-                , Attr.attribute "y" (n top_)
-                , Attr.attribute "width" (n (xOf 0.5 - xOf 0.1))
-                , Attr.attribute "height" (n (chartH - top_ - bottom))
+                , Attr.attribute "x" (n left)
+                , Attr.attribute "y" (n (yOf 0.996))
+                , Attr.attribute "width" (n (chartW - left - right))
+                , Attr.attribute "height" (n (yOf 0.99 - yOf 0.996))
                 ]
                 []
 
@@ -1030,7 +1038,7 @@ ceiling model =
         [ Html.ul [ Attr.class "study-legend" ]
             [ Html.li [] [ Html.span [ Attr.class "sw sw-human" ] [], Element.text "people only" ]
             , Html.li [] [ Html.span [ Attr.class "sw sw-both" ] [], Element.text "people plus the vision layer" ]
-            , Html.li [] [ Html.span [ Attr.class "sw sw-band" ] [], Element.text "the 10 to 50% ceiling band" ]
+            , Html.li [] [ Html.span [ Attr.class "sw sw-band" ] [], Element.text "WERC typical picking accuracy, 99.0 to 99.6%" ]
             ]
         , svg "svg"
             [ Attr.attribute "viewBox" ("0 0 " ++ n chartW ++ " " ++ n chartH)
