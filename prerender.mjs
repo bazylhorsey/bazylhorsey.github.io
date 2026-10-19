@@ -73,7 +73,7 @@ const STUDY = {
   title: "Escapes Multiply",
   description:
     "How to analyze the ROI of computer vision working next to the people who already inspect a warehouse dock. With a model you can push on.",
-  date: "2026-10-19",
+  date: "2026-08-01",
 };
 
 // An article page is the same shell as the home page (same stylesheet, same

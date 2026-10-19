@@ -31,12 +31,12 @@ slug =
 
 date : String
 date =
-    "2026-10-19"
+    "2026-08-01"
 
 
 dateLabel : String
 dateLabel =
-    "2026.10"
+    "2026.08"
 
 
 
