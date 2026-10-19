@@ -365,21 +365,6 @@ roles =
     ]
 
 
-paper : Piece
-paper =
-    { kind = "peer reviewed / 2024 / second author"
-    , heading = "Implementing concepts from green logistics in the turkey production supply chain"
-    , body =
-        "Frontiers in Sustainability 5:1416964. Modeled roughly 50% lower "
-            ++ "emissions by rerouting livestock between brooders and "
-            ++ "finishers with a Gurobi optimization over distance, "
-            ++ "exclusivity, and capacity. The notebook is public, which is "
-            ++ "the point of publishing."
-    , href = "https://doi.org/10.3389/frsus.2024.1416964"
-    , label = "doi:10.3389/frsus.2024.1416964"
-    }
-
-
 podcasts : List Piece
 podcasts =
     [ { kind = "software leaders uncensored / with steve taplin"
@@ -406,7 +391,7 @@ podcasts =
     ]
 
 
-{-| Blog posts under my own byline, newest first. -}
+{-| Posts and papers, newest first. -}
 posts : List Post
 posts =
     [ { date = Essay.dateLabel
@@ -441,6 +426,12 @@ posts =
             "Quotes price the connection. The time and money go into mapping data "
                 ++ "that doesn't line up and the scope nobody wrote down."
       , href = "https://arvist.ai/why-your-integration-quote-is-wrong/"
+      }
+    , { date = "2024.07"
+      , outlet = "frontiers in sustainability"
+      , title = "Implementing concepts from green logistics in the turkey production supply chain"
+      , gist = "Peer reviewed, with Griffin Wilson and Richard Stone."
+      , href = "https://doi.org/10.3389/frsus.2024.1416964"
       }
     , { date = "2021.01"
       , outlet = "medium"
@@ -1114,9 +1105,7 @@ writing =
     section "writing"
         "04 / writing & talking"
         "Said out loud, on the record."
-        [ groupLabel "Research"
-        , paperCard
-        , groupLabel "Podcasts"
+        [ groupLabel "Podcasts"
         , Html.div [ Attr.class "writes" ] (List.map piece podcasts)
         , groupLabel "Posts"
         , Html.ul [ Attr.class "posts" ] (List.map postRow posts)
@@ -1126,26 +1115,6 @@ writing =
 groupLabel : String -> Element msg
 groupLabel label =
     Html.p [ Attr.class "group-label" ] [ Element.text label ]
-
-
-{-| The paper gets the full width and two links: the article, and the notebook
-that produced it, because the notebook being public is the point.
--}
-paperCard : Element msg
-paperCard =
-    Html.article [ Attr.class "write write--paper" ]
-        [ Html.p [ Attr.class "write-meta" ] [ Element.text paper.kind ]
-        , Html.h3 [] [ Element.text paper.heading ]
-        , Html.p [] [ Element.text paper.body ]
-        , Html.div [ Attr.class "write-links" ]
-            [ Html.a [ Attr.class "link", Attr.href paper.href ] [ Element.text paper.label ]
-            , Html.a
-                [ Attr.class "link"
-                , Attr.href "https://github.com/bazylhorsey/livestock-logistic-optimizer"
-                ]
-                [ Element.text "the notebook, gurobi MIP" ]
-            ]
-        ]
 
 
 postRow : Post -> Element msg
