@@ -59,6 +59,7 @@ type alias Model =
     , minutes : Float
     , wage : Float
     , hover : Maybe Int
+    , answer : Answer
     }
 
 
@@ -80,6 +81,7 @@ init =
     , minutes = 3
     , wage = 28
     , hover = Nothing
+    , answer = ShareRemoved
     }
 
 
@@ -99,11 +101,18 @@ type Field
     | Wage
 
 
+{-| Which answer the sensitivity figure shows. -}
+type Answer
+    = ShareRemoved
+    | NetPerYear
+
+
 type Msg
     = Set Field String
     | UseMeasured Bool
     | Hover Int
     | Unhover
+    | ShowAnswer Answer
     | Reset
 
 
@@ -127,8 +136,11 @@ update msg model =
         Unhover ->
             { model | hover = Nothing }
 
+        ShowAnswer answer ->
+            { model | answer = answer }
+
         Reset ->
-            init
+            { init | answer = model.answer }
 
 
 get : Field -> Model -> Float
@@ -409,6 +421,7 @@ type Fig
     | Overlap
     | Burden
     | Dollars
+    | Sensitivity
 
 
 sections : List ( String, List Block )
@@ -418,7 +431,7 @@ sections =
         , P "It's the obvious question about computer vision on a warehouse dock. If people already check every shipment, what does a camera add?"
         , P "The honest answer isn't a percentage. It's a model. This page is that model. Every outside number has its source at the bottom. Every other number is a round, illustrative assumption, and you can drag it."
         , P "The short version: people and machines fail in different ways, and on a dock that difference is where the money is."
-        , P "At the defaults, that's about 39 escapes stopped per 10,000 shipments and about $115,000 a year net of review labor on 250,000 shipments, roughly 11 times what the review costs. Two inputs behind those numbers, how much the two layers' misses overlap and how many real flags review confirms, haven't been measured on a dock. Treat them as the place to start."
+        , P "At the defaults, that's about 39 escapes stopped per 10,000 shipments and about $115,000 a year net of review labor on 250,000 shipments, roughly 11 times what the review costs. With every input drawn at random across its range, the vision layer still covers its review labor in 95% of 200,000 draws. Two inputs, how much the two layers' misses overlap and how many real flags review confirms, haven't been measured on a dock. They move the share of escapes removed more than the money, which turns mostly on what an escape costs and how much your people miss. Both of those can be measured before anything is bought."
         ]
       )
     , ( "Escapes multiply"
@@ -459,7 +472,7 @@ sections =
         ]
       )
     , ( "The number nobody has measured"
-      , [ P "ρ is the most important input in the model and the one with the least evidence behind it. It asks a simple question. When the model misses something, is it the same thing a person would have missed?"
+      , [ P "At the defaults, ρ swings the share of escapes removed further than any other input, and it has the least evidence behind it. It asks a simple question. When the model misses something, is it the same thing a person would have missed?"
         , P "If the model and your people fail on different things, the model's recall counts in full. If every miss the model makes is one your people made too, the pair is no better than the model alone. ρ slides between those two ends."
         , P "Full overlap doesn't take you back to people alone. At the defaults the model catches 90 of every 100 defects and people catch 74, so at least 16 of the model's catches are ones people missed. At ρ = 1 and perfect review, the pair equals whichever layer is better on its own."
         , Eq
@@ -523,6 +536,15 @@ sections =
         , Figure Dollars
         ]
       )
+    , ( "What moves the answer"
+      , [ P "Every input on this page is a number somebody could argue with. So I gave each one a range and pushed on all of them. The figure below moves one input at a time to each end of its range, with everything else where you've set it."
+        , Figure Sensitivity
+        , P "The ranges come from the sources where there are any. People's miss rate runs from 15%, what inspectors missed in the precision parts study, to 50%, the high end of lab studies at 1 to 2% prevalence. Model recall runs from 80% up to 97%, where vendor claims start. ρ gets its whole range, because nobody has measured it. Upstream defects run from 1.5% to 4.5%, where people-only accuracy lands in WERC's typical band, and cost per escape covers the vendor range of $50 to $250. The rest are judgment calls pushed both ways."
+        , P "Then I drew every input at once, anywhere in its range, 200,000 times. The layer covers its review labor in 95% of those draws. At the defaults, it breaks even when an escape costs about $32: roughly $12 of review labor per escape stopped, plus the $20 to fix it. The inputs behind review labor barely move the money: the false positive rate, minutes per flag and wage together explain about 1% of its spread."
+        , P "The two answers hang on different inputs. The share of escapes removed depends mostly on model recall, how much people miss and ρ. The money depends mostly on what an escape costs and how much people miss, and ρ explains only about 3% of its spread. Both of the money's big inputs can be measured before anyone buys a camera: what an escape costs from the operation's own books, and how much people miss from seeded defects or a careful re-inspection. The human curve comes from labs, not docks, so that's the first measurement I'd make."
+        , P "The defaults also lean favorable. With everything moving at once, the median is 57% fewer escapes, not 76%. Most of that gap comes from two defaults: cameras that see every shipment, and people who don't lean on them. The worst case is a model that misses more than your people do, with every one of its misses overlapping theirs. It adds nothing. Put everything else at the bad end of its range too, including people missing 10 points more once the cameras are in, and escapes go up 45%. That's why the checklist below measures people again after the cameras go in."
+        ]
+      )
     , ( "Checking it against a real operation"
       , [ Steps
             [ ( "Pick one denominator.", "Pick-line, order and retail-compliance accuracy are three different numbers. Agree on one before you measure anything." )
@@ -541,7 +563,7 @@ sections =
         , P "It doesn't say the human curve is a measurement of your floor. It's lab data, checked against factory studies and warehouse benchmarks but never measured on a dock. Directionally sound, worth validating."
         , P "It holds your people's recall fixed once the cameras go in. People tend to check less carefully when automation is checking too, and if yours do, the vision layer's catch count goes up while escapes go up too. At the defaults, a 5-point drop in inspector recall takes the layer from 39 catches per 10,000 shipments to 47, while escapes rise from 12 to 14. Against the old baseline the real gain is 37, not 47. So judge the layer on escapes against a pre-deployment baseline, never on what it catches."
         , P "It treats every defect as one kind. On a real dock people and models look for several kinds at once, each rarer than the total, so the prevalence each search runs at is lower than d₀. Run it per defect class when you have the data."
-        , P "It gives point estimates. Every input here has a range, and the overlap table is the quickest way to see how much the answer moves."
+        , P "The 95% isn't the odds that a real deployment covers its review labor. The ranges behind it are judgment calls, from the sources where there are any, and the draws treat every input as independent, with every value in its range equally likely. Inputs that move together on a real dock can make the spread wider."
         , P "And it doesn't say AI replaces inspectors. The whole point of the math is that two different kinds of failure, stacked, beat either one alone. The best number on this page needs both."
         ]
       )
@@ -774,6 +796,10 @@ viewFigure model fig =
                 , Html.p [ Attr.class "study-caption" ]
                     [ Element.text "Net and ratio count escapes avoided and review labor, nothing else." ]
                 ]
+
+        Sensitivity ->
+            figure "fig 06 / each input at the ends of its range"
+                [ swingChart model ]
 
 
 figure : String -> List (Element msg) -> Element msg
@@ -1254,6 +1280,205 @@ overlapTable model r =
                 )
             ]
         ]
+
+
+
+-- FIG 06: what moves the answer
+
+
+{-| One input pushed to each end of its range. The ranges match the
+sensitivity analysis the section quotes.
+-}
+type alias Swing =
+    { label : String
+    , symbol : String
+    , low : String
+    , high : String
+    , atLow : Model -> Model
+    , atHigh : Model -> Model
+    }
+
+
+swings : List Swing
+swings =
+    let
+        field f lo hi low high =
+            let
+                s =
+                    spec f
+            in
+            Swing s.label s.symbol low high (put f lo) (put f hi)
+    in
+    [ field Rho 0 1 "0" "1"
+    , Swing "share of defects people miss" "m" "15%" "50%" (missing 0.15) (missing 0.5)
+    , field Recall 0.8 0.97 "80%" "97%"
+    , field Review 0.8 1 "80%" "100%"
+    , field Coverage 0.8 1 "80%" "100%"
+    , field Drop 0 0.1 "0" "10 points"
+    , field D0 0.015 0.045 "1.5%" "4.5%"
+    , field Fpr 0.01 0.08 "1%" "8%"
+    , field Minutes 1 6 "1" "6"
+    , field Wage 24 35 "$24" "$35"
+    , field Cost 50 250 "$50" "$250"
+    , field Fix 10 40 "$10" "$40"
+    ]
+
+
+{-| People's miss rate set directly, through a measured baseline, so it
+holds whatever the curve says at d0.
+-}
+missing : Float -> Model -> Model
+missing share model =
+    { model | useMeasured = True, measured = 1 - model.d0 * share }
+
+
+swingChart : Model -> Element Msg
+swingChart model =
+    let
+        pick =
+            case model.answer of
+                ShareRemoved ->
+                    .reduction
+
+                NetPerYear ->
+                    .net
+
+        show =
+            case model.answer of
+                ShareRemoved ->
+                    pct 1
+
+                NetPerYear ->
+                    money
+
+        now =
+            pick (results model)
+
+        -- Biggest swing first. Inputs that can't move this answer drop out.
+        rows =
+            swings
+                |> List.map (\s -> ( s, pick (results (s.atLow model)), pick (results (s.atHigh model)) ))
+                |> List.filter (\( _, lo, hi ) -> abs (hi - lo) > 1.0e-9)
+                |> List.sortBy (\( _, lo, hi ) -> negate (abs (hi - lo)))
+
+        -- One scale for every row, centered on the current answer.
+        reach =
+            rows
+                |> List.map (\( _, lo, hi ) -> max (abs (lo - now)) (abs (hi - now)))
+                |> List.maximum
+                |> Maybe.withDefault 0
+
+        -- Percent of the track, rounded so a swing of nothing reads as 0.
+        bar cls x =
+            let
+                offset =
+                    toFloat (round (5000 * safeDiv (x - now) reach)) / 100
+            in
+            Html.span
+                [ Attr.classes [ ( "study-swing-bar", True ), ( cls, True ), ( "is-down", offset < 0 ) ]
+                , Attr.styles
+                    [ ( "left", String.fromFloat (50 + min 0 offset) ++ "%" )
+                    , ( "width", String.fromFloat (abs offset) ++ "%" )
+                    ]
+                ]
+                []
+
+        value x at =
+            Html.b []
+                [ Element.text (show x)
+                , Html.span [ Attr.class "study-sr" ] [ Element.text (" at " ++ at) ]
+                ]
+
+        row ( s, lo, hi ) =
+            Html.li []
+                [ Html.span [ Attr.class "study-swing-k" ]
+                    [ Element.text s.label
+                    , Html.i [] [ Element.text s.symbol ]
+                    , Html.small [] [ Element.text (s.low ++ " to " ++ s.high) ]
+                    ]
+                , Html.span [ Attr.class "study-swing-track", Attr.attribute "aria-hidden" "true" ]
+                    [ bar "is-low" lo, bar "is-high" hi ]
+                , Html.span [ Attr.class "study-swing-v" ] [ value lo s.low, value hi s.high ]
+                ]
+
+        axis =
+            Html.li [ Attr.class "study-swing-head", Attr.attribute "aria-hidden" "true" ]
+                [ Html.span [ Attr.class "study-swing-k" ] []
+                , Html.span [ Attr.class "study-swing-axis" ]
+                    [ Html.span [] [ Element.text "lower" ]
+                    , Html.b [] [ Element.text ("now " ++ show now) ]
+                    , Html.span [] [ Element.text "higher" ]
+                    ]
+                , Html.span [] []
+                ]
+
+        hot x =
+            Html.b [ Attr.class "hot" ] [ Element.text x ]
+
+        current =
+            case model.answer of
+                ShareRemoved ->
+                    if now < 0 then
+                        [ Element.text "At your settings escapes go up ", hot (pct 1 (negate now)), Element.text " with the vision layer." ]
+
+                    else
+                        [ Element.text "At your settings the vision layer removes ", hot (pct 1 now), Element.text " of escapes." ]
+
+                NetPerYear ->
+                    [ Element.text "At your settings it nets ", hot (money now), Element.text " a year after review labor." ]
+
+        biggest =
+            case rows of
+                ( s, lo, hi ) :: _ ->
+                    [ Element.text (" The biggest swing is " ++ s.label ++ ": ")
+                    , Html.b [] [ Element.text (show lo) ]
+                    , Element.text (" at " ++ s.low ++ " and ")
+                    , Html.b [] [ Element.text (show hi) ]
+                    , Element.text (" at " ++ s.high ++ ".")
+                    ]
+
+                [] ->
+                    []
+    in
+    Html.div [ Attr.class "study-swings" ]
+        [ Html.div [ Attr.class "filters study-filters" ]
+            (List.map (answerButton model.answer)
+                [ ( ShareRemoved, "fewer escapes" )
+                , ( NetPerYear, "net per year" )
+                ]
+            )
+        , Html.ul [ Attr.class "study-legend" ]
+            [ Html.li [] [ Html.span [ Attr.class "sw sw-low" ] [], Element.text "input at the low end of its range" ]
+            , Html.li [] [ Html.span [ Attr.class "sw sw-high" ] [], Element.text "at the high end" ]
+            ]
+        , Html.ol [ Attr.class "study-swing" ] (axis :: List.map row rows)
+        , Html.p [ Attr.class "study-readout" ] (current ++ biggest)
+        , Html.p [ Attr.class "study-caption" ]
+            [ Element.text "Each input moves to both ends of its range while everything else stays where you've set it, biggest swing at the top. The dashed line is your current answer. The share of defects people miss is set directly here, in place of the curve or a measured baseline. Labor and dollar inputs don't change the share of escapes removed, so that view leaves them out." ]
+        ]
+
+
+answerButton : Answer -> ( Answer, String ) -> Element Msg
+answerButton current ( answer, label ) =
+    Html.button
+        [ Attr.class
+            (if answer == current then
+                "filter is-on"
+
+             else
+                "filter"
+            )
+        , Attr.type_ "button"
+        , Attr.attribute "aria-pressed"
+            (if answer == current then
+                "true"
+
+             else
+                "false"
+            )
+        , Events.onClick (ShowAnswer answer)
+        ]
+        [ Element.text label ]
 
 
 
