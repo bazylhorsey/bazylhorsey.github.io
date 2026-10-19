@@ -408,7 +408,15 @@ podcasts =
 {-| Blog posts under my own byline, newest first. -}
 posts : List Post
 posts =
-    [ { date = CaseStudy.dateLabel
+    [ { date = Essay.dateLabel
+      , outlet = "essay"
+      , title = Essay.title
+      , gist =
+            "Distracted is what listening looks like when the person you're "
+                ++ "listening to isn't in the room."
+      , href = Essay.slug
+      }
+    , { date = CaseStudy.dateLabel
       , outlet = "case study"
       , title = CaseStudy.title
       , gist =
@@ -416,14 +424,6 @@ posts =
                 ++ "Escapes multiply, people get worse as defects get rarer, and the "
                 ++ "model is yours to push on."
       , href = CaseStudy.slug
-      }
-    , { date = Essay.dateLabel
-      , outlet = "essay"
-      , title = Essay.title
-      , gist =
-            "Distracted is what listening looks like when the person you're "
-                ++ "listening to isn't in the room."
-      , href = Essay.slug
       }
     , { date = "2026.08"
       , outlet = "arvist blog"

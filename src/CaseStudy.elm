@@ -31,12 +31,12 @@ slug =
 
 date : String
 date =
-    "2026-10-19"
+    "2026-08-01"
 
 
 dateLabel : String
 dateLabel =
-    "2026.10"
+    "2026.08"
 
 
 
@@ -575,7 +575,7 @@ viewFigure model fig =
                 [ controls model [ Recall, Rho ]
                 , overlapTable model r
                 , Html.p [ Attr.class "study-caption" ]
-                    [ Element.text "Columns are model recall R, rows are miss overlap ρ. Your current inputs are highlighted when they land on the grid. Coverage and baseline come from the first figure." ]
+                    [ Element.text "Columns are model recall R, rows are miss overlap ρ. The row and column closest to your current inputs are highlighted. Coverage and baseline come from the first figure." ]
                 ]
 
         Burden ->
@@ -1012,12 +1012,28 @@ overlapTable model r =
         rhos =
             [ 0, 0.1, 0.15, 0.2, 0.3, 0.4, 0.5 ]
 
-        near a b =
-            abs (a - b) < 0.0001
+        -- The grid is coarse, so mark the row and column closest to the
+        -- current inputs, not only an exact match.
+        nearest target values =
+            values
+                |> List.sortBy (\v -> abs (v - target))
+                |> List.head
+                |> Maybe.withDefault target
+
+        rowAt =
+            nearest model.rho rhos
+
+        colAt =
+            nearest model.recall recalls
 
         cell rho rec =
             Html.td
-                [ Attr.classes [ ( "is-here", near rho model.rho && near rec model.recall ) ] ]
+                [ Attr.classes
+                    [ ( "is-here", rho == rowAt && rec == colAt )
+                    , ( "in-row", rho == rowAt )
+                    , ( "in-col", rec == colAt )
+                    ]
+                ]
                 [ Element.text (pct 2 (1 - r.e0 * (1 - model.coverage * rec * (1 - rho)))) ]
     in
     Html.div [ Attr.class "study-table" ]
@@ -1029,7 +1045,7 @@ overlapTable model r =
                             (\rec ->
                                 Html.th
                                     [ Attr.attribute "scope" "col"
-                                    , Attr.classes [ ( "is-col", near rec model.recall ) ]
+                                    , Attr.classes [ ( "is-col", rec == colAt ) ]
                                     ]
                                     [ Element.text (pct 0 rec) ]
                             )
@@ -1039,7 +1055,7 @@ overlapTable model r =
             , Html.tbody []
                 (List.map
                     (\rho ->
-                        Html.tr [ Attr.classes [ ( "is-row", near rho model.rho ) ] ]
+                        Html.tr [ Attr.classes [ ( "is-row", rho == rowAt ) ] ]
                             (Html.th [ Attr.attribute "scope" "row" ] [ Element.text (fixed 2 rho) ]
                                 :: List.map (cell rho) recalls
                             )
