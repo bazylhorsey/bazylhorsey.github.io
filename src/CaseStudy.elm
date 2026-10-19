@@ -431,7 +431,7 @@ sections =
         , P "It's the obvious question about computer vision on a warehouse dock. If people already check every shipment, what does a camera add?"
         , P "The honest answer isn't a percentage. It's a model. This page is that model. Every outside number has its source at the bottom. Every other number is a round, illustrative assumption, and you can drag it."
         , P "The short version: people and machines fail in different ways, and on a dock that difference is where the money is."
-        , P "At the defaults, that's about 39 escapes stopped per 10,000 shipments and about $115,000 a year net of review labor on 250,000 shipments, roughly 11 times what the review costs. With every input drawn at random across its range, the vision layer still covers its review labor in 95% of 200,000 draws. Two inputs, how much the two layers' misses overlap and how many real flags review confirms, haven't been measured on a dock. They move the share of escapes removed more than the money, which turns mostly on what an escape costs and how much your people miss. Both of those can be measured before anything is bought."
+        , P "At the defaults, that's about 39 escapes stopped per 10,000 shipments and about $115,000 a year net of review labor on 250,000 shipments, roughly 11 times what the review costs. With every input drawn at random across its range, the vision layer still covers its review labor in 82% of 200,000 draws. Two inputs, how much the two layers' misses overlap and how many real flags review confirms, haven't been measured on a dock, and the second matters more. Several studies find people clearing alarms let a lot of real ones go, and review recall moves the money about as much as what an escape costs or how much your people miss. Measure those three first."
         ]
       )
     , ( "Escapes multiply"
@@ -472,7 +472,7 @@ sections =
         ]
       )
     , ( "The number nobody has measured"
-      , [ P "At the defaults, ρ swings the share of escapes removed further than any other input, and it has the least evidence behind it. It asks a simple question. When the model misses something, is it the same thing a person would have missed?"
+      , [ P "At the defaults, ρ swings the share of escapes removed further than any input but review recall, and it has the least evidence behind it. It asks a simple question. When the model misses something, is it the same thing a person would have missed?"
         , P "If the model and your people fail on different things, the model's recall counts in full. If every miss the model makes is one your people made too, the pair is no better than the model alone. ρ slides between those two ends."
         , P "Full overlap doesn't take you back to people alone. At the defaults the model catches 90 of every 100 defects and people catch 74, so at least 16 of the model's catches are ones people missed. At ρ = 1 and perfect review, the pair equals whichever layer is better on its own."
         , Eq
@@ -524,7 +524,7 @@ sections =
         , Figure Burden
         , P "That assumes the model's flags only get reviewed on shipments your people passed. If every model flag goes to review, including defects people already caught, the queue is bigger. Price the workflow you'll actually run."
         , P "Among the shipments people pass, clean ones outnumber defective ones about 190 to 1. That's what's left after people do their job, not the upstream mix of 49 to 1, and it's why a 3% false positive rate buries the real flags. If the model looked before people did, about 38% of its flags would be real. The model's recall doesn't care about prevalence, but its precision does: the better your people are, the cleaner the stream it sees. So at the defaults, only about 13% of flags are real. That sounds bad until you price it. Clearing every flag still costs a little under a tenth of what the prevented escapes are worth. The $28 an hour default is the BLS median for hand laborers and material movers, $18.38 in May 2025, with benefits and overhead on top."
-        , P "Somebody has to clear those flags, and their queue is the setup this page started with, pointed at a new person. Seven of every eight flags are false, so the bar for calling one real drifts up. Read the curve at the queue's 13% and a reviewer confirms about 85% of real flags. Checking a flag is easier than searching a pallet cold, so I use 90% as a placeholder and carry it through every figure as v. At the defaults, about 108 real defects a year get flagged and cleared anyway. They ship, and they count as escapes."
+        , P "Somebody has to clear those flags, and their queue is the setup this page started with, pointed at a new person. Seven of every eight flags are false, so the bar for calling one real drifts up. Read the curve at the queue's 13% and a reviewer confirms about 85% of real flags. Checking a flag is easier than searching a pallet cold, so I use 90% as a placeholder and carry it through every figure as v. Studies of people clearing real alarm queues often find worse, so the sensitivity figure further down runs it as low as 30%. At the defaults, about 108 real defects a year get flagged and cleared anyway. They ship, and they count as escapes."
         , Note "People raise false alarms too: 2% in a classic study of circuit inspection, and 35% of good parts in a recent study of precision manufactured parts, where the same inspectors caught 85% of defects. The fair comparison is against that, not against zero."
         ]
       )
@@ -539,10 +539,10 @@ sections =
     , ( "What moves the answer"
       , [ P "Every input on this page is a number somebody could argue with. So I gave each one a range and pushed on all of them. The figure below moves one input at a time to each end of its range, with everything else where you've set it."
         , Figure Sensitivity
-        , P "The ranges come from the sources where there are any. People's miss rate runs from 15%, what inspectors missed in the precision parts study, to 50%, the high end of lab studies at 1 to 2% prevalence. Model recall runs from 80% up to 97%, where vendor claims start. ρ gets its whole range, because nobody has measured it. Upstream defects run from 1.5% to 4.5%, where people-only accuracy lands in WERC's typical band, and cost per escape covers the vendor range of $50 to $250. The rest are judgment calls pushed both ways."
-        , P "Then I drew every input at once, anywhere in its range, 200,000 times. The layer covers its review labor in 95% of those draws. At the defaults, it breaks even when an escape costs about $32: roughly $12 of review labor per escape stopped, plus the $20 to fix it. The inputs behind review labor barely move the money: the false positive rate, minutes per flag and wage together explain about 1% of its spread."
-        , P "The two answers hang on different inputs. The share of escapes removed depends mostly on model recall, how much people miss and ρ. The money depends mostly on what an escape costs and how much people miss, and ρ explains only about 3% of its spread. Both of the money's big inputs can be measured before anyone buys a camera: what an escape costs from the operation's own books, and how much people miss from seeded defects or a careful re-inspection. The human curve comes from labs, not docks, so that's the first measurement I'd make."
-        , P "The defaults also lean favorable. With everything moving at once, the median is 57% fewer escapes, not 76%. Most of that gap comes from two defaults: cameras that see every shipment, and people who don't lean on them. The worst case is a model that misses more than your people do, with every one of its misses overlapping theirs. It adds nothing. Put everything else at the bad end of its range too, including people missing 10 points more once the cameras are in, and escapes go up 45%. That's why the checklist below measures people again after the cameras go in."
+        , P "The ranges come from the sources where there are any. People's miss rate runs from 15%, what inspectors missed in the precision parts study, to 50%, the high end of lab studies at 1 to 2% prevalence. Model recall runs from 80% up to 97%, where vendor claims start. Review recall runs from 30%, about how often radiologists acted on correct prompts for cancers they had missed, up to 100%. ρ gets its whole range, because nobody has measured it. Upstream defects run from 1.5% to 4.5%, where people-only accuracy lands in WERC's typical band, and cost per escape covers the vendor range of $50 to $250. The rest are judgment calls pushed both ways."
+        , P "Then I drew every input at once, anywhere in its range, 200,000 times. The layer covers its review labor in 82% of those draws. At the defaults, it breaks even when an escape costs about $32: roughly $12 of review labor per escape stopped, plus the $20 to fix it. With review recall at 30%, it takes about $56. The inputs behind review labor barely move the money: the false positive rate, minutes per flag and wage together explain about 2% of its spread."
+        , P "Review recall is the biggest unknown. It explains about 60% of the spread in the share of escapes removed, far more than model recall, how much people miss or ρ. It also explains about a third of the spread in the money, as much as what an escape costs or how much people miss, while ρ explains about 3%. Two of the money's big inputs can be measured before anyone buys a camera: what an escape costs from the operation's own books, and how much people miss from seeded defects or a careful re-inspection. Review recall can't be measured until there are flags to review, so it's the first thing I'd audit in a pilot."
+        , P "The defaults also lean favorable. With everything moving at once, the median is 34% fewer escapes, not 76%. About half of that gap is review recall, whose 90% default sits near the top of its range. Most of the rest comes from two more defaults: cameras that see every shipment, and people who don't lean on them. The worst case is a model that misses more than your people do, with every one of its misses overlapping theirs. It adds nothing. Put everything else at the bad end of its range too, including people missing 10 points more once the cameras are in, and escapes go up 59%. That's why the checklist below measures people again after the cameras go in."
         ]
       )
     , ( "Checking it against a real operation"
@@ -559,11 +559,11 @@ sections =
       )
     , ( "What this doesn't claim"
       , [ P "It doesn't say any particular model hits 90%. That's a round figure for the math, not a measured result. Vendors claim 97 to 99.5% for vision inspection without publishing the data behind it, and I'd assume less until field data shows otherwise."
-        , P "It doesn't say review confirms 90% of real flags either. That's a placeholder between what the curve predicts at the queue's prevalence, about 85%, and a perfect 100%. It's the one human step the vision layer adds, and it's much cheaper to measure than ρ, because a flag tells the auditor where to look."
+        , P "It doesn't say review confirms 90% of real flags either. That's a placeholder between what the curve predicts at the queue's prevalence, about 85%, and a perfect 100%, and studies of people clearing alarms say it could be much lower. Airport screeners ignored about half of true alarms on hard targets when 3 in 10 alarms were real, and radiologists ignored 71% of correct prompts on cancers they had missed. Air traffic controllers, with nearly half their alerts false, showed no such drop. It's the one human step the vision layer adds, and it's much cheaper to measure than ρ, because a flag tells the auditor where to look."
         , P "It doesn't say the human curve is a measurement of your floor. It's lab data, checked against factory studies and warehouse benchmarks but never measured on a dock. Directionally sound, worth validating."
         , P "It holds your people's recall fixed once the cameras go in. People tend to check less carefully when automation is checking too, and if yours do, the vision layer's catch count goes up while escapes go up too. At the defaults, a 5-point drop in inspector recall takes the layer from 39 catches per 10,000 shipments to 47, while escapes rise from 12 to 14. Against the old baseline the real gain is 37, not 47. So judge the layer on escapes against a pre-deployment baseline, never on what it catches."
         , P "It treats every defect as one kind. On a real dock people and models look for several kinds at once, each rarer than the total, so the prevalence each search runs at is lower than d₀. Run it per defect class when you have the data."
-        , P "The 95% isn't the odds that a real deployment covers its review labor. The ranges behind it are judgment calls, from the sources where there are any, and the draws treat every input as independent, with every value in its range equally likely. Inputs that move together on a real dock can make the spread wider."
+        , P "The 82% isn't the odds that a real deployment covers its review labor. The ranges behind it are judgment calls, from the sources where there are any, and the draws treat every input as independent, with every value in its range equally likely. Inputs that move together on a real dock can make the spread wider."
         , P "And it doesn't say AI replaces inspectors. The whole point of the math is that two different kinds of failure, stacked, beat either one alone. The best number on this page needs both."
         ]
       )
@@ -581,6 +581,9 @@ sources =
     , ( "See, \"Visual inspection reliability for precision manufactured parts,\" Human Factors 2015", "https://www.sandia.gov/research/publications/details/visual-inspection-reliability-for-precision-manufactured-parts-2015-12-01/" )
     , ( "Schoonard, Gould and Miller, \"Studies of visual inspection,\" Ergonomics 1973", "https://doi.org/10.1080/00140137308924528" )
     , ( "Parasuraman and Manzey, \"Complacency and bias in human use of automation: an attentional integration,\" Human Factors 2010", "https://doi.org/10.1177/0018720810376055" )
+    , ( "Hügli, Merks and Schwaninger, \"Automation reliability, human-machine system performance, and operator compliance: a study with airport security screeners supported by automated explosives detection systems for cabin baggage screening,\" Applied Ergonomics 2020", "https://doi.org/10.1016/j.apergo.2020.103094" )
+    , ( "Nishikawa, Schmidt, Linver, Edwards, Papaioannou and Stull, \"Clinically missed cancer: how effectively can radiologists use computer-aided detection?\" American Journal of Roentgenology 2012", "https://doi.org/10.2214/AJR.11.6423" )
+    , ( "Wickens, Rice, Keller, Hutchins, Hughes and Clayton, \"False alerts in air traffic control conflict alerting system: is there a 'cry wolf' effect?\" Human Factors 2009", "https://doi.org/10.1177/0018720809344720" )
     , ( "Perfect order rate median and top quartile, Warehouse Revolution, citing CSCMP", "https://warehouserevolution.net/warehouse-kpis/" )
     , ( "Tillman, Manrodt and Williams, \"DC Measures 2019,\" WERC, order picking accuracy by order, from the report's handout", "https://www.rfsmart.com/hubfs/Whitepapers/2019_WERC_DC_Measures%202019_Handout.pdf" )
     , ( "Pick-line, order and compliance accuracy as different denominators", "https://openskygroup.com/warehouse-kpis/" )
@@ -850,7 +853,7 @@ spec field =
             Spec "miss overlap" "ρ" 0 1 0.01 (fixed 2)
 
         Review ->
-            Spec "review recall" "v" 0.5 1 0.01 (pct 0)
+            Spec "review recall" "v" 0.3 1 0.01 (pct 0)
 
         Drop ->
             Spec "inspector recall drop after cameras" "s" 0 0.15 0.01 points
@@ -1312,7 +1315,7 @@ swings =
     [ field Rho 0 1 "0" "1"
     , Swing "share of defects people miss" "m" "15%" "50%" (missing 0.15) (missing 0.5)
     , field Recall 0.8 0.97 "80%" "97%"
-    , field Review 0.8 1 "80%" "100%"
+    , field Review 0.3 1 "30%" "100%"
     , field Coverage 0.8 1 "80%" "100%"
     , field Drop 0 0.1 "0" "10 points"
     , field D0 0.015 0.045 "1.5%" "4.5%"
