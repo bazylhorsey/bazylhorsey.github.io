@@ -15,7 +15,6 @@ and the filter on the work list. Both are plain Elm values.
 import Json.Decode as Decode
 import Json.Encode as Encode exposing (Value)
 
-import CaseStudy
 import Essay
 import Jorn
 import Jorn.Attribute as Attr
@@ -59,14 +58,12 @@ type Filter
 type Page
     = Home
     | EssayPage
-    | StudyPage
 
 
 type alias Model =
     { theme : Theme
     , filter : Filter
     , page : Page
-    , study : CaseStudy.Model
     }
 
 
@@ -74,7 +71,6 @@ type Msg
     = ToggleTheme
     | PickFilter Filter
     | NudgeSaid Int
-    | StudyMsg CaseStudy.Msg
 
 
 {-| The shell passes `{ "dark": true }` when the visitor picked night last
@@ -96,12 +92,8 @@ init flags =
             Ok "essay" ->
                 EssayPage
 
-            Ok "study" ->
-                StudyPage
-
             _ ->
                 Home
-    , study = CaseStudy.init
     }
 
 
@@ -131,9 +123,6 @@ update msg model =
 
         NudgeSaid direction ->
             ( model, Effect.client "nudgeSaid" (Encode.int direction) )
-
-        StudyMsg studyMsg ->
-            ( { model | study = CaseStudy.update studyMsg model.study }, Effect.none )
 
 
 
@@ -408,16 +397,7 @@ podcasts =
 {-| Blog posts under my own byline, newest first. -}
 posts : List Post
 posts =
-    [ { date = CaseStudy.dateLabel
-      , outlet = "case study"
-      , title = CaseStudy.title
-      , gist =
-            "How to analyze the ROI of computer vision next to human inspectors. "
-                ++ "Escapes multiply, people get worse as defects get rarer, and the "
-                ++ "model is yours to push on."
-      , href = CaseStudy.slug
-      }
-    , { date = Essay.dateLabel
+    [ { date = Essay.dateLabel
       , outlet = "essay"
       , title = Essay.title
       , gist =
@@ -493,9 +473,6 @@ view model =
 
                 EssayPage ->
                     [ Essay.view ]
-
-                StudyPage ->
-                    [ Element.map StudyMsg (CaseStudy.view model.study) ]
             )
         , foot
         ]

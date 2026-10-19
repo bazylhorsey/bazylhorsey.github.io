@@ -58,7 +58,6 @@ function swap(page, from, to) {
 
 const SITE = "https://bazylhorsey.github.io";
 const ESSAY = {
-  page: "essay",
   path: "/writing/distracted-forward-deployed-officer/",
   title: "The Distracted Forward Deployed Officer",
   // His words, from the essay.
@@ -67,45 +66,36 @@ const ESSAY = {
   date: "2026-10-15",
 };
 
-const STUDY = {
-  page: "study",
-  path: "/writing/escapes-multiply/",
-  title: "Escapes Multiply",
-  description:
-    "How to analyze the ROI of computer vision working next to the people who already inspect a warehouse dock. With a model you can push on.",
-  date: "2026-10-19",
-};
-
-// An article page is the same shell as the home page (same stylesheet, same
+// The essay page is the same shell as the home page (same stylesheet, same
 // compiled Elm, same patcher and glue), with its own head and flags.
-function articleShell(home, article) {
-  const url = SITE + article.path;
-  const full = `${article.title} | Bazyl Horsey`;
+function essayShell(home) {
+  const url = SITE + ESSAY.path;
+  const full = `${ESSAY.title} | Bazyl Horsey`;
   let page = home;
   page = page.replace(/<title>[^<]*<\/title>/, `<title>${full}</title>`);
   page = page.replace(
     /(<meta\s+name="description"\s+content=")[^"]*(")/,
-    `$1${escAttr(article.description)}$2`,
+    `$1${escAttr(ESSAY.description)}$2`,
   );
   page = page.replace(
     /(<meta\s+property="og:description"\s+content=")[^"]*(")/,
-    `$1${escAttr(article.description)}$2`,
+    `$1${escAttr(ESSAY.description)}$2`,
   );
   page = swap(page, '<meta property="og:type" content="website" />', '<meta property="og:type" content="article" />');
   page = page.replace(/(<meta property="og:title" content=")[^"]*(")/, `$1${escAttr(full)}$2`);
   page = swap(page, `<meta property="og:url" content="${SITE}/" />`, `<meta property="og:url" content="${url}" />`);
   page = swap(page, `<link rel="canonical" href="${SITE}/" />`, `<link rel="canonical" href="${url}" />`);
   page = page.replace(/(<meta property="og:image:alt" content=")[^"]*(")/, `$1${escAttr(full)}$2`);
-  // Home has WebSite + Person blocks; an article gets one Article block.
+  // Home has WebSite + Person blocks; the essay gets one Article block.
   const ld = page.match(/\s*<script type="application\/ld\+json">[\s\S]*?<\/script>/g) || [];
   if (ld.length < 1) throw new Error("no JSON-LD in the shell");
   ld.forEach((block) => (page = page.replace(block, "")));
-  const schema = {
+  const article = {
     "@context": "https://schema.org",
     "@type": "Article",
-    headline: article.title,
-    description: article.description,
-    datePublished: article.date,
+    headline: ESSAY.title,
+    description: ESSAY.description,
+    datePublished: ESSAY.date,
     url,
     mainEntityOfPage: url,
     image: `${SITE}/og.png`,
@@ -114,12 +104,12 @@ function articleShell(home, article) {
   page = swap(
     page,
     "</title>",
-    `</title>\n    <script type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n    </script>`,
+    `</title>\n    <script type="application/ld+json">\n${JSON.stringify(article, null, 2)}\n    </script>`,
   );
   page = swap(
     page,
     'flags: { dark: root.dataset.theme === "night" },',
-    `flags: { dark: root.dataset.theme === "night", page: "${article.page}" },`,
+    'flags: { dark: root.dataset.theme === "night", page: "essay" },',
   );
   return page;
 }
@@ -134,11 +124,11 @@ if (!home.includes(empty)) {
 
 const pages = [
   { file: homeFile, shell: home, flags: { dark: false } },
-  ...[ESSAY, STUDY].map((article) => ({
-    file: "build" + article.path + "index.html",
-    shell: articleShell(home, article),
-    flags: { dark: false, page: article.page },
-  })),
+  {
+    file: "build" + ESSAY.path + "index.html",
+    shell: essayShell(home),
+    flags: { dark: false, page: "essay" },
+  },
 ];
 
 for (const { file, shell, flags } of pages) {
