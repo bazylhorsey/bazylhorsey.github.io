@@ -62,6 +62,7 @@ for page in [
     out / "index.html",
     out / "writing/distracted-forward-deployed-officer/index.html",
     out / "writing/escapes-multiply/index.html",
+    out / "writing/phantom-zone-for-ai/index.html",
 ]:
     html = page.read_text(encoding="utf-8")
     for ref, path in [

@@ -23,6 +23,7 @@ import Jorn.Effect as Effect exposing (Effect)
 import Jorn.Element as Element exposing (Element)
 import Jorn.Element.Html as Html
 import Jorn.Event as Events
+import PhantomZone
 
 
 
@@ -60,6 +61,7 @@ type Page
     = Home
     | EssayPage
     | StudyPage
+    | ZonePage
 
 
 type alias Model =
@@ -67,6 +69,7 @@ type alias Model =
     , filter : Filter
     , page : Page
     , study : CaseStudy.Model
+    , zone : PhantomZone.Model
     }
 
 
@@ -75,6 +78,7 @@ type Msg
     | PickFilter Filter
     | NudgeSaid Int
     | StudyMsg CaseStudy.Msg
+    | ZoneMsg PhantomZone.Msg
 
 
 {-| The shell passes `{ "dark": true }` when the visitor picked night last
@@ -99,9 +103,13 @@ init flags =
             Ok "study" ->
                 StudyPage
 
+            Ok "zone" ->
+                ZonePage
+
             _ ->
                 Home
     , study = CaseStudy.init
+    , zone = PhantomZone.init
     }
 
 
@@ -134,6 +142,9 @@ update msg model =
 
         StudyMsg studyMsg ->
             ( { model | study = CaseStudy.update studyMsg model.study }, Effect.none )
+
+        ZoneMsg zoneMsg ->
+            ( { model | zone = PhantomZone.update zoneMsg model.zone }, Effect.none )
 
 
 
@@ -409,7 +420,15 @@ podcasts =
 {-| Blog posts under my own byline, newest first. -}
 posts : List Post
 posts =
-    [ { date = Essay.dateLabel
+    [ { date = PhantomZone.dateLabel
+      , outlet = "deep dive"
+      , title = PhantomZone.title
+      , gist =
+            "How to boot an air-gapped GPU node so nothing touches memory until "
+                ++ "the machine proves what it is. No match, no key."
+      , href = PhantomZone.slug
+      }
+    , { date = Essay.dateLabel
       , outlet = "essay"
       , title = Essay.title
       , gist =
@@ -497,6 +516,9 @@ view model =
 
                 StudyPage ->
                     [ Element.map StudyMsg (CaseStudy.view model.study) ]
+
+                ZonePage ->
+                    [ Element.map ZoneMsg (PhantomZone.view model.zone) ]
             )
         , foot
         ]

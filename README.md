@@ -17,7 +17,8 @@ every time state changes. `public/index.html` is a shell with one `<div>` in it.
 ├── src/
 │   ├── Main.elm      the home page: model, update, view, content
 │   ├── Essay.elm     /writing/distracted-forward-deployed-officer/
-│   └── CaseStudy.elm /writing/escapes-multiply/
+│   ├── CaseStudy.elm /writing/escapes-multiply/
+│   └── PhantomZone.elm /writing/phantom-zone-for-ai/
 ├── public/           the shell, stylesheet, font, icons and crawler files
 ├── build.sh          elm make + collect everything into build/
 ├── prerender.mjs     writes each page's HTML into build/ (run by build.sh)
