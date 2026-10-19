@@ -1014,7 +1014,7 @@ html[data-theme="night"] .diagram .dg-shadow {
   transition: width 0.15s;
 }
 
-.study-funnel .is-last .study-funnel-bar span {
+.study-funnel .ships .study-funnel-bar span {
   background: var(--accent);
 }
 
@@ -1026,6 +1026,38 @@ html[data-theme="night"] .diagram .dg-shadow {
 
 .study-tiles {
   margin-top: 0;
+}
+
+/* Figures carry three to five readouts. Three sit in a row, five go three
+   over two, so no row ends in an empty cell. */
+.nums.study-tiles--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.nums.study-tiles--5 {
+  grid-template-columns: repeat(6, 1fr);
+}
+
+.study-tiles--5 .num {
+  grid-column: span 2;
+}
+
+.study-tiles--5 .num:nth-child(n + 4) {
+  grid-column: span 3;
+}
+
+@media (max-width: 1000px) {
+  .nums.study-tiles--3,
+  .nums.study-tiles--5 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .study-tiles--5 .num,
+  .study-tiles--5 .num:nth-child(n + 4) {
+    grid-column: auto;
+  }
+  .study-tiles .num:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
 }
 
 .study-reset {

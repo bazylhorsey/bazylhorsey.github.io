@@ -48,7 +48,8 @@ type alias Model =
     , coverage : Float
     , recall : Float
     , rho : Float
-    , claims : Float
+    , review : Float
+    , drop : Float
     , fix : Float
     , useMeasured : Bool
     , measured : Float
@@ -68,7 +69,8 @@ init =
     , coverage = 1
     , recall = 0.9
     , rho = 0.2
-    , claims = 0.5
+    , review = 0.9
+    , drop = 0
     , fix = 20
     , useMeasured = False
     , measured = 0.994
@@ -86,7 +88,8 @@ type Field
     | Coverage
     | Recall
     | Rho
-    | Claims
+    | Review
+    | Drop
     | Fix
     | Measured
     | Cost
@@ -143,8 +146,11 @@ get field m =
         Rho ->
             m.rho
 
-        Claims ->
-            m.claims
+        Review ->
+            m.review
+
+        Drop ->
+            m.drop
 
         Fix ->
             m.fix
@@ -183,8 +189,11 @@ put field v m =
         Rho ->
             { m | rho = v }
 
-        Claims ->
-            { m | claims = v }
+        Review ->
+            { m | review = v }
+
+        Drop ->
+            { m | drop = v }
 
         Fix ->
             { m | fix = v }
@@ -210,8 +219,8 @@ put field v m =
 
 
 -- THE MATH
--- Layered escapes. Miss overlap stays inside what the two recalls allow, and
--- footage recovers money, not defects.
+-- Layered escapes. Miss overlap stays inside what the two recalls allow,
+-- review lets some real flags go, and people can lean on the cameras.
 
 
 {-| Human recall at prevalence d, fitted to Wolfe's 2005 single-target
@@ -261,14 +270,51 @@ catch model m =
     catchWith model.coverage model.recall model.rho m
 
 
+type alias Layers =
+    { missed : Float
+    , flagged : Float
+    , escapes : Float
+    }
+
+
+{-| What gets past each layer at prevalence d, from people's escape rate e0
+and miss rate m before the cameras go in.
+
+People who lean on the cameras miss s more, capped at missing everything.
+That's added onto e0 rather than rebuilt from d, so with no drop it's e0
+exactly, even when a measured baseline caps m. The vision layer flags its
+share of what people miss, review confirms v of the real flags, and the
+rest ship.
+-}
+layers : Model -> Float -> Float -> Float -> Layers
+layers model d e0 m =
+    let
+        leaned =
+            min 1 (m + model.drop)
+
+        missed =
+            e0 + d * (leaned - m)
+
+        flagged =
+            catch model leaned
+    in
+    { missed = missed
+    , flagged = flagged
+    , escapes = missed * (1 - flagged * model.review)
+    }
+
+
 type alias Result =
     { e0 : Float
+    , missed : Float
+    , flagged : Float
     , e1 : Float
     , reduction : Float
     , prevented : Float
+    , caught : Float
     , avoided : Float
-    , recovered : Float
     , tp : Float
+    , cleared : Float
     , fp : Float
     , precision : Float
     , hours : Float
@@ -293,18 +339,19 @@ results m =
         miss =
             clamp 0 1 (safeDiv e0 m.d0)
 
-        k =
-            catch m miss
+        after =
+            layers m m.d0 e0 miss
 
         e1 =
-            e0 * (1 - k)
+            after.escapes
 
-        -- A caught defect still costs a re-pick or repack.
+        -- Against the baseline before the cameras. A caught defect still
+        -- costs a re-pick or repack, whoever catches it.
         avoided =
             (e0 - e1) * m.volume * (m.cost - m.fix)
 
         tp =
-            e0 * m.volume * k
+            after.missed * m.volume * after.flagged
 
         fp =
             (1 - m.d0) * m.volume * m.coverage * m.fpr
@@ -316,12 +363,15 @@ results m =
             hours * m.wage
     in
     { e0 = e0
+    , missed = after.missed
+    , flagged = after.flagged
     , e1 = e1
     , reduction = safeDiv (e0 - e1) e0
     , prevented = (e0 - e1) * 10000
+    , caught = after.missed * after.flagged * m.review * 10000
     , avoided = avoided
-    , recovered = m.coverage * e1 * m.volume * m.cost * m.claims
     , tp = tp
+    , cleared = tp * (1 - m.review)
     , fp = fp
     , precision = safeDiv tp (tp + fp)
     , hours = hours
@@ -368,12 +418,13 @@ sections =
         , P "It's the obvious question about computer vision on a warehouse dock. If people already check every shipment, what does a camera add?"
         , P "The honest answer isn't a percentage. It's a model. This page is that model. Every outside number has its source at the bottom. Every other number is a round, illustrative assumption, and you can drag it."
         , P "The short version: people and machines fail in different ways, and on a dock that difference is where the money is."
+        , P "At the defaults, that's about 39 escapes stopped per 10,000 shipments and about $115,000 a year net of review labor on 250,000 shipments, roughly 11 times what the review costs. Two inputs behind those numbers, how much the two layers' misses overlap and how many real flags review confirms, haven't been measured on a dock. Treat them as the place to start."
         ]
       )
     , ( "Escapes multiply"
       , [ P "A defect only reaches the customer if every inspection layer misses it. That one sentence does most of the work. Escapes multiply. They don't average."
         , Eq
-            [ eq [ mi "e", mo "=", d0, mi "m", mo "[", mn "1", mo "−", mi "c", paren [ mn "1", mo "−", mi "μ" ], mo "]" ]
+            [ eq [ mi "e", mo "=", d0, mi "m", mo "[", mn "1", mo "−", mi "c", paren [ mn "1", mo "−", mi "μ" ], mi "v", mo "]" ]
             , eq [ mi "m", mo "=", mn "1", mo "−", eh, paren [ d0 ] ]
             , eq [ mi "Q", mo "=", mn "1", mo "−", mi "e" ]
             ]
@@ -385,6 +436,7 @@ sections =
             , ( "c", "coverage: the share of shipments the cameras actually see." )
             , ( "R", "model recall: the share of present defects the model catches, measured in the field." )
             , ( "μ", "how often the model misses a defect people already missed. It depends on R and on ρ, below." )
+            , ( "v", "review recall, the share of real flags the reviewer confirms. A placeholder, more on that below." )
             , ( "Q", "outbound accuracy: the share of shipments that leave without a defect." )
             ]
         , P "If you averaged, a 90% model and a team that catches about three quarters of defects would land around 82%. Multiply instead and the picture changes. People let about a quarter of defects through, the model catches most of those, and what's left is small. Push the inputs around and watch where the defects go."
@@ -398,9 +450,9 @@ sections =
             [ eq [ eh, paren [ mi "d" ], mo "=", mn "0.973", mo "+", mn "0.0589", fn "ln", mi "d" ] ]
             "fitted to 1%, 10% and 50% prevalence"
         , P "Lab numbers vary a lot by task. At 1 to 2% prevalence, other experiments put misses anywhere from about a quarter to a half. I fit the curve to the single-target experiment because it matches this model's one-kind-of-defect setup, and because it sits closest to factory inspection studies, where people catch around 80% of defects. If your people miss more than that, the vision layer is worth more than this page says."
-        , P "Machine recall has no prevalence term. A model looks at the ten thousandth clean pallet with the same attention it gave the first one. That asymmetry is the whole argument for putting the two together."
+        , P "Machine recall has no prevalence term. A model looks at the ten thousandth clean pallet with the same attention it gave the first one. That asymmetry is the whole argument for putting the two together. Its precision is another matter, and that comes back as labor further down."
         , Figure Ceiling
-        , P "Here's the check I'd want before trusting the curve on a dock. WERC's DC Measures benchmark puts order picking accuracy at about 99.4% on average, between 99.0% and 99.6% for most companies, and 99.89% or better for the best. Give the curve an upstream defect rate between about 1.5% and 4.5%, and people-only accuracy lands in that same band. That's a consistency check, not proof. Nobody publishes upstream defect rates, so I can't confirm the 2% default, and a different curve with a different defect rate could land in the same place. What it does show is that the curve and a plausible defect rate end up where real warehouses report."
+        , P "Here's the check I'd want before trusting the curve on a dock. WERC's 2019 DC Measures benchmark puts the median for order picking accuracy at 99.4%, with the middle fifth of companies between 99.0% and 99.6% and the top fifth at 99.89% or better. Give the curve an upstream defect rate between about 1.5% and 4.5%, and people-only accuracy lands in that same band. That's a consistency check, not proof. Nobody publishes upstream defect rates, so I can't confirm the 2% default, and a different curve with a different defect rate could land in the same place. What it does show is that the curve and a plausible defect rate end up where real warehouses report."
         , P "It also shows why the last half a percent is so hard. As an operation gets cleaner, people catch a smaller share of what's left: about 84% of defects at 10% upstream, 74% at 2%, and 66% at 0.5%. Getting from the median to best in class takes either a much cleaner process upstream or a second layer whose attention doesn't depend on how rare the defect is."
         , P "Perfect order rate is a different number. Its medians sit lower, around 93 to 96%, because it also counts late shipments, paperwork and damage in transit, which a dock inspection never sees. Picking accuracy is a slightly different denominator too. This model is about the inspection layer only."
         , Note "Above about 5% upstream defects, people-only accuracy drops below 99%: 98.4% at 10% and 97.6% at 20%. That's an operation with a real upstream problem, and it's where a vision layer pays back fastest. One more caveat: in a mixed experiment from the same 2005 paper, where some target showed up on half the trials, a target type that showed up 1% of the time was missed 52% of the time. That design doesn't map onto a single defect rate, so the fit leaves it out."
@@ -409,7 +461,7 @@ sections =
     , ( "The number nobody has measured"
       , [ P "ρ is the most important input in the model and the one with the least evidence behind it. It asks a simple question. When the model misses something, is it the same thing a person would have missed?"
         , P "If the model and your people fail on different things, the model's recall counts in full. If every miss the model makes is one your people made too, the pair is no better than the model alone. ρ slides between those two ends."
-        , P "Full overlap doesn't take you back to people alone. At the defaults the model catches 90 of every 100 defects and people catch 74, so at least 16 of the model's catches are ones people missed. At ρ = 1 the pair equals whichever layer is better on its own."
+        , P "Full overlap doesn't take you back to people alone. At the defaults the model catches 90 of every 100 defects and people catch 74, so at least 16 of the model's catches are ones people missed. At ρ = 1 and perfect review, the pair equals whichever layer is better on its own."
         , Eq
             [ eq
                 [ mi "μ"
@@ -423,22 +475,28 @@ sections =
                 ]
             ]
             ""
+        , P "Formally, ρ is the correlation between the two layers' misses divided by the largest correlation their miss rates allow. Zero means independent; one means as overlapped as the rates permit. It isn't a raw correlation: at the defaults, ρ = 0.2 is a raw correlation of about 0.11, so don't plug in one measured some other way."
         , Figure Overlap
-        , P "You can't measure ρ from flags alone. The defects both layers miss are exactly the ones nobody flagged, so they never show up in a query. It takes ground truth: pull a random sample of shipments that passed both layers, inspect them carefully, and count the real defects people missed and how many of those the model missed too. That share is μ, and the equation above gives you ρ. The 0.2 default here is a placeholder until somebody does that."
+        , P "You can't measure ρ from flags alone. The defects both layers miss are exactly the ones nobody flagged, so they never show up in a query. You need ground truth, and it has to come from the right place. A sample of shipments that passed both layers can't give it to you: every defect in that sample got past both, so it can't show what share the model missed. Draw a random sample of shipments your people passed instead, whatever the model said about them, and re-inspect them carefully. Add back any defect in the sample that review already confirmed and fixed. For each real defect, note whether the model flagged it. The share it never flagged is μ, and the equation above turns μ into ρ. A defect the model flagged and review cleared is a review miss, not a model miss, and it counts toward v."
+        , P "Plan for the volume. At the defaults, about 50 of every 10,000 shipments people pass have a defect, and about 8 of those get past the model too. Ten thousand careful re-inspections pin ρ down to roughly ±0.35, most of the table above. And careful re-inspection is still people searching at about half a percent prevalence, where the curve says they miss about a third. The cheaper, cleaner route is to seed known defects, the way airports project fictional threat images into real bag scans to score screeners. You know the truth, you control the rate, and you can score people, the model and their overlap on the same items. The catch is that seeded defects have to look real. Airport screeners sometimes spot projected threats just because they look pasted in. The 0.2 default here is a placeholder until somebody does that."
         ]
       )
     , ( "Coverage or recall"
       , [ P "Coverage and recall multiply, so they trade almost one for one. When misses are independent, a model that sees every shipment at 88% recall catches more than one that sees 80% of shipments at 99%: 0.88 against 0.79."
         , P "Overlap changes that, because it hits the weaker model harder, and it hits harder the more defects people already catch. At this page's defaults the order holds, 0.81 against 0.79. Push upstream defects past about 5%, where people catch more of them, and the same ρ of 0.2 flips it: at 20% it's 0.71 against 0.78. So the rule of thumb only holds when misses are close to independent or people miss a lot, which is one more reason to measure ρ before you pick where to spend."
         , P "Coverage is still the first thing I'd check. It's the one you can count today, and an uncovered dock door catches nothing no matter how good the model is."
+        , P "These are catch shares before review. Review recall multiplies both sides by the same v, so it never changes which one wins."
         ]
       )
-    , ( "Good operations gain less, and that's fine"
-      , [ P "If you plug in an operation's measured accuracy instead of the curve, the share of escapes removed is easy to read off."
+    , ( "Cleaner floors gain more, better teams gain less"
+      , [ P "\"Good\" can mean two things here, and they move the relative gain in opposite directions."
+        , P "A cleaner floor means a lower d₀. Under the curve, people catch a smaller share of a rarer defect, so the vision layer removes a bigger share of what they miss: at the defaults, about 77% of escapes at 0.5% upstream defects, 76% at 2%, and 72% at 10%."
+        , P "A better team means higher recall at the same d₀, which is what the measured baseline switch sets."
         , Eq
-            [ eq [ mn "1", mo "−", over [ sub "e" "1" ] [ sub "e" "0" ], mo "=", mi "c", paren [ mn "1", mo "−", mi "μ" ] ] ]
-            "which is c·R when ρ = 0"
+            [ eq [ mn "1", mo "−", over [ sub "e" "1" ] [ sub "e" "0" ], mo "=", mi "c", paren [ mn "1", mo "−", mi "μ" ], mi "v" ] ]
+            "which is c·R·v when ρ = 0"
         , P "With no overlap the baseline drops out: an operation at 90% and one at 99% cut escapes by the same share. Overlap changes that. A team that already catches most defects is left with the hard ones, and those are the ones a model is most likely to miss too. So the honest expectation for a strong operation is a smaller relative gain, not the same one. Turn on the measured baseline switch in the first figure, leave ρ above zero, and watch the reduction shrink as the baseline climbs."
+        , P "Neither share is the number to decide on. The money runs on escapes avoided times what each one costs, and a cleaner floor stops fewer escapes even when it stops a bigger share of them. Judge the layer on the last figure, not this one."
         ]
       )
     , ( "False positives move labor, not quality"
@@ -452,32 +510,36 @@ sections =
             ""
         , Figure Burden
         , P "That assumes the model's flags only get reviewed on shipments your people passed. If every model flag goes to review, including defects people already caught, the queue is bigger. Price the workflow you'll actually run."
-        , P "At the defaults, only about one flag in eight is real, because clean shipments outnumber defective ones 49 to 1. That sounds bad until you price it. Clearing every flag still costs about a twelfth of what the prevented escapes are worth. The $28 an hour default is the BLS median for hand laborers and material movers, $18.38 in May 2025, with benefits and overhead on top."
+        , P "Among the shipments people pass, clean ones outnumber defective ones about 190 to 1. That's what's left after people do their job, not the upstream mix of 49 to 1, and it's why a 3% false positive rate buries the real flags. If the model looked before people did, about 38% of its flags would be real. The model's recall doesn't care about prevalence, but its precision does: the better your people are, the cleaner the stream it sees. So at the defaults, only about 13% of flags are real. That sounds bad until you price it. Clearing every flag still costs a little under a tenth of what the prevented escapes are worth. The $28 an hour default is the BLS median for hand laborers and material movers, $18.38 in May 2025, with benefits and overhead on top."
+        , P "Somebody has to clear those flags, and their queue is the setup this page started with, pointed at a new person. Seven of every eight flags are false, so the bar for calling one real drifts up. Read the curve at the queue's 13% and a reviewer confirms about 85% of real flags. Checking a flag is easier than searching a pallet cold, so I use 90% as a placeholder and carry it through every figure as v. At the defaults, about 108 real defects a year get flagged and cleared anyway. They ship, and they count as escapes."
         , Note "People raise false alarms too: 2% in a classic study of circuit inspection, and 35% of good parts in a recent study of precision manufactured parts, where the same inspectors caught 85% of defects. The fair comparison is against that, not against zero."
         ]
       )
     , ( "Putting a dollar on an escape"
       , [ P "An escaped defect costs labor, return freight and goodwill. Vendor estimates put one shipping error somewhere between $50 and $250, without saying where the range comes from. The default here is $150. If an operation tracks its own cost per error, use that instead."
         , P "Catching a defect isn't free either. Somebody re-picks or repacks it, so the saving per catch is the escape cost minus the cost to fix it in house. The $20 default is a placeholder."
-        , P "Footage is the last layer, and it's easy to oversell. It doesn't stop an escape or find one nobody flagged. What it does is help you get money back on the escapes you do ship, because concealed damage claims are among the hardest freight claims to resolve, and the burden of proof shifts to the receiver. So I count claim recovery as money, not accuracy, and only on shipments the cameras covered."
-        , P "One more thing to keep in front of you: the dollars scale with d₀. At 2% upstream defects the base case stops about 43 escapes per 10,000 shipments. At 10% it stops about 130. A slightly smaller relative gain, three times the money. Use a real defect rate before you trust the dollars."
+        , P "Footage is the last layer, and it's easy to oversell. It doesn't stop an escape or find one nobody flagged. It doesn't get money back on one either. Footage of a real escape either shows the defect, which sinks the claim, or misses it, and then using it against a carrier means billing them for your mistake. Footage pays in the other direction. When a shipment leaves clean and arrives damaged, video of it leaving clean is the proof a concealed damage claim needs, and those claims are notoriously hard to win because the receiver carries the burden of proof. The same video settles disputes about what left the dock. That's real money, but it comes from transit damage and disputes, which this model doesn't size, so it stays out of the figure below."
+        , P "One more thing to keep in front of you: the dollars scale with d₀. At 2% upstream defects the base case stops about 39 escapes per 10,000 shipments. At 10% it stops about 117. A slightly smaller relative gain, three times the money. Use a real defect rate before you trust the dollars."
         , Figure Dollars
         ]
       )
     , ( "Checking it against a real operation"
       , [ Steps
             [ ( "Pick one denominator.", "Pick-line, order and retail-compliance accuracy are three different numbers. Agree on one before you measure anything." )
-            , ( "Measure the baseline at two prevalences.", "The human curve comes from lab studies. Check it against one operation at two different defect rates before relying on it." )
-            , ( "Measure ρ.", "Ground truth on a random sample of shipments both layers passed. Flags alone can't show it." )
+            , ( "Measure the baseline at two prevalences, before and after.", "The human curve comes from lab studies. Check it against one operation at two different defect rates before relying on it. Then measure it again once the cameras are in, since people lean on a backstop." )
+            , ( "Measure ρ from what people passed.", "Re-inspect a random sample of what people passed, regardless of the model's call, or seed defects with known answers. Flags can't reveal it, and a sample of what both layers passed can't either." )
+            , ( "Measure review recall.", "Audit a random sample of the flags review cleared, and scale the real defects you find to all cleared flags. Then divide confirmed defects by confirmed plus that number." )
             , ( "Count coverage honestly.", "The shipments the cameras actually see, not the doors that have cameras." )
             , ( "Count false positives and the minutes to clear one.", "That's the labor line, which the accuracy numbers never show." )
-            , ( "Price an escape with the operation's own numbers.", "Net of the cost to fix a catch. Then report quality and claim recovery as two lines, not one." )
+            , ( "Price an escape with the operation's own numbers.", "Net of the cost to fix a catch. If footage goes in at all, it goes in on transit damage and disputed claims, as its own line." )
             ]
         ]
       )
     , ( "What this doesn't claim"
       , [ P "It doesn't say any particular model hits 90%. That's a round figure for the math, not a measured result. Vendors claim 97 to 99.5% for vision inspection without publishing the data behind it, and I'd assume less until field data shows otherwise."
+        , P "It doesn't say review confirms 90% of real flags either. That's a placeholder between what the curve predicts at the queue's prevalence, about 85%, and a perfect 100%. It's the one human step the vision layer adds, and it's much cheaper to measure than ρ, because a flag tells the auditor where to look."
         , P "It doesn't say the human curve is a measurement of your floor. It's lab data, checked against factory studies and warehouse benchmarks but never measured on a dock. Directionally sound, worth validating."
+        , P "It holds your people's recall fixed once the cameras go in. People tend to check less carefully when automation is checking too, and if yours do, the vision layer's catch count goes up while escapes go up too. At the defaults, a 5-point drop in inspector recall takes the layer from 39 catches per 10,000 shipments to 47, while escapes rise from 12 to 14. Against the old baseline the real gain is 37, not 47. So judge the layer on escapes against a pre-deployment baseline, never on what it catches."
         , P "It treats every defect as one kind. On a real dock people and models look for several kinds at once, each rarer than the total, so the prevalence each search runs at is lower than d₀. Run it per defect class when you have the data."
         , P "It gives point estimates. Every input here has a range, and the overlap table is the quickest way to see how much the answer moves."
         , P "And it doesn't say AI replaces inspectors. The whole point of the math is that two different kinds of failure, stacked, beat either one alone. The best number on this page needs both."
@@ -492,11 +554,13 @@ sources =
     , ( "Rich, Kunar, Van Wert, Hidalgo-Sotelo, Horowitz and Wolfe, \"Why do we miss rare targets?\" Journal of Vision 2008", "https://jov.arvojournals.org/article.aspx?articleid=2193138" )
     , ( "Wolfe, Horowitz, Van Wert, Kenner, Place and Kibbi, \"Low target prevalence is a stubborn source of errors in visual search tasks,\" Journal of Experimental Psychology: General 2007", "https://pmc.ncbi.nlm.nih.gov/articles/PMC2662480/" )
     , ( "Wolfe, Brunelli, Rubinstein and Horowitz, \"Prevalence effects in newly trained airport checkpoint screeners,\" Journal of Vision 2013", "https://pubmed.ncbi.nlm.nih.gov/24297778/" )
+    , ( "Riz à Porta, Sterchi and Schwaninger, \"How realistic is threat image projection for X-ray baggage screening?\" Sensors 2022", "https://doi.org/10.3390/s22062220" )
     , ( "Van Wert, Horowitz and Wolfe, \"Even in correctable search, some types of rare targets are frequently missed,\" Attention, Perception & Psychophysics 2009", "https://link.springer.com/article/10.3758/APP.71.3.541" )
     , ( "See, \"Visual inspection reliability for precision manufactured parts,\" Human Factors 2015", "https://www.sandia.gov/research/publications/details/visual-inspection-reliability-for-precision-manufactured-parts-2015-12-01/" )
-    , ( "Schoonard, Gould and Miller, \"Studies of visual inspection,\" Ergonomics 1973, as summarized on Wikipedia", "https://en.wikipedia.org/wiki/Visual_inspection" )
+    , ( "Schoonard, Gould and Miller, \"Studies of visual inspection,\" Ergonomics 1973", "https://doi.org/10.1080/00140137308924528" )
+    , ( "Parasuraman and Manzey, \"Complacency and bias in human use of automation: an attentional integration,\" Human Factors 2010", "https://doi.org/10.1177/0018720810376055" )
     , ( "Perfect order rate median and top quartile, Warehouse Revolution, citing CSCMP", "https://warehouserevolution.net/warehouse-kpis/" )
-    , ( "WERC DC Measures order picking accuracy, as summarized by RF-SMART", "https://www.rfsmart.com/blog/warehouse-metrics-that-matter-for-netsuite-customers" )
+    , ( "Tillman, Manrodt and Williams, \"DC Measures 2019,\" WERC, order picking accuracy by order, from the report's handout", "https://www.rfsmart.com/hubfs/Whitepapers/2019_WERC_DC_Measures%202019_Handout.pdf" )
     , ( "Pick-line, order and compliance accuracy as different denominators", "https://openskygroup.com/warehouse-kpis/" )
     , ( "Cost of one shipping mistake, $50 to $250, a vendor estimate from Wisys", "https://wisys.com/blog/warehouse-scanner-roi-what-the-data-actually-shows" )
     , ( "Vision inspection accuracy and false positive claims, a vendor page from OXmaint", "https://oxmaint.com/industries/steel-plant/computer-vision-vs-manual-inspection-in-manufacturing" )
@@ -661,7 +725,7 @@ viewFigure model fig =
     case fig of
         Funnel ->
             figure "fig 01 / where the defects go, per 10,000 shipments"
-                [ controls model [ D0, Coverage, Recall, Rho ]
+                [ controls model [ D0, Coverage, Recall, Rho, Review, Drop ]
                 , measuredSwitch model
                 , funnel model r
                 , tiles
@@ -669,6 +733,7 @@ viewFigure model fig =
                     , ( pct 2 (1 - r.e1), "with the vision layer" )
                     , ( pct 1 r.reduction, "fewer escapes" )
                     , ( fixed 0 r.prevented, "defects stopped per 10,000 shipments" )
+                    , ( fixed 0 r.caught, "caught by the vision layer per 10,000 shipments" )
                     ]
                 , Html.button [ Attr.class "btn study-reset", Attr.type_ "button", Events.onClick Reset ]
                     [ Element.text "reset to the base case" ]
@@ -683,7 +748,7 @@ viewFigure model fig =
                 [ controls model [ Recall, Rho ]
                 , overlapTable model r
                 , Html.p [ Attr.class "study-caption" ]
-                    [ Element.text "Columns are model recall R, rows are miss overlap ρ. The grid follows your inputs, so the filled cell is exactly what the sliders say. Each step out is 3 points of recall or 0.1 of overlap. Coverage and baseline come from the first figure." ]
+                    [ Element.text "Columns are model recall R, rows are miss overlap ρ. The grid follows your inputs, so the filled cell is exactly what the sliders say. Each step out is 3 points of recall or 0.1 of overlap. Coverage, baseline, review recall v and the recall drop s come from the first figure. With review below 100%, more recall runs into a ceiling. At the defaults and 90% review, no model gets past about 99.95%, because one real flag in ten still gets cleared." ]
                 ]
 
         Burden ->
@@ -694,20 +759,20 @@ viewFigure model fig =
                     , ( pct 0 r.precision, "of flags are real" )
                     , ( fixed 0 r.hours, "review hours" )
                     , ( money r.reviewCost, "review labor" )
+                    , ( fixed 0 r.cleared, "real flags cleared in review" )
                     ]
                 ]
 
         Dollars ->
             figure "fig 05 / what it's worth per year"
-                [ controls model [ Cost, Fix, Volume, Claims ]
+                [ controls model [ Cost, Fix, Volume ]
                 , tiles
                     [ ( money r.avoided, "escapes avoided, net of fixing them" )
-                    , ( money r.recovered, "recovered on claims with footage" )
                     , ( money r.net, "net of review labor" )
                     , ( fixed 0 r.ratio ++ "x", "benefit to review cost" )
                     ]
                 , Html.p [ Attr.class "study-caption" ]
-                    [ Element.text "Net and ratio leave claim recovery out on purpose. It's money back on escapes that still happened, not fewer escapes." ]
+                    [ Element.text "Net and ratio count escapes avoided and review labor, nothing else." ]
                 ]
 
 
@@ -719,7 +784,7 @@ figure caption children =
 
 tiles : List ( String, String ) -> Element msg
 tiles items =
-    Html.div [ Attr.class "nums nums--inline study-tiles" ]
+    Html.div [ Attr.class ("nums nums--inline study-tiles study-tiles--" ++ String.fromInt (List.length items)) ]
         (List.map
             (\( big, small ) ->
                 Html.div [ Attr.class "num" ]
@@ -758,8 +823,11 @@ spec field =
         Rho ->
             Spec "miss overlap" "ρ" 0 1 0.01 (fixed 2)
 
-        Claims ->
-            Spec "escape cost recovered on claims" "a" 0 0.95 0.05 (pct 0)
+        Review ->
+            Spec "review recall" "v" 0.5 1 0.01 (pct 0)
+
+        Drop ->
+            Spec "inspector recall drop after cameras" "s" 0 0.15 0.01 points
 
         Fix ->
             Spec "cost to fix a caught defect" "$" 0 100 5 money
@@ -840,24 +908,26 @@ measuredSwitch model =
 funnel : Model -> Result -> Element msg
 funnel model r =
     let
+        -- The last two rows are the ones that ship.
         rows =
             (if model.useMeasured then
                 []
 
              else
-                [ ( "arrive with a defect", model.d0 ) ]
+                [ ( "arrive with a defect", model.d0, False ) ]
             )
-                ++ [ ( "missed by people", r.e0 )
-                   , ( "also missed by the vision layer", r.e1 )
+                ++ [ ( "missed by people", r.missed, False )
+                   , ( "not flagged by the vision layer", r.missed * (1 - r.flagged), True )
+                   , ( "flagged, then cleared in review", r.missed * r.flagged * (1 - model.review), True )
                    ]
 
         top =
-            List.head rows |> Maybe.map Tuple.second |> Maybe.withDefault 1
+            List.head rows |> Maybe.map (\( _, share, _ ) -> share) |> Maybe.withDefault 1
     in
     Html.ol [ Attr.class "study-funnel" ]
-        (List.indexedMap
-            (\i ( label, share ) ->
-                Html.li [ Attr.classes [ ( "is-last", i == List.length rows - 1 ) ] ]
+        (List.map
+            (\( label, share, ships ) ->
+                Html.li [ Attr.classes [ ( "ships", ships ) ] ]
                     [ Html.span [ Attr.class "study-funnel-k" ] [ Element.text label ]
                     , Html.span [ Attr.class "study-funnel-bar" ]
                         [ Html.span
@@ -944,7 +1014,7 @@ ceiling model =
             1 - humanEscape d
 
         combined d =
-            1 - humanEscape d * (1 - catch model (1 - humanRecall d))
+            1 - (layers model d (humanEscape d) (1 - humanRecall d)).escapes
 
         line cls f =
             svg "path"
@@ -1154,7 +1224,7 @@ overlapTable model r =
                     , ( "in-col", rec == colAt )
                     ]
                 ]
-                [ Element.text (pct 2 (1 - r.e0 * (1 - catchWith model.coverage rec rho miss))) ]
+                [ Element.text (pct 2 (1 - (layers { model | recall = rec, rho = rho } model.d0 r.e0 miss).escapes)) ]
     in
     Html.div [ Attr.class "study-table" ]
         [ Html.table []
@@ -1241,6 +1311,22 @@ pct d x =
 pctTrim : Float -> String
 pctTrim x =
     String.fromFloat (toFloat (round (x * 1000)) / 10) ++ "%"
+
+
+{-| Recall points: 0.05 reads as 5 points. -}
+points : Float -> String
+points x =
+    let
+        p =
+            fixed 0 (x * 100)
+    in
+    p
+        ++ (if p == "1" then
+                " point"
+
+            else
+                " points"
+           )
 
 
 money : Float -> String
