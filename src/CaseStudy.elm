@@ -48,6 +48,7 @@ type alias Model =
     , coverage : Float
     , recall : Float
     , rho : Float
+    , review : Float
     , claims : Float
     , fix : Float
     , useMeasured : Bool
@@ -68,6 +69,7 @@ init =
     , coverage = 1
     , recall = 0.9
     , rho = 0.2
+    , review = 0.9
     , claims = 0.5
     , fix = 20
     , useMeasured = False
@@ -86,6 +88,7 @@ type Field
     | Coverage
     | Recall
     | Rho
+    | Review
     | Claims
     | Fix
     | Measured
@@ -143,6 +146,9 @@ get field m =
         Rho ->
             m.rho
 
+        Review ->
+            m.review
+
         Claims ->
             m.claims
 
@@ -183,6 +189,9 @@ put field v m =
         Rho ->
             { m | rho = v }
 
+        Review ->
+            { m | review = v }
+
         Claims ->
             { m | claims = v }
 
@@ -210,8 +219,8 @@ put field v m =
 
 
 -- THE MATH
--- Layered escapes. Miss overlap stays inside what the two recalls allow, and
--- footage recovers money, not defects.
+-- Layered escapes. Miss overlap stays inside what the two recalls allow,
+-- review clears some real flags, and footage recovers money, not defects.
 
 
 {-| Human recall at prevalence d, fitted to Wolfe's 2005 single-target
@@ -263,12 +272,14 @@ catch model m =
 
 type alias Result =
     { e0 : Float
+    , flagged : Float
     , e1 : Float
     , reduction : Float
     , prevented : Float
     , avoided : Float
     , recovered : Float
     , tp : Float
+    , cleared : Float
     , fp : Float
     , precision : Float
     , hours : Float
@@ -296,8 +307,9 @@ results m =
         k =
             catch m miss
 
+        -- Review confirms v of the real flags. The rest get cleared and ship.
         e1 =
-            e0 * (1 - k)
+            e0 * (1 - k * m.review)
 
         -- A caught defect still costs a re-pick or repack.
         avoided =
@@ -316,12 +328,14 @@ results m =
             hours * m.wage
     in
     { e0 = e0
+    , flagged = k
     , e1 = e1
     , reduction = safeDiv (e0 - e1) e0
     , prevented = (e0 - e1) * 10000
     , avoided = avoided
     , recovered = m.coverage * e1 * m.volume * m.cost * m.claims
     , tp = tp
+    , cleared = tp * (1 - m.review)
     , fp = fp
     , precision = safeDiv tp (tp + fp)
     , hours = hours
@@ -373,7 +387,7 @@ sections =
     , ( "Escapes multiply"
       , [ P "A defect only reaches the customer if every inspection layer misses it. That one sentence does most of the work. Escapes multiply. They don't average."
         , Eq
-            [ eq [ mi "e", mo "=", d0, mi "m", mo "[", mn "1", mo "−", mi "c", paren [ mn "1", mo "−", mi "μ" ], mo "]" ]
+            [ eq [ mi "e", mo "=", d0, mi "m", mo "[", mn "1", mo "−", mi "c", paren [ mn "1", mo "−", mi "μ" ], mi "v", mo "]" ]
             , eq [ mi "m", mo "=", mn "1", mo "−", eh, paren [ d0 ] ]
             , eq [ mi "Q", mo "=", mn "1", mo "−", mi "e" ]
             ]
@@ -385,6 +399,7 @@ sections =
             , ( "c", "coverage: the share of shipments the cameras actually see." )
             , ( "R", "model recall: the share of present defects the model catches, measured in the field." )
             , ( "μ", "how often the model misses a defect people already missed. It depends on R and on ρ, below." )
+            , ( "v", "review recall, the share of real flags the reviewer confirms. A placeholder, more on that below." )
             , ( "Q", "outbound accuracy: the share of shipments that leave without a defect." )
             ]
         , P "If you averaged, a 90% model and a team that catches about three quarters of defects would land around 82%. Multiply instead and the picture changes. People let about a quarter of defects through, the model catches most of those, and what's left is small. Push the inputs around and watch where the defects go."
@@ -409,7 +424,7 @@ sections =
     , ( "The number nobody has measured"
       , [ P "ρ is the most important input in the model and the one with the least evidence behind it. It asks a simple question. When the model misses something, is it the same thing a person would have missed?"
         , P "If the model and your people fail on different things, the model's recall counts in full. If every miss the model makes is one your people made too, the pair is no better than the model alone. ρ slides between those two ends."
-        , P "Full overlap doesn't take you back to people alone. At the defaults the model catches 90 of every 100 defects and people catch 74, so at least 16 of the model's catches are ones people missed. At ρ = 1 the pair equals whichever layer is better on its own."
+        , P "Full overlap doesn't take you back to people alone. At the defaults the model catches 90 of every 100 defects and people catch 74, so at least 16 of the model's catches are ones people missed. At ρ = 1 and perfect review, the pair equals whichever layer is better on its own."
         , Eq
             [ eq
                 [ mi "μ"
@@ -431,6 +446,7 @@ sections =
       , [ P "Coverage and recall multiply, so they trade almost one for one. When misses are independent, a model that sees every shipment at 88% recall catches more than one that sees 80% of shipments at 99%: 0.88 against 0.79."
         , P "Overlap changes that, because it hits the weaker model harder, and it hits harder the more defects people already catch. At this page's defaults the order holds, 0.81 against 0.79. Push upstream defects past about 5%, where people catch more of them, and the same ρ of 0.2 flips it: at 20% it's 0.71 against 0.78. So the rule of thumb only holds when misses are close to independent or people miss a lot, which is one more reason to measure ρ before you pick where to spend."
         , P "Coverage is still the first thing I'd check. It's the one you can count today, and an uncovered dock door catches nothing no matter how good the model is."
+        , P "These are catch shares before review. Review recall multiplies both sides by the same v, so it never changes which one wins."
         ]
       )
     , ( "Good operations gain less, and that's fine"
@@ -453,6 +469,7 @@ sections =
         , Figure Burden
         , P "That assumes the model's flags only get reviewed on shipments your people passed. If every model flag goes to review, including defects people already caught, the queue is bigger. Price the workflow you'll actually run."
         , P "At the defaults, only about one flag in eight is real, because clean shipments outnumber defective ones 49 to 1. That sounds bad until you price it. Clearing every flag still costs about a twelfth of what the prevented escapes are worth. The $28 an hour default is the BLS median for hand laborers and material movers, $18.38 in May 2025, with benefits and overhead on top."
+        , P "Somebody has to clear those flags, and their queue is the setup this page started with, pointed at a new person. Seven of every eight flags are false, so the bar for calling one real drifts up. Read the curve at the queue's 13% and a reviewer confirms about 85% of real flags. Checking a flag is easier than searching a pallet cold, so I use 90% as a placeholder and carry it through every figure as v. At the defaults, about 108 real defects a year get flagged and cleared anyway. They ship, and they count as escapes."
         , Note "People raise false alarms too: 2% in a classic study of circuit inspection, and 35% of good parts in a recent study of precision manufactured parts, where the same inspectors caught 85% of defects. The fair comparison is against that, not against zero."
         ]
       )
@@ -477,6 +494,7 @@ sections =
       )
     , ( "What this doesn't claim"
       , [ P "It doesn't say any particular model hits 90%. That's a round figure for the math, not a measured result. Vendors claim 97 to 99.5% for vision inspection without publishing the data behind it, and I'd assume less until field data shows otherwise."
+        , P "It doesn't say review confirms 90% of real flags either. That's a placeholder between what the curve predicts at the queue's prevalence, about 85%, and a perfect 100%. It's the one human step the vision layer adds, and it's much cheaper to measure than ρ, because a flag tells the auditor where to look."
         , P "It doesn't say the human curve is a measurement of your floor. It's lab data, checked against factory studies and warehouse benchmarks but never measured on a dock. Directionally sound, worth validating."
         , P "It treats every defect as one kind. On a real dock people and models look for several kinds at once, each rarer than the total, so the prevalence each search runs at is lower than d₀. Run it per defect class when you have the data."
         , P "It gives point estimates. Every input here has a range, and the overlap table is the quickest way to see how much the answer moves."
@@ -661,7 +679,7 @@ viewFigure model fig =
     case fig of
         Funnel ->
             figure "fig 01 / where the defects go, per 10,000 shipments"
-                [ controls model [ D0, Coverage, Recall, Rho ]
+                [ controls model [ D0, Coverage, Recall, Rho, Review ]
                 , measuredSwitch model
                 , funnel model r
                 , tiles
@@ -683,7 +701,7 @@ viewFigure model fig =
                 [ controls model [ Recall, Rho ]
                 , overlapTable model r
                 , Html.p [ Attr.class "study-caption" ]
-                    [ Element.text "Columns are model recall R, rows are miss overlap ρ. The grid follows your inputs, so the filled cell is exactly what the sliders say. Each step out is 3 points of recall or 0.1 of overlap. Coverage and baseline come from the first figure." ]
+                    [ Element.text "Columns are model recall R, rows are miss overlap ρ. The grid follows your inputs, so the filled cell is exactly what the sliders say. Each step out is 3 points of recall or 0.1 of overlap. Coverage, baseline and review recall v come from the first figure. With review below 100%, more recall runs into a ceiling. At the defaults and 90% review, no model gets past about 99.95%, because one real flag in ten still gets cleared." ]
                 ]
 
         Burden ->
@@ -694,6 +712,7 @@ viewFigure model fig =
                     , ( pct 0 r.precision, "of flags are real" )
                     , ( fixed 0 r.hours, "review hours" )
                     , ( money r.reviewCost, "review labor" )
+                    , ( fixed 0 r.cleared, "real flags cleared in review" )
                     ]
                 ]
 
@@ -719,7 +738,7 @@ figure caption children =
 
 tiles : List ( String, String ) -> Element msg
 tiles items =
-    Html.div [ Attr.class "nums nums--inline study-tiles" ]
+    Html.div [ Attr.class ("nums nums--inline study-tiles study-tiles--" ++ String.fromInt (List.length items)) ]
         (List.map
             (\( big, small ) ->
                 Html.div [ Attr.class "num" ]
@@ -757,6 +776,9 @@ spec field =
 
         Rho ->
             Spec "miss overlap" "ρ" 0 1 0.01 (fixed 2)
+
+        Review ->
+            Spec "review recall" "v" 0.5 1 0.01 (pct 0)
 
         Claims ->
             Spec "escape cost recovered on claims" "a" 0 0.95 0.05 (pct 0)
@@ -840,24 +862,26 @@ measuredSwitch model =
 funnel : Model -> Result -> Element msg
 funnel model r =
     let
+        -- The last two rows are the ones that ship.
         rows =
             (if model.useMeasured then
                 []
 
              else
-                [ ( "arrive with a defect", model.d0 ) ]
+                [ ( "arrive with a defect", model.d0, False ) ]
             )
-                ++ [ ( "missed by people", r.e0 )
-                   , ( "also missed by the vision layer", r.e1 )
+                ++ [ ( "missed by people", r.e0, False )
+                   , ( "not flagged by the vision layer", r.e0 * (1 - r.flagged), True )
+                   , ( "flagged, then cleared in review", r.e0 * r.flagged * (1 - model.review), True )
                    ]
 
         top =
-            List.head rows |> Maybe.map Tuple.second |> Maybe.withDefault 1
+            List.head rows |> Maybe.map (\( _, share, _ ) -> share) |> Maybe.withDefault 1
     in
     Html.ol [ Attr.class "study-funnel" ]
-        (List.indexedMap
-            (\i ( label, share ) ->
-                Html.li [ Attr.classes [ ( "is-last", i == List.length rows - 1 ) ] ]
+        (List.map
+            (\( label, share, ships ) ->
+                Html.li [ Attr.classes [ ( "ships", ships ) ] ]
                     [ Html.span [ Attr.class "study-funnel-k" ] [ Element.text label ]
                     , Html.span [ Attr.class "study-funnel-bar" ]
                         [ Html.span
@@ -944,7 +968,7 @@ ceiling model =
             1 - humanEscape d
 
         combined d =
-            1 - humanEscape d * (1 - catch model (1 - humanRecall d))
+            1 - humanEscape d * (1 - catch model (1 - humanRecall d) * model.review)
 
         line cls f =
             svg "path"
@@ -1154,7 +1178,7 @@ overlapTable model r =
                     , ( "in-col", rec == colAt )
                     ]
                 ]
-                [ Element.text (pct 2 (1 - r.e0 * (1 - catchWith model.coverage rec rho miss))) ]
+                [ Element.text (pct 2 (1 - r.e0 * (1 - catchWith model.coverage rec rho miss * model.review))) ]
     in
     Html.div [ Attr.class "study-table" ]
         [ Html.table []
