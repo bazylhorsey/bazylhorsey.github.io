@@ -391,21 +391,11 @@ podcasts =
     ]
 
 
-{-| Peer reviewed work, set apart from the posts but drawn the same way. -}
-papers : List Post
-papers =
-    [ { date = "2024.07"
-      , outlet = "frontiers in sustainability"
-      , title = "Implementing concepts from green logistics in the turkey production supply chain"
-      , gist = "Peer reviewed, with Griffin Wilson and Richard Stone."
-      , href = "https://doi.org/10.3389/frsus.2024.1416964"
-      }
-    ]
-
-
-{-| Blog posts under my own byline, newest first. -}
-posts : List Post
-posts =
+{-| The deep pieces, newest first, split from the posts by depth rather than
+by venue. Peer review shows in the outlet column instead of a group of its own.
+-}
+longForm : List Post
+longForm =
     [ { date = Essay.dateLabel
       , outlet = "essay"
       , title = Essay.title
@@ -423,7 +413,22 @@ posts =
                 ++ "model is yours to push on."
       , href = CaseStudy.slug
       }
-    , { date = "2026.08"
+    , { date = "2024.07"
+      , outlet = "peer reviewed"
+      , title = "Implementing concepts from green logistics in the turkey production supply chain"
+      , gist =
+            "Frontiers in Sustainability, with Griffin Wilson and Richard Stone. "
+                ++ "A mixed integer model routes birds from brooders to finishers "
+                ++ "for roughly half the emissions."
+      , href = "https://doi.org/10.3389/frsus.2024.1416964"
+      }
+    ]
+
+
+{-| Shorter posts, mine and on company blogs, newest first. -}
+posts : List Post
+posts =
+    [ { date = "2026.08"
       , outlet = "arvist blog"
       , title = "Why vertical monopoly doesn't work for warehouse software anymore"
       , gist =
@@ -1111,8 +1116,8 @@ writing =
     section "writing"
         "04 / writing & talking"
         "Said out loud, on the record."
-        [ groupLabel "Research"
-        , Html.ul [ Attr.class "posts" ] (List.map postRow papers)
+        [ groupLabel "Long form"
+        , Html.ul [ Attr.class "posts" ] (List.map postRow longForm)
         , groupLabel "Podcasts"
         , Html.div [ Attr.class "writes" ] (List.map piece podcasts)
         , groupLabel "Posts"
