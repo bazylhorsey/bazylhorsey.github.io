@@ -8,14 +8,14 @@ model where every number on the page moves when you drag an input. Outside
 numbers are published benchmarks, cited at the bottom. Defaults are round,
 illustrative values, not any company's data.
 
-Equations are plain text for now. Each one has a MATHML comment above it with
-the markup it should become once Jorn ships MathML (v0.3).
+Equations are real MathML, built with Jorn's MathMl elements (v0.2.1).
 
 -}
 
 import Jorn.Attribute as Attr
 import Jorn.Element as Element exposing (Element)
 import Jorn.Element.Html as Html
+import Jorn.Element.MathMl as M
 import Jorn.Event as Events
 
 
@@ -343,7 +343,7 @@ safeDiv a b =
 
 type Block
     = P String
-    | Eq String
+    | Eq (List (Element Never)) String
     | Defs (List ( String, String ))
     | Note String
     | Steps (List ( String, String ))
@@ -368,17 +368,12 @@ sections =
       )
     , ( "Escapes multiply"
       , [ P "A defect only reaches the customer if every inspection layer misses it. That one sentence does most of the work. Escapes multiply. They don't average."
-
-        -- MATHML (Jorn v0.3): render as one display equation, e.g.
-        --   <math display="block">
-        --     <mi>e</mi><mo>=</mo><msub><mi>d</mi><mn>0</mn></msub>
-        --     <mi>m</mi>
-        --     <mo>[</mo><mn>1</mn><mo>-</mo><mi>c</mi>
-        --       <mo>(</mo><mn>1</mn><mo>-</mo><mi>μ</mi><mo>)</mo><mo>]</mo>
-        --   </math>
-        -- followed by m = 1 - E_h(d0) and Q = 1 - e as two more short rows,
-        -- ideally one <mtable> so the equals signs line up.
-        , Eq "e = d₀ · m · [1 − c·(1 − μ)]        m = 1 − Eₕ(d₀)        Q = 1 − e"
+        , Eq
+            [ eq [ mi "e", mo "=", d0, mi "m", mo "[", mn "1", mo "−", mi "c", paren [ mn "1", mo "−", mi "μ" ], mo "]" ]
+            , eq [ mi "m", mo "=", mn "1", mo "−", eh, paren [ d0 ] ]
+            , eq [ mi "Q", mo "=", mn "1", mo "−", mi "e" ]
+            ]
+            ""
         , Defs
             [ ( "d₀", "upstream defect rate: the share of shipments with any defect before anyone looks." )
             , ( "Eₕ(d₀)", "human recall at that prevalence. Not a constant, more on that below." )
@@ -395,15 +390,9 @@ sections =
     , ( "People get worse as the floor gets cleaner"
       , [ P "The big assumption in the model is that human recall isn't a constant. It falls as defects get rarer. Researchers call it the low prevalence effect, and it's one of the most replicated results in visual search."
         , P "In Jeremy Wolfe's lab, observers missed about 7% of targets when half the displays had one. In a mixed-prevalence study the miss rate climbed to 25% for targets that showed up 10% of the time, and 52% for targets that showed up 1% of the time. It isn't laziness. The cause is a shift in criterion, not a loss of sensitivity: when something is rare, people want more evidence before they call it. Trained airport screeners show it too."
-
-        -- MATHML (Jorn v0.3):
-        --   <math display="block">
-        --     <msub><mi>E</mi><mi>h</mi></msub><mo>(</mo><mi>d</mi><mo>)</mo>
-        --     <mo>=</mo><mn>1.01</mn><mo>+</mo><mn>0.112</mn>
-        --     <mo>&#x2062;</mo><mi>ln</mi><mo>&#x2061;</mo><mi>d</mi>
-        --   </math>
-        -- with the validity range (0.5% to 50%) as a caption, not inside the math.
-        , Eq "Eₕ(d) = 1.01 + 0.112 · ln d        fitted for 0.5% ≤ d ≤ 50%"
+        , Eq
+            [ eq [ eh, paren [ mi "d" ], mo "=", mn "1.01", mo "+", mn "0.112", fn "ln", mi "d" ] ]
+            "fitted for 0.5% ≤ d ≤ 50%"
         , P "Machine recall has no prevalence term. A model looks at the ten thousandth clean pallet with the same attention it gave the first one. That asymmetry is the whole argument for putting the two together."
         , Figure Ceiling
         , P "Here's the result that surprised me. Across a 5x swing in upstream defect rate, from 10% to 50%, human-only outbound accuracy barely moves. It stays between about 96.2% and 97.5%. As an operation gets cleaner, people get proportionally worse at catching what's left. The layer limits itself."
@@ -414,18 +403,19 @@ sections =
     , ( "The number nobody has measured"
       , [ P "ρ is the most important input in the model and the one with the least evidence behind it. It asks a simple question. When the model misses something, is it the same thing a person would have missed?"
         , P "If the model and your people fail on different things, the model's recall counts in full. If every miss the model makes is one your people made too, the pair is no better than the model alone. ρ slides between those two ends."
-
-        -- MATHML (Jorn v0.3):
-        --   <math display="block">
-        --     <mi>μ</mi><mo>=</mo>
-        --     <mo>(</mo><mn>1</mn><mo>-</mo><mi>ρ</mi><mo>)</mo>
-        --     <mo>(</mo><mn>1</mn><mo>-</mo><mi>R</mi><mo>)</mo>
-        --     <mo>+</mo><mi>ρ</mi><mo>&#x2062;</mo><mi>min</mi>
-        --     <mo>(</mo><mn>1</mn><mo>,</mo>
-        --       <mfrac><mrow><mn>1</mn><mo>-</mo><mi>R</mi></mrow><mi>m</mi></mfrac>
-        --     <mo>)</mo>
-        --   </math>
-        , Eq "μ = (1 − ρ) · (1 − R) + ρ · min(1, (1 − R) / m)"
+        , Eq
+            [ eq
+                [ mi "μ"
+                , mo "="
+                , paren [ mn "1", mo "−", mi "ρ" ]
+                , paren [ mn "1", mo "−", mi "R" ]
+                , mo "+"
+                , mi "ρ"
+                , fn "min"
+                , paren [ mn "1", mo ",", over [ mn "1", mo "−", mi "R" ] [ mi "m" ] ]
+                ]
+            ]
+            ""
         , Figure Overlap
         , P "You can't measure ρ from flags alone. The defects both layers miss are exactly the ones nobody flagged, so they never show up in a query. It takes ground truth: pull a random sample of shipments that passed both layers, inspect them carefully, and count the real defects people missed and how many of those the model missed too. That share is μ, and the equation above gives you ρ. The 0.2 default here is a placeholder until somebody does that."
         ]
@@ -438,28 +428,21 @@ sections =
       )
     , ( "Good operations gain less, and that's fine"
       , [ P "If you plug in a site's measured accuracy instead of the curve, the share of escapes removed is easy to read off."
-
-        -- MATHML (Jorn v0.3):
-        --   <math display="block">
-        --     <mn>1</mn><mo>-</mo>
-        --     <mfrac><msub><mi>e</mi><mn>1</mn></msub><msub><mi>e</mi><mn>0</mn></msub></mfrac>
-        --     <mo>=</mo><mi>c</mi><mo>(</mo><mn>1</mn><mo>-</mo><mi>μ</mi><mo>)</mo>
-        --   </math>
-        -- with "c R when rho = 0" as a caption.
-        , Eq "1 − e₁ / e₀ = c · (1 − μ)        which is c · R when ρ = 0"
+        , Eq
+            [ eq [ mn "1", mo "−", over [ sub "e" "1" ] [ sub "e" "0" ], mo "=", mi "c", paren [ mn "1", mo "−", mi "μ" ] ] ]
+            "which is c·R when ρ = 0"
         , P "With no overlap the baseline drops out: a site at 90% and a site at 99% cut escapes by the same share. Overlap changes that. A team that already catches most defects is left with the hard ones, and those are the ones a model is most likely to miss too. So the honest pitch to a strong operation is a smaller relative gain, not the same one. Turn on the measured baseline switch in the first figure, leave ρ above zero, and watch the reduction shrink as the baseline climbs."
         ]
       )
     , ( "False positives move labor, not quality"
       , [ P "This is the objection an ops lead raises the second you show them 99.3%. What does it cost my people to clear the flags?"
         , P "False positives don't change what ships. They change how many minutes somebody spends looking at a clean pallet. So I track them on their own line."
-
-        -- MATHML (Jorn v0.3): three rows, best as one <math display="block">
-        -- holding an <mtable> so the equals signs line up:
-        --   FP = (1 - d0) N c FPR
-        --   TP = e0 N c (1 - mu)
-        --   precision = TP / (TP + FP), with <mfrac>
-        , Eq "FP = (1 − d₀) · N · c · FPR        TP = e₀ · N · c·(1 − μ)        precision = TP / (TP + FP)"
+        , Eq
+            [ eq [ mi "FP", mo "=", paren [ mn "1", mo "−", d0 ], mi "N", mi "c", mi "FPR" ]
+            , eq [ mi "TP", mo "=", sub "e" "0", mi "N", mi "c", paren [ mn "1", mo "−", mi "μ" ] ]
+            , eq [ mi "precision", mo "=", over [ mi "TP" ] [ mi "TP", mo "+", mi "FP" ] ]
+            ]
+            ""
         , Figure Burden
         , P "That assumes the model's flags only get reviewed on shipments your people passed. If every model flag goes to review, including defects people already caught, the queue is bigger. Price the workflow you'll actually run."
         , P "At the defaults, about half the flags are real. That sounds bad until you price it. Clearing every flag costs a small fraction of what the prevented escapes are worth. Having that number ready is stronger than having the story ready."
@@ -557,9 +540,16 @@ viewBlock model block =
         P text ->
             Html.p [] [ Element.text text ]
 
-        Eq text ->
-            Html.p [ Attr.class "study-eq", Attr.attribute "role" "math", Attr.attribute "aria-label" text ]
-                [ Element.text text ]
+        Eq rows note ->
+            Html.div [ Attr.class "study-eq" ]
+                (List.map (Element.map never) rows
+                    ++ (if note == "" then
+                            []
+
+                        else
+                            [ Html.p [ Attr.class "study-eq-note" ] [ Element.text note ] ]
+                       )
+                )
 
         Defs items ->
             Html.dl [ Attr.class "study-defs" ]
@@ -591,6 +581,62 @@ leadItem ( lead, rest ) =
 source : ( String, String ) -> Element msg
 source ( label, href ) =
     Html.li [] [ Html.a [ Attr.href href ] [ Element.text label ] ]
+
+
+
+-- EQUATIONS
+-- Small builders so each equation above reads close to how it's written.
+
+
+eq : List (Element msg) -> Element msg
+eq parts =
+    M.math [ Attr.attribute "display" "block" ] [ M.mrow [] parts ]
+
+
+mi : String -> Element msg
+mi name =
+    M.mi [] [ Element.text name ]
+
+
+mn : String -> Element msg
+mn value =
+    M.mn [] [ Element.text value ]
+
+
+mo : String -> Element msg
+mo op =
+    M.mo [] [ Element.text op ]
+
+
+{-| A named function like ln or min, upright and spaced from its argument. -}
+fn : String -> Element msg
+fn name =
+    M.mrow [] [ M.mi [] [ Element.text name ], M.mo [ Attr.attribute "rspace" "0.17em" ] [ Element.text "\u{2061}" ] ]
+
+
+sub : String -> String -> Element msg
+sub base script =
+    M.msub [] [ mi base, mn script ]
+
+
+paren : List (Element msg) -> Element msg
+paren parts =
+    M.mrow [] (mo "(" :: parts ++ [ mo ")" ])
+
+
+over : List (Element msg) -> List (Element msg) -> Element msg
+over num den =
+    M.mfrac [] [ M.mrow [] num, M.mrow [] den ]
+
+
+d0 : Element msg
+d0 =
+    sub "d" "0"
+
+
+eh : Element msg
+eh =
+    M.msub [] [ mi "E", mi "h" ]
 
 
 
