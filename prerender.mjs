@@ -77,6 +77,15 @@ const STUDY = {
   date: "2026-08-01",
 };
 
+const ZONE = {
+  page: "zone",
+  path: "/writing/phantom-zone-for-ai/",
+  title: "A Phantom Zone for AI",
+  description:
+    "How to boot an air-gapped GPU node so the model and the customer's data never touch memory until the machine proves what it is.",
+  date: "2026-10-19",
+};
+
 // An article page is the same shell as the home page (same stylesheet, same
 // compiled Elm, same patcher and glue), with its own head and flags.
 function articleShell(home, article) {
@@ -135,7 +144,7 @@ if (!home.includes(empty)) {
 
 const pages = [
   { file: homeFile, shell: home, flags: { dark: false } },
-  ...[ESSAY, STUDY].map((article) => ({
+  ...[ESSAY, STUDY, ZONE].map((article) => ({
     file: "build" + article.path + "index.html",
     shell: articleShell(home, article),
     flags: { dark: false, page: article.page },
