@@ -363,9 +363,9 @@ type Fig
 
 sections : List ( String, List Block )
 sections =
-    [ ( "The question every ops lead asks"
+    [ ( "The obvious question"
       , [ Note "An independent case study, built only from peer-reviewed research and public industry sources, to show how you might estimate the ROI of pairing people with computer vision. It contains no proprietary data and doesn't describe any company's product, customers or results."
-        , P "Every operations lead I've sat across from asks some version of the same thing. My people already check every shipment. What does a camera add?"
+        , P "It's the obvious question about computer vision on a warehouse dock. If people already check every shipment, what does a camera add?"
         , P "The honest answer isn't a percentage. It's a model. This page is that model. Every outside number has its source at the bottom. Every other number is a round, illustrative assumption, and you can drag it."
         , P "The short version: people and machines fail in different ways, and on a dock that difference is where the money is."
         ]
@@ -385,7 +385,7 @@ sections =
             , ( "c", "coverage: the share of shipments the cameras actually see." )
             , ( "R", "model recall: the share of present defects the model catches, measured in the field." )
             , ( "μ", "how often the model misses a defect people already missed. It depends on R and on ρ, below." )
-            , ( "Q", "outbound accuracy, the number that ends up on a slide." )
+            , ( "Q", "outbound accuracy: the share of shipments that leave without a defect." )
             ]
         , P "If you averaged, a 90% model and a team that catches about three quarters of defects would land around 82%. Multiply instead and the picture changes. People let about a quarter of defects through, the model catches most of those, and what's left is small. Push the inputs around and watch where the defects go."
         , Figure Funnel
@@ -403,7 +403,7 @@ sections =
         , P "Here's the check I'd want before trusting the curve on a dock. WERC's DC Measures benchmark puts order picking accuracy at about 99.4% on average, between 99.0% and 99.6% for most companies, and 99.89% or better for the best. Give the curve an upstream defect rate between about 1.5% and 4.5%, and people-only accuracy lands in that same band. That's a consistency check, not proof. Nobody publishes upstream defect rates, so I can't confirm the 2% default, and a different curve with a different defect rate could land in the same place. What it does show is that the curve and a plausible defect rate end up where real warehouses report."
         , P "It also shows why the last half a percent is so hard. As an operation gets cleaner, people catch a smaller share of what's left: about 84% of defects at 10% upstream, 74% at 2%, and 66% at 0.5%. Getting from the median to best in class takes either a much cleaner process upstream or a second layer whose attention doesn't depend on how rare the defect is."
         , P "Perfect order rate is a different number. Its medians sit lower, around 93 to 96%, because it also counts late shipments, paperwork and damage in transit, which a dock inspection never sees. Picking accuracy is a slightly different denominator too. This model is about the inspection layer only."
-        , Note "Above about 5% upstream defects, people-only accuracy drops below 99%: 98.4% at 10% and 97.6% at 20%. That's a site with a real upstream problem, and it's where a vision layer pays back fastest. One more caveat: in a mixed experiment from the same 2005 paper, where some target showed up on half the trials, a target type that showed up 1% of the time was missed 52% of the time. That design doesn't map onto a single defect rate, so the fit leaves it out."
+        , Note "Above about 5% upstream defects, people-only accuracy drops below 99%: 98.4% at 10% and 97.6% at 20%. That's an operation with a real upstream problem, and it's where a vision layer pays back fastest. One more caveat: in a mixed experiment from the same 2005 paper, where some target showed up on half the trials, a target type that showed up 1% of the time was missed 52% of the time. That design doesn't map onto a single defect rate, so the fit leaves it out."
         ]
       )
     , ( "The number nobody has measured"
@@ -433,15 +433,15 @@ sections =
         ]
       )
     , ( "Good operations gain less, and that's fine"
-      , [ P "If you plug in a site's measured accuracy instead of the curve, the share of escapes removed is easy to read off."
+      , [ P "If you plug in an operation's measured accuracy instead of the curve, the share of escapes removed is easy to read off."
         , Eq
             [ eq [ mn "1", mo "−", over [ sub "e" "1" ] [ sub "e" "0" ], mo "=", mi "c", paren [ mn "1", mo "−", mi "μ" ] ] ]
             "which is c·R when ρ = 0"
-        , P "With no overlap the baseline drops out: a site at 90% and a site at 99% cut escapes by the same share. Overlap changes that. A team that already catches most defects is left with the hard ones, and those are the ones a model is most likely to miss too. So the honest pitch to a strong operation is a smaller relative gain, not the same one. Turn on the measured baseline switch in the first figure, leave ρ above zero, and watch the reduction shrink as the baseline climbs."
+        , P "With no overlap the baseline drops out: an operation at 90% and one at 99% cut escapes by the same share. Overlap changes that. A team that already catches most defects is left with the hard ones, and those are the ones a model is most likely to miss too. So the honest expectation for a strong operation is a smaller relative gain, not the same one. Turn on the measured baseline switch in the first figure, leave ρ above zero, and watch the reduction shrink as the baseline climbs."
         ]
       )
     , ( "False positives move labor, not quality"
-      , [ P "This is the objection an ops lead raises the second you show them 99.9%. What does it cost my people to clear the flags?"
+      , [ P "Accuracy is only half the question. The other half is labor: what does it cost people to clear the flags?"
         , P "False positives don't change what ships. They change how many minutes somebody spends looking at a clean pallet. So I track them on their own line."
         , Eq
             [ eq [ mi "FP", mo "=", paren [ mn "1", mo "−", d0 ], mi "N", mi "c", mi "FPR" ]
@@ -451,31 +451,31 @@ sections =
             ""
         , Figure Burden
         , P "That assumes the model's flags only get reviewed on shipments your people passed. If every model flag goes to review, including defects people already caught, the queue is bigger. Price the workflow you'll actually run."
-        , P "At the defaults, only about one flag in eight is real, because clean shipments outnumber defective ones 49 to 1. That sounds bad until you price it. Clearing every flag still costs about a twelfth of what the prevented escapes are worth. Having that number ready is stronger than having the story ready. The $28 an hour default is the BLS median for hand laborers and material movers, $18.38 in May 2025, with benefits and overhead on top."
+        , P "At the defaults, only about one flag in eight is real, because clean shipments outnumber defective ones 49 to 1. That sounds bad until you price it. Clearing every flag still costs about a twelfth of what the prevented escapes are worth. The $28 an hour default is the BLS median for hand laborers and material movers, $18.38 in May 2025, with benefits and overhead on top."
         , Note "People raise false alarms too: 2% in a classic study of circuit inspection, and 35% of good parts in a recent study of precision manufactured parts, where the same inspectors caught 85% of defects. The fair comparison is against that, not against zero."
         ]
       )
     , ( "Putting a dollar on an escape"
-      , [ P "An escaped defect costs labor, return freight and goodwill. Vendor estimates put one shipping error somewhere between $50 and $250, without saying where the range comes from. The default here is $150. Use the site's own number when they have one. They usually do."
+      , [ P "An escaped defect costs labor, return freight and goodwill. Vendor estimates put one shipping error somewhere between $50 and $250, without saying where the range comes from. The default here is $150. If an operation tracks its own cost per error, use that instead."
         , P "Catching a defect isn't free either. Somebody re-picks or repacks it, so the saving per catch is the escape cost minus the cost to fix it in house. The $20 default is a placeholder."
         , P "Footage is the last layer, and it's easy to oversell. It doesn't stop an escape or find one nobody flagged. What it does is help you get money back on the escapes you do ship, because concealed damage claims are among the hardest freight claims to resolve, and the burden of proof shifts to the receiver. So I count claim recovery as money, not accuracy, and only on shipments the cameras covered."
-        , P "One more thing to keep in front of you: the dollars scale with d₀. At 2% upstream defects the base case stops about 43 escapes per 10,000 shipments. At 10% it stops about 130. A slightly smaller relative gain, three times the money. Use the site's real defect rate before you quote a number."
+        , P "One more thing to keep in front of you: the dollars scale with d₀. At 2% upstream defects the base case stops about 43 escapes per 10,000 shipments. At 10% it stops about 130. A slightly smaller relative gain, three times the money. Use a real defect rate before you trust the dollars."
         , Figure Dollars
         ]
       )
-    , ( "How I'd run this at a new site"
+    , ( "Checking it against a real operation"
       , [ Steps
             [ ( "Pick one denominator.", "Pick-line, order and retail-compliance accuracy are three different numbers. Agree on one before you measure anything." )
-            , ( "Measure the baseline at two prevalences.", "The human curve comes from lab studies. Check it against one site at two different defect rates before it goes in a deck." )
+            , ( "Measure the baseline at two prevalences.", "The human curve comes from lab studies. Check it against one operation at two different defect rates before relying on it." )
             , ( "Measure ρ.", "Ground truth on a random sample of shipments both layers passed. Flags alone can't show it." )
             , ( "Count coverage honestly.", "The shipments the cameras actually see, not the doors that have cameras." )
-            , ( "Count false positives and the minutes to clear one.", "That's the labor line, and it's the first thing an ops lead will ask about." )
-            , ( "Price an escape with the site's numbers.", "Net of the cost to fix a catch. Then report quality and claim recovery as two lines, not one." )
+            , ( "Count false positives and the minutes to clear one.", "That's the labor line, which the accuracy numbers never show." )
+            , ( "Price an escape with the operation's own numbers.", "Net of the cost to fix a catch. Then report quality and claim recovery as two lines, not one." )
             ]
         ]
       )
     , ( "What this doesn't claim"
-      , [ P "It doesn't say any particular model hits 90%. That's a round figure for the math, not a measured result. Vendors claim 97 to 99.5% for vision inspection without publishing the data behind it, and I'd assume less until a site proves otherwise."
+      , [ P "It doesn't say any particular model hits 90%. That's a round figure for the math, not a measured result. Vendors claim 97 to 99.5% for vision inspection without publishing the data behind it, and I'd assume less until field data shows otherwise."
         , P "It doesn't say the human curve is a measurement of your floor. It's lab data, checked against factory studies and warehouse benchmarks but never measured on a dock. Directionally sound, worth validating."
         , P "It treats every defect as one kind. On a real dock people and models look for several kinds at once, each rarer than the total, so the prevalence each search runs at is lower than d₀. Run it per defect class when you have the data."
         , P "It gives point estimates. Every input here has a range, and the overlap table is the quickest way to see how much the answer moves."
