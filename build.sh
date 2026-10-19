@@ -61,7 +61,11 @@ node prerender.mjs
 python3 - "$OUT" <<'PY2'
 import hashlib, pathlib, sys
 out = pathlib.Path(sys.argv[1])
-for page in [out / "index.html", out / "writing/distracted-forward-deployed-officer/index.html"]:
+for page in [
+    out / "index.html",
+    out / "writing/distracted-forward-deployed-officer/index.html",
+    out / "writing/escapes-multiply/index.html",
+]:
     html = page.read_text(encoding="utf-8")
     for ref, path in [
         ('href="/portfolio.css"', "portfolio.css"),
