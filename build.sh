@@ -36,10 +36,7 @@ cp public/index.html public/portfolio.css public/favicon.svg public/favicon.ico 
 # Older iOS asks for the -precomposed name first; same image.
 cp public/apple-touch-icon.png "$OUT/apple-touch-icon-precomposed.png"
 
-# 4. the layout audit, so a deployed copy can still be checked
-cp audit.html "$OUT/audit.html"
-
-# 4b. the one self-hosted font and its license
+# 4. the one self-hosted font and its license
 mkdir -p "$OUT/fonts"
 cp public/fonts/bigshoulders.woff2 public/fonts/BigShoulders-OFL.txt "$OUT/fonts/"
 
@@ -83,5 +80,4 @@ PY2
 echo
 echo "built $OUT/"
 echo "preview:  python3 -m http.server -d $OUT 8080"
-echo "audit:    http://127.0.0.1:8080/audit.html"
 echo "deploy:   upload the contents of $OUT/ anywhere that serves static files"

@@ -10,7 +10,8 @@
 // In the browser nothing changes: Jorn still mounts the same tree and owns the
 // page from then on (theme toggle, filters, every patch). Mount replaces the
 // prerendered children with an identical tree, so there is nothing to see.
-// Real hydration, adopting the existing DOM instead, is Jorn stage 7.
+// Real hydration, adopting the existing DOM instead, is still todo on Jorn's
+// roadmap.
 
 import { createRequire } from "node:module";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";

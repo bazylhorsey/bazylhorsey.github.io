@@ -14,13 +14,16 @@ every time state changes. `public/index.html` is a shell with one `<div>` in it.
 .
 ├── elm.json          points at the JORN submodule in jorn/src
 ├── jorn/             JORN, as a git submodule pinned to one commit
-├── src/Main.elm      the entire page: model, update, view, content
-├── public/           the shell and the stylesheet
-│   ├── index.html
-│   ├── portfolio.css
-│   └── favicon.svg
+├── src/
+│   ├── Main.elm      the home page: model, update, view, content
+│   ├── Essay.elm     /writing/distracted-forward-deployed-officer/
+│   └── CaseStudy.elm /writing/escapes-multiply/
+├── public/           the shell, stylesheet, font, icons and crawler files
 ├── build.sh          elm make + collect everything into build/
+├── prerender.mjs     writes each page's HTML into build/ (run by build.sh)
 ├── run.mjs           headless check: mounts, fires events, inspects patches
+├── serve.command     rebuild and preview on http://127.0.0.1:8080
+├── TESTIMONIALS.md   the original quotes the site cuts down from
 ├── build/            the deployable folder (generated, not committed)
 └── .github/workflows/pages.yml   builds, checks and deploys on push to main
 ```
@@ -75,8 +78,11 @@ nothing.
 ## Preview
 
 ```bash
-python3 -m http.server -d build 8080
+./serve.command
 ```
+
+Rebuilds when `elm` is on your PATH, then serves `build/` on
+http://127.0.0.1:8080. Double-clicking it in Finder does the same.
 
 ## Deploy
 
@@ -87,25 +93,6 @@ requests get the same build and check, without the deploy.
 `build/` is a static folder with no server requirements, so it can also be
 uploaded anywhere by hand. Nothing in it needs API keys or fetches fonts from
 anywhere.
-
-## Check the layout at real widths
-
-```bash
-python3 -m http.server -d build 8080
-# then open http://127.0.0.1:8080/audit.html
-```
-
-`audit.html` loads the page in an offscreen iframe at 375, 768, 1280, 1600,
-1920, and 2560 pixels and flags two things: text collapsed into a
-one-word-per-line ribbon, and anything spilling past the viewport. Both are
-easy to miss if you only ever look at one window size. `node run.mjs` covers
-the Elm side, this covers the CSS side.
-
-It caught a real one: the `::before` counter in the claims list is a grid item,
-so the paragraph was wrapping back into the 4.5rem number column and rendering
-as a ribbon. That only happens above 700px, where the mobile override collapses
-the grid. It looked perfect in a narrow window and was broken on every desktop
-browser.
 
 ## Rules for editing it
 
