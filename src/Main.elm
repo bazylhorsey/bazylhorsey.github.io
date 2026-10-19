@@ -391,7 +391,19 @@ podcasts =
     ]
 
 
-{-| Posts and papers, newest first. -}
+{-| Peer reviewed work, set apart from the posts but drawn the same way. -}
+papers : List Post
+papers =
+    [ { date = "2024.07"
+      , outlet = "frontiers in sustainability"
+      , title = "Implementing concepts from green logistics in the turkey production supply chain"
+      , gist = "Peer reviewed, with Griffin Wilson and Richard Stone."
+      , href = "https://doi.org/10.3389/frsus.2024.1416964"
+      }
+    ]
+
+
+{-| Blog posts under my own byline, newest first. -}
 posts : List Post
 posts =
     [ { date = Essay.dateLabel
@@ -426,12 +438,6 @@ posts =
             "Quotes price the connection. The time and money go into mapping data "
                 ++ "that doesn't line up and the scope nobody wrote down."
       , href = "https://arvist.ai/why-your-integration-quote-is-wrong/"
-      }
-    , { date = "2024.07"
-      , outlet = "frontiers in sustainability"
-      , title = "Implementing concepts from green logistics in the turkey production supply chain"
-      , gist = "Peer reviewed, with Griffin Wilson and Richard Stone."
-      , href = "https://doi.org/10.3389/frsus.2024.1416964"
       }
     , { date = "2021.01"
       , outlet = "medium"
@@ -1105,7 +1111,9 @@ writing =
     section "writing"
         "04 / writing & talking"
         "Said out loud, on the record."
-        [ groupLabel "Podcasts"
+        [ groupLabel "Research"
+        , Html.ul [ Attr.class "posts" ] (List.map postRow papers)
+        , groupLabel "Podcasts"
         , Html.div [ Attr.class "writes" ] (List.map piece podcasts)
         , groupLabel "Posts"
         , Html.ul [ Attr.class "posts" ] (List.map postRow posts)
