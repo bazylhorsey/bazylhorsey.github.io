@@ -88,25 +88,6 @@ requests get the same build and check, without the deploy.
 uploaded anywhere by hand. Nothing in it needs API keys or fetches fonts from
 anywhere.
 
-## Check the layout at real widths
-
-```bash
-python3 -m http.server -d build 8080
-# then open http://127.0.0.1:8080/audit.html
-```
-
-`audit.html` loads the page in an offscreen iframe at 375, 768, 1280, 1600,
-1920, and 2560 pixels and flags two things: text collapsed into a
-one-word-per-line ribbon, and anything spilling past the viewport. Both are
-easy to miss if you only ever look at one window size. `node run.mjs` covers
-the Elm side, this covers the CSS side.
-
-It caught a real one: the `::before` counter in the claims list is a grid item,
-so the paragraph was wrapping back into the 4.5rem number column and rendering
-as a ribbon. That only happens above 700px, where the mobile override collapses
-the grid. It looked perfect in a narrow window and was broken on every desktop
-browser.
-
 ## Rules for editing it
 
 1. **Content lives in `src/Main.elm`, not in markup.** The lists at the top of
