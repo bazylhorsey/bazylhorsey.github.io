@@ -2,8 +2,6 @@
 
 Quotes collected for the site. Everyone below has agreed to be quoted by name.
 
-Kept in the site repo under `source/` for reference.
-
 The full quotes below are the originals, word for word, exactly as received.
 Never edit, trim or "fix" them. What the site shows can be cut down; that
 lives in `src/Main.elm`, and the log at the bottom records each change.

@@ -14,13 +14,16 @@ every time state changes. `public/index.html` is a shell with one `<div>` in it.
 .
 ├── elm.json          points at the JORN submodule in jorn/src
 ├── jorn/             JORN, as a git submodule pinned to one commit
-├── src/Main.elm      the entire page: model, update, view, content
-├── public/           the shell and the stylesheet
-│   ├── index.html
-│   ├── portfolio.css
-│   └── favicon.svg
+├── src/
+│   ├── Main.elm      the home page: model, update, view, content
+│   ├── Essay.elm     /writing/distracted-forward-deployed-officer/
+│   └── CaseStudy.elm /writing/escapes-multiply/
+├── public/           the shell, stylesheet, font, icons and crawler files
 ├── build.sh          elm make + collect everything into build/
+├── prerender.mjs     writes each page's HTML into build/ (run by build.sh)
 ├── run.mjs           headless check: mounts, fires events, inspects patches
+├── serve.command     rebuild and preview on http://127.0.0.1:8080
+├── TESTIMONIALS.md   the original quotes the site cuts down from
 ├── build/            the deployable folder (generated, not committed)
 └── .github/workflows/pages.yml   builds, checks and deploys on push to main
 ```
@@ -75,8 +78,11 @@ nothing.
 ## Preview
 
 ```bash
-python3 -m http.server -d build 8080
+./serve.command
 ```
+
+Rebuilds when `elm` is on your PATH, then serves `build/` on
+http://127.0.0.1:8080. Double-clicking it in Finder does the same.
 
 ## Deploy
 
