@@ -3,10 +3,10 @@ module CaseStudy exposing (Model, Msg, date, dateLabel, init, slug, title, updat
 {-| "Escapes Multiply", a case study on pricing a vision layer next to the
 people who already inspect a dock.
 
-The math is the cumulative quality model I built in a spreadsheet in July
-2026, rebuilt here so every number on the page moves when you drag an input.
-Outside numbers are published benchmarks, cited at the bottom. Inside numbers
-are illustrative defaults, not anyone's customer data.
+An open assessment built only from published research: a layered escape
+model where every number on the page moves when you drag an input. Outside
+numbers are published benchmarks, cited at the bottom. Defaults are round,
+illustrative values, not any company's data.
 
 Equations are plain text for now. Each one has a MATHML comment above it with
 the markup it should become once Jorn ships MathML (v0.3).
@@ -61,13 +61,13 @@ type alias Model =
     }
 
 
-{-| The spreadsheet's base case. -}
+{-| Round, illustrative defaults. -}
 init : Model
 init =
     { d0 = 0.2
     , coverage = 1
-    , recall = 0.91
-    , rho = 0.15
+    , recall = 0.9
+    , rho = 0.2
     , claims = 0.5
     , fix = 20
     , useMeasured = False
@@ -75,7 +75,7 @@ init =
     , cost = 150
     , volume = 250000
     , fpr = 0.03
-    , minutes = 2.5
+    , minutes = 3
     , wage = 28
     , hover = Nothing
     }
@@ -210,8 +210,8 @@ put field v m =
 
 
 -- THE MATH
--- The spreadsheet's model, with two corrections: miss overlap stays inside
--- what the two recalls allow, and footage recovers money, not defects.
+-- Layered escapes. Miss overlap stays inside what the two recalls allow, and
+-- footage recovers money, not defects.
 
 
 {-| Human recall at prevalence d, fitted to the Wolfe anchor points:
@@ -362,7 +362,7 @@ sections : List ( String, List Block )
 sections =
     [ ( "The question every ops lead asks"
       , [ P "Every operations lead I've sat across from asks some version of the same thing. My people already check every shipment. What does a camera add?"
-        , P "The honest answer isn't a percentage. It's a model. This page is that model. I built it in July 2026 during my time at Arvist, and what I'm sharing here is the method, not anyone's customer data. Every outside number is a published benchmark with its source at the bottom. Every inside number is an assumption, and you can drag it."
+        , P "The honest answer isn't a percentage. It's a model. This page is that model. It's an open assessment built only on published research and public benchmarks, each with its source at the bottom. Every other number is a round, illustrative assumption, and you can drag it."
         , P "The short version: people and machines fail in different ways, and on a dock that difference is where the money is."
         ]
       )
@@ -388,7 +388,7 @@ sections =
             , ( "μ", "how often the model misses a defect people already missed. It depends on R and on ρ, below." )
             , ( "Q", "outbound accuracy, the number that ends up on a slide." )
             ]
-        , P "If you averaged, a 91% model and a team that catches 83% would land somewhere in the high eighties. Multiply instead and the picture changes. People let some defects through, the model catches most of those, and what's left is small. Push the inputs around and watch where the defects go."
+        , P "If you averaged, a 90% model and a team that catches 83% would land somewhere in the high eighties. Multiply instead and the picture changes. People let some defects through, the model catches most of those, and what's left is small. Push the inputs around and watch where the defects go."
         , Figure Funnel
         ]
       )
@@ -427,12 +427,13 @@ sections =
         --   </math>
         , Eq "μ = (1 − ρ) · (1 − R) + ρ · min(1, (1 − R) / m)"
         , Figure Overlap
-        , P "You can't measure ρ from flags alone. The defects both layers miss are exactly the ones nobody flagged, so they never show up in a query. It takes ground truth: pull a random sample of shipments that passed both layers, inspect them carefully, and count the real defects people missed and how many of those the model missed too. That share is μ, and the equation above gives you ρ. The 15% default here is a placeholder until somebody does that."
+        , P "You can't measure ρ from flags alone. The defects both layers miss are exactly the ones nobody flagged, so they never show up in a query. It takes ground truth: pull a random sample of shipments that passed both layers, inspect them carefully, and count the real defects people missed and how many of those the model missed too. That share is μ, and the equation above gives you ρ. The 0.2 default here is a placeholder until somebody does that."
         ]
       )
-    , ( "Coverage beats recall"
-      , [ P "Coverage and recall trade almost one for one, because they multiply. A model that sees every shipment at 88% recall catches more than a model that sees 80% of shipments at 99%: 0.88 against 0.79 when misses are independent. Overlap narrows that gap, because it eats into the weaker model more, but at the base case coverage still comes out ahead."
-        , P "For an ROI case that changes where the effort goes. Getting every dock door covered, with camera angles that actually see the freight, is usually worth more than the last few points of model accuracy. It's also the less glamorous work, which is why it gets skipped."
+    , ( "Coverage or recall"
+      , [ P "Coverage and recall multiply, so they trade almost one for one. When misses are independent, a model that sees every shipment at 88% recall catches more than one that sees 80% of shipments at 99%: 0.88 against 0.79."
+        , P "Overlap changes that, because it hits the weaker model harder. At this page's default ρ of 0.2 the order flips, 0.76 against 0.78. So the rule of thumb only holds when misses are close to independent, which is one more reason to measure ρ before you pick where to spend."
+        , P "Coverage is still the first thing I'd check. It's the one you can count today, and an uncovered dock door catches nothing no matter how good the model is."
         ]
       )
     , ( "Good operations gain less, and that's fine"
@@ -450,7 +451,7 @@ sections =
         ]
       )
     , ( "False positives move labor, not quality"
-      , [ P "This is the objection an ops lead raises the second you show them 99.5%. What does it cost my people to clear the flags?"
+      , [ P "This is the objection an ops lead raises the second you show them 99.3%. What does it cost my people to clear the flags?"
         , P "False positives don't change what ships. They change how many minutes somebody spends looking at a clean pallet. So I track them on their own line."
 
         -- MATHML (Jorn v0.3): three rows, best as one <math display="block">
@@ -469,7 +470,7 @@ sections =
       , [ P "An escaped defect costs labor, return freight and goodwill. Published estimates put one shipping error somewhere between $50 and $250. The default here is $150. Use the site's own number when they have one. They usually do."
         , P "Catching a defect isn't free either. Somebody re-picks or repacks it, so the saving per catch is the escape cost minus the cost to fix it in house. The $20 default is a placeholder."
         , P "Footage is the last layer, and it's easy to oversell. It doesn't stop an escape or find one nobody flagged. What it does is help you get money back on the escapes you do ship, because concealed damage claims get denied far more often and the burden of proof shifts to the receiver. So I count claim recovery as money, not accuracy, and only on shipments the cameras covered."
-        , P "One more thing to keep in front of you: the dollars scale with d₀. At 20% upstream defects the base case stops about 287 escapes per 10,000 shipments. At 2% it stops about 76. Same relative gain, a quarter of the money. Use the site's real defect rate before you quote a number."
+        , P "One more thing to keep in front of you: the dollars scale with d₀. At 20% upstream defects the base case stops about 273 escapes per 10,000 shipments. At 2% it stops about 75. Roughly the same relative gain, about a quarter of the money. Use the site's real defect rate before you quote a number."
         , Figure Dollars
         ]
       )
@@ -485,7 +486,7 @@ sections =
         ]
       )
     , ( "What this doesn't claim"
-      , [ P "It doesn't say any particular model hits 91%. That's a conservative starting figure for the math, not a measured result. Published vision benchmarks run from 97 to 99.5%, and I'd still assume less until a site proves otherwise."
+      , [ P "It doesn't say any particular model hits 90%. That's a round figure for the math, not a measured result. Published vision benchmarks run from 97 to 99.5%, and I'd still assume less until a site proves otherwise."
         , P "It doesn't say the human curve is a measurement of your floor. It's lab data, extrapolated to dock work. Directionally sound, worth validating."
         , P "It treats every defect as one kind. On a real dock people and models look for several kinds at once, each rarer than the total, so the prevalence each search runs at is lower than d₀. Run it per defect class when you have the data."
         , P "It gives point estimates. Every input here has a range, and the overlap table is the quickest way to see how much the answer moves."
@@ -627,7 +628,7 @@ viewFigure model fig =
                 [ controls model [ Recall, Rho ]
                 , overlapTable model r
                 , Html.p [ Attr.class "study-caption" ]
-                    [ Element.text "Columns are model recall R, rows are miss overlap ρ. The row and column closest to your current inputs are highlighted. Coverage and baseline come from the first figure." ]
+                    [ Element.text "Columns are model recall R, rows are miss overlap ρ. The grid follows your inputs, so the filled cell is exactly what the sliders say. Each step out is 3 points of recall or 0.1 of overlap. Coverage and baseline come from the first figure." ]
                 ]
 
         Burden ->
@@ -1057,28 +1058,38 @@ n x =
 overlapTable : Model -> Result -> Element msg
 overlapTable model r =
     let
+        -- The grid follows the sliders: the middle row and column are the
+        -- current inputs exactly, with steps either side, so the highlighted
+        -- cell always matches what's set above.
+        -- Near a limit the window slides instead of shrinking, so the grid
+        -- stays seven by seven and the current value stays on it.
+        around value step lo hi =
+            let
+                fits limit =
+                    floor (abs (limit - value) / step + 0.000001)
+
+                below =
+                    min (fits lo) (max 3 (6 - fits hi))
+
+                above =
+                    min (fits hi) (6 - below)
+            in
+            List.map (\i -> value + toFloat i * step) (List.range -below above)
+
         recalls =
-            [ 0.8, 0.85, 0.88, 0.91, 0.94, 0.97, 0.99 ]
+            around model.recall 0.03 0.5 0.99
 
         rhos =
-            [ 0, 0.1, 0.15, 0.2, 0.3, 0.5, 0.8 ]
+            around model.rho 0.1 0 1
 
         miss =
             clamp 0 1 (safeDiv r.e0 model.d0)
 
-        -- The grid is coarse, so mark the row and column closest to the
-        -- current inputs, not only an exact match.
-        nearest target values =
-            values
-                |> List.sortBy (\v -> abs (v - target))
-                |> List.head
-                |> Maybe.withDefault target
-
         rowAt =
-            nearest model.rho rhos
+            model.rho
 
         colAt =
-            nearest model.recall recalls
+            model.recall
 
         cell rho rec =
             Html.td
