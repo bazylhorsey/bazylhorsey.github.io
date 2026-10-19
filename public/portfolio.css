@@ -1181,6 +1181,12 @@ html[data-theme="night"] .diagram .dg-shadow {
   font-weight: 700;
 }
 
+.study-table td.in-row,
+.study-table td.in-col {
+  background: var(--paper-2);
+  color: var(--ink);
+}
+
 .study-table td.is-here {
   background: var(--accent);
   color: var(--accent-ink);
