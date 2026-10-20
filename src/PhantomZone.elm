@@ -84,17 +84,17 @@ type Block
 
 sections : List ( String, List Block )
 sections =
-    [ ( "The question"
-      , [ P "I got asked this recently, and I haven't stopped thinking about it."
-        , P "You're bringing up a brand new bare-metal GPU server for a customer with serious compliance requirements. It's air-gapped. You provision it out of band over Redfish and boot it over PXE. Design the boot so the TPM 2.0 measurements, your custom eBPF network hooks and the GPUs' VFIO bindings are all verified and active before any model runtime or customer data touches memory."
-        , P "Each piece is easy to talk about on its own. The hard part is the order, and proving the order happened. Here's how I'd build it."
+    [ ( "The problem"
+      , [ P "A customer with serious compliance requirements wants a model running on their data, on a brand new bare-metal GPU server. The server is air-gapped. You provision it out of band over Redfish, and it boots over PXE. Before any model runtime or customer data touches memory, three things have to be verified and active: the TPM 2.0 measurements, your custom eBPF network hooks and the GPUs' VFIO bindings."
+        , P "That sounds narrow. It isn't. Swap the GPU server for an edge box on a factory floor, a rack in a sovereign cloud or an inference appliance in a hospital, and it's the same problem. A machine has to prove what it is before it gets anything worth stealing."
+        , P "Each piece is well documented on its own. The hard part is the order, and proving the order happened. What follows is a design that holds up, piece by piece, and the places it breaks."
         ]
       )
     , ( "Phantoms can watch. They can't touch."
       , [ P "In the Superman comics, the Phantom Zone is where Krypton sent its worst criminals. Prisoners like General Zod could see everything going on outside. They just couldn't touch any of it."
         , P "That's the state I want a fresh node in. It can power on, get an address, pull its boot image and talk to the one server that checks it. It can't touch anything that matters, because everything that matters is encrypted and it doesn't have the key. It stays a phantom until it proves it shouldn't be one."
         , P "Once it does, the zone flips around. The model runs inside a zone of its own: GPUs fenced off, network shut except for what you allowed. It can see its inputs. It can't reach out."
-        , P "Most answers to this question are about ordering. Load this, then that, then start the runtime. Order matters, but it isn't security. Anything running as root can start whatever it wants, in whatever order it likes. What it can't do is decrypt data it doesn't have a key for."
+        , P "The obvious approach is all about ordering. Load this, then that, then start the runtime. Order matters, but it isn't security. Anything running as root can start whatever it wants, in whatever order it likes. What it can't do is decrypt data it doesn't have a key for."
         , P "So the whole design hangs on one rule. The key to the model and the customer's data only comes out after the node proves it booted exactly what you expected, with the network hooks and the GPU bindings live."
         , Quote "Boot order keeps honest software in line. Key release keeps everything else out."
         ]
@@ -138,7 +138,7 @@ sections =
         ]
       )
     , ( "The gate, up close"
-      , [ P "The question says verified *and* active. Those are different things, and plenty of designs only check the first one."
+      , [ P "Verified *and* active are different things, and plenty of designs only check the first one."
         , P "An eBPF object file on disk is present. A program attached to an interface is active. So the gate doesn't hash files and call it a day. It asks the kernel what's attached right now (`bpftool` lists the programs on every interface and cgroup), hashes the instructions the kernel hands back, and measures that. Zero out the map IDs first. They change every boot, and the hash shouldn't."
         , P "Same for the GPUs. The gate reads sysfs to see which driver owns each device and what else sits in its IOMMU group. The group is the real unit of isolation, and VFIO won't hand one over until every device in it is bound to a VFIO driver or has no driver at all. So check the whole group, not just the GPU."
         , P "Then it locks the door behind itself, as far as it can. A small BPF LSM program can refuse new `bpf()` calls once the gate is done. Give it an allow-list, because systemd and the VM manager load small BPF programs of their own every time they start a unit or a VM. It won't stop root from rewriting nftables, though. Root on the host is its own problem, and I'll get to it."
@@ -173,7 +173,7 @@ sections =
         ]
       )
     , ( "The short version"
-      , [ P "If I had thirty seconds: Secure Boot with your own keys, a signed unified kernel image, and every stage measured into the TPM. A tiny initramfs that drops every packet except attestation, binds the GPUs to `vfio-pci`, attaches the eBPF programs, then measures what's actually live. A quote to an attestation server inside the air gap. And a key that only comes out if everything matches."
+      , [ P "All of it in one breath: Secure Boot with your own keys, a signed unified kernel image, and every stage measured into the TPM. A tiny initramfs that drops every packet except attestation, binds the GPUs to `vfio-pci`, attaches the eBPF programs, then measures what's actually live. A quote to an attestation server inside the air gap. And a key that only comes out if everything matches."
         , Quote "No match, no key. The node stays a phantom."
         , P "Every system I've built has had to live somewhere I didn't control: lockers in other people's buildings, cameras on warehouse floors, someone else's power and someone else's network. This is the cleanest version of that problem I've seen. A box that has to earn trust before it touches anything that matters."
         ]
