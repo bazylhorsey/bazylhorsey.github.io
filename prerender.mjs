@@ -73,7 +73,7 @@ const STUDY = {
   path: "/writing/escapes-multiply/",
   title: "Escapes Multiply",
   description:
-    "How to analyze the ROI of computer vision working next to the people who already inspect a warehouse dock. With a model you can push on.",
+    "How to analyze the ROI of computer vision working next to human inspectors in industrial quality control. With a model you can push on.",
   date: "2026-08-01",
 };
 
