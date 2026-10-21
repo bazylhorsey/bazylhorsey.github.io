@@ -315,7 +315,7 @@ work =
 
 roles : List Role
 roles =
-    [ { span = "2023→now"
+    [ { span = "2023→2026"
       , place = "Chicago, IL"
       , org = "Arvist"
       , title = "CTO"
@@ -352,7 +352,7 @@ roles =
     , { span = "2020→2021"
       , place = "Storm Lake, IA"
       , org = "Levity"
-      , title = "CEO"
+      , title = "Co-founder & CEO"
       , body =
             [ "First startup out of Buena Vista's Foundry incubator. Wound it "
                 ++ "down in 2021 and brought two of its engineers to Koloni, which "
