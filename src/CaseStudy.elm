@@ -532,7 +532,7 @@ sections =
     , ( "Putting a dollar on an escape"
       , [ P "An escaped defect costs labor, returns and goodwill. For shipping, vendor estimates put one error somewhere between $50 and $250, without saying where the range comes from. The default here is $150. What an escape costs varies a lot by industry, so if an operation tracks its own cost per escape, use that instead."
         , P "Catching a defect isn't free either. Somebody reworks, replaces or repacks it, so the saving per catch is the escape cost minus the cost to fix it in house. The $20 default is a placeholder."
-        , P "Footage is the last layer, and it's easy to oversell. It doesn't stop an escape or find one nobody flagged. It doesn't get money back on one either. Footage of a real escape either shows the defect, which sinks the claim, or misses it, and then using it against whoever handled the unit next means billing them for your mistake. Footage pays in the other direction. When a unit leaves clean and arrives damaged, video of it leaving clean is the proof a damage claim needs. In shipping those are concealed damage claims, notoriously hard to win because the receiver carries the burden of proof. The same video settles disputes about what left the building. That's real money, but it comes from damage and disputes after the unit leaves, which this model doesn't size, so it stays out of the figure below."
+        , P "Footage is the last layer, and it's easy to oversell. It doesn't stop an escape or find one nobody flagged. It doesn't get money back on one either. Footage of a real escape either shows the defect, which sinks the claim, or misses it, and then using it against whoever handled the unit next means billing them for your mistake. What it's worth comes from damage and disputes after a unit leaves, which this model doesn't size, so it stays out of the figure below."
         , P "One more thing to keep in front of you: the dollars scale with d₀. At 2% upstream defects the base case stops about 39 escapes per 10,000 units. At 10% it stops about 117. A slightly smaller relative gain, three times the money. Use a real defect rate before you trust the dollars."
         , Figure Dollars
         ]
@@ -591,7 +591,6 @@ sources =
     , ( "Cost of one shipping mistake, $50 to $250, a vendor estimate from Wisys", "https://wisys.com/blog/warehouse-scanner-roi-what-the-data-actually-shows" )
     , ( "Vision inspection accuracy and false positive claims, a vendor page from OXmaint", "https://oxmaint.com/industries/steel-plant/computer-vision-vs-manual-inspection-in-manufacturing" )
     , ( "Median pay for hand laborers and material movers, BLS Occupational Outlook Handbook", "https://www.bls.gov/ooh/transportation-and-material-moving/hand-laborers-and-material-movers.htm" )
-    , ( "Concealed damage claims and burden of proof", "https://armstrongtransport.com/blog/what-is-a-concealed-damage-claim-and-how-can-it-be-resolved" )
     ]
 
 
