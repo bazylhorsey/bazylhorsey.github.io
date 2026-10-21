@@ -29,7 +29,7 @@ Contact: bhorsey16@gmail.com
 ## Writing and talks
 
 - [A Phantom Zone for AI](https://bazylhorsey.github.io/writing/phantom-zone-for-ai/): deep dive, 2026, on booting an air-gapped GPU node so the model and the customer's data never touch memory until the machine proves itself. Covers TPM measured boot and remote attestation, a signed unified kernel image, an initramfs gate for eBPF hooks and VFIO bindings, and key release.
-- [Escapes Multiply](https://bazylhorsey.github.io/writing/escapes-multiply/): interactive case study, 2026, on how to analyze the ROI of computer vision working alongside human inspectors in industrial quality control. Covers the low prevalence effect, miss overlap, review burden and pricing an escape.
+- [Escapes Multiply](https://bazylhorsey.github.io/writing/escapes-multiply/): interactive analysis, 2026, on how to analyze the ROI of computer vision working alongside human inspectors in industrial quality control. Covers the low prevalence effect, miss overlap, review burden and pricing an escape.
 - [The Distracted Forward Deployed Officer](https://bazylhorsey.github.io/writing/distracted-forward-deployed-officer/): essay, 2026, on four years at Arvist and what forward deployed engineering looks like from the floor. Includes a nine-point playbook.
 - [Implementing concepts from green logistics in the turkey production supply chain](https://doi.org/10.3389/frsus.2024.1416964): Frontiers in Sustainability, 2024, second author.
 - [Software Leaders Uncensored, with Steve Taplin](https://youtu.be/mk7CKtatU8U): podcast.

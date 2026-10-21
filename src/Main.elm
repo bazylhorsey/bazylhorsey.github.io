@@ -437,7 +437,7 @@ posts =
       , href = Essay.slug
       }
     , { date = CaseStudy.dateLabel
-      , outlet = "case study"
+      , outlet = "analysis"
       , title = CaseStudy.title
       , gist =
             "How to analyze the ROI of computer vision next to human inspectors. "

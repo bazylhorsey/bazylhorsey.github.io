@@ -1,6 +1,6 @@
 module CaseStudy exposing (Model, Msg, date, dateLabel, init, slug, title, update, view)
 
-{-| "Escapes Multiply", a case study on pricing a vision layer next to the
+{-| "Escapes Multiply", an analysis of pricing a vision layer next to the
 people who already do industrial quality inspection.
 
 An open assessment built only from published research: a layered escape
@@ -427,7 +427,7 @@ type Fig
 sections : List ( String, List Block )
 sections =
     [ ( "The obvious question"
-      , [ Note "An independent case study, built only from peer-reviewed research and public industry sources, to show how you might estimate the ROI of pairing people with computer vision. It contains no proprietary data and doesn't describe any company's product, customers or results."
+      , [ Note "An independent analysis, built only from peer-reviewed research and public industry sources, to show how you might estimate the ROI of pairing people with computer vision. It contains no proprietary data and doesn't describe any company's product, customers or results."
         , P "It's the obvious question about computer vision in industrial quality control. If people already inspect every unit, what does a camera add?"
         , P "The honest answer isn't a percentage. It's a model. This page is that model. Every outside number has its source at the bottom. Every other number is a round, illustrative assumption, and you can drag it."
         , P "The math holds anywhere people inspect and a camera checks behind them: final inspection on a production line, incoming inspection of supplier parts, a packaging line, the last check before an order ships. The defaults lean on shipping, where public numbers for a people-only baseline and the cost of an escape are easiest to find. Swap in your own."
@@ -604,7 +604,7 @@ view model =
         [ Attr.class "essay study wrap" ]
         [ Html.header [ Attr.class "essay-head" ]
             [ Html.p [ Attr.class "eyebrow" ]
-                [ Element.text ("case study / " ++ dateLabel) ]
+                [ Element.text ("analysis / " ++ dateLabel) ]
             , Html.h1 [ Attr.class "essay-title" ] [ Element.text title ]
             , Html.p [ Attr.class "study-dek" ]
                 [ Element.text "How to analyze the ROI of computer vision working next to human inspectors in industrial quality control. With a model you can push on." ]
