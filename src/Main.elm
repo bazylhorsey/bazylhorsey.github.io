@@ -215,8 +215,8 @@ jornStages =
     , { number = "v0.1", description = "Full HTML and SVG, keyed lists, effects, app runtime", status = Done }
     , { number = "v0.2", description = "Server components over a websocket, with reconnects", status = Done }
     , { number = "v0.2.1", description = "MathML, raw HTML, HTML strings, form submits", status = Done }
-    , { number = "v0.3", description = "The rest of the view layer: memoized subtrees, per-event preventDefault", status = Next }
-    , { number = "v0.4", description = "Server-side rendering, hydration, URL routing", status = Planned }
+    , { number = "v0.3", description = "The rest of the view layer: memoized subtrees, per-event preventDefault", status = Done }
+    , { number = "v0.4", description = "Server-side rendering, hydration, URL routing", status = Next }
     , { number = "v0.5", description = "Components as custom elements: shadow DOM, slots, forms", status = Planned }
     , { number = "v0.6", description = "A dev server, a build command, and test utilities", status = Planned }
     , { number = "v1.0", description = "The full feature set, on the Elm package registry", status = Planned }
@@ -239,7 +239,7 @@ metrics =
 work : List Item
 work =
     [ { name = "Jorn"
-      , tags = [ "elm", "v0.2.1" ]
+      , tags = [ "elm", "v0.3" ]
       , blurb =
             "Write your UI once in Elm and decide at deploy time where each "
                 ++ "piece runs: browser, server, or both. Pure Elm virtual DOM, a "
