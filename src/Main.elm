@@ -318,7 +318,7 @@ roles =
     [ { span = "2023→now"
       , place = "Chicago, IL"
       , org = "Arvist"
-      , title = "Co-founder & CTO, now Technical Advisor"
+      , title = "CTO"
       , body =
             [ "Techstars '22, then a $4M seed led by Rackhouse. Took the "
                 ++ "platform from first commit to about twenty customer "
@@ -352,7 +352,7 @@ roles =
     , { span = "2020→2021"
       , place = "Storm Lake, IA"
       , org = "Levity"
-      , title = "Co-founder & CEO"
+      , title = "CEO"
       , body =
             [ "First startup out of Buena Vista's Foundry incubator. Wound it "
                 ++ "down in 2021 and brought two of its engineers to Koloni, which "
@@ -602,7 +602,7 @@ heroCopy =
             ]
         , Html.p [ Attr.class "lede" ]
             [ Element.text
-                ("Serial co-founder and two-time VC-backed startup CTO. Applied AI: agentic "
+                ("Serial startup executive and two-time VC-backed CTO. Applied AI: agentic "
                     ++ "systems and edge inference."
                 )
             ]
