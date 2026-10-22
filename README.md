@@ -6,7 +6,8 @@ My portfolio. Written in Elm, rendered by [JORN](https://github.com/bazylhorsey/
 
 There is no HTML for the page in here. `src/Main.elm` returns a `Jorn.Element`,
 Jorn sends that tree to the browser once to mount, and sends only the diff
-every time state changes. `public/index.html` is a shell with one `<div>` in it.
+every time state changes. Even the page shell is Elm: `src/Site.elm` describes
+every page's `<head>` and body, and `jorn build` writes them out as static HTML.
 
 ## Layout
 
@@ -15,13 +16,12 @@ every time state changes. `public/index.html` is a shell with one `<div>` in it.
 ├── elm.json          points at the JORN submodule in jorn/src
 ├── jorn/             JORN, as a git submodule pinned to one commit
 ├── src/
+│   ├── Site.elm      every page's HTML, the assets and the sitemap (jorn build)
 │   ├── Main.elm      the home page: model, update, view, content
 │   ├── Essay.elm     /writing/distracted-forward-deployed-officer/
 │   ├── CaseStudy.elm /writing/escapes-multiply/
 │   └── PhantomZone.elm /writing/phantom-zone-for-ai/
-├── public/           the shell, stylesheet, font, icons and crawler files
-├── build.sh          elm make + collect everything into build/
-├── prerender.mjs     writes each page's HTML into build/ (run by build.sh)
+├── public/           stylesheet, font, icons, crawler files, copied as they are
 ├── run.mjs           headless check: mounts, fires events, inspects patches
 ├── serve.command     rebuild and preview on http://127.0.0.1:8080
 ├── TESTIMONIALS.md   the original quotes the site cuts down from
@@ -43,12 +43,15 @@ git submodule update --init
 Then:
 
 ```bash
-./build.sh
+node jorn/cli/jorn.mjs build
 ```
 
-That runs `elm make --optimize` and collects the result into `build/`, copying
-`client/jorn.js` from the same JORN commit into `build/vendor/`, so the Elm
-side and the patcher always match.
+That runs `src/Site.elm` and writes the site into `build/`: each page with the
+app already rendered inside it, `main.js` compiled with `--optimize`, everything
+in `public/`, a sitemap, and `jorn.js` from the same JORN commit, so the Elm
+side and the patcher always match. Scripts and the stylesheet get a hash of
+their contents in their URLs, so a returning visitor never mixes new HTML with
+an old script. In the browser, `start` mounts the app over the page's HTML.
 
 ## Upgrade JORN
 
@@ -57,7 +60,7 @@ The submodule is pinned, so a new JORN release only lands when you move it:
 ```bash
 git -C jorn fetch origin
 git -C jorn checkout <tag or commit>
-./build.sh && node run.mjs
+node jorn/cli/jorn.mjs build && node run.mjs
 git add jorn && git commit -m "Bump Jorn"
 ```
 
@@ -88,7 +91,7 @@ http://127.0.0.1:8080. Double-clicking it in Finder does the same.
 ## Deploy
 
 Push to `main`. The `pages` workflow checks out the JORN submodule, runs
-`./build.sh` and `node run.mjs`, and deploys `build/` to GitHub Pages. Pull
+`jorn build` and `node run.mjs`, and deploys `build/` to GitHub Pages. Pull
 requests get the same build and check, without the deploy.
 
 `build/` is a static folder with no server requirements, so it can also be
@@ -111,4 +114,6 @@ anywhere.
    function for every HTML element, so write `Html.blockquote`, not
    `Element.element "blockquote"`. Anything that belongs to the browser rather
    than the tree (the theme on `<html>`, scrolling the testimonial strip) goes
-   out as an `Effect.client` that the shell in `public/index.html` registers.
+   out as an `Effect.client` that the shell in `src/Site.elm` registers.
+6. **A new page is a line in `src/Site.elm`.** Add it to `pages` with its
+   title and description, and it gets its head, JSON-LD and sitemap entry.

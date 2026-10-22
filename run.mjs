@@ -1,7 +1,7 @@
 // Headless check that the portfolio actually works, the same way a server
 // component would run it: no DOM, no browser, just the program.
 //
-//   ./build.sh && node run.mjs
+//   node jorn/cli/jorn.mjs build && node run.mjs
 //
 // It mounts the view, works out the path of each filter button the way the
 // browser patcher does, fires a click at it, and then reads the patches Jorn
@@ -11,7 +11,7 @@
 import { createRequire } from "node:module";
 
 const require = createRequire(import.meta.url);
-const { Elm } = require("./build/build/main.js");
+const { Elm } = require("./build/main.js");
 
 const app = Elm.Main.init();
 

@@ -35,7 +35,7 @@ jobs:
         run: npm install --no-save elm@0.19.1-6
 
       - name: Build
-        run: PATH="$PWD/node_modules/.bin:$PATH" bash build.sh
+        run: node jorn/cli/jorn.mjs build
 
       - name: Check
         run: node run.mjs
