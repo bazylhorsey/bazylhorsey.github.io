@@ -328,8 +328,8 @@ roles =
                 ++ "has."
             , "Grew engineering from solo to nine across time zones. As CISO, "
                 ++ "built the ISMS from nothing to ISO 27001:2022 and SOC 2 Type I "
-                ++ "readiness. Principal investigator on a $1M+ DoD-funded MxD "
-                ++ "safety AI project."
+                ++ "readiness. Sole engineer on a $1M+ DoD-funded MxD safety "
+                ++ "AI project."
             ]
       , figures = metrics
       }
@@ -592,7 +592,6 @@ heroCopy =
         [ Html.p [ Attr.class "status" ]
             [ Html.span [ Attr.class "dot" ] []
             , Element.text "Chicago, IL"
-            , Element.text " / Open to work"
             ]
         , Html.h1 [ Attr.class "name" ]
             [ Element.text "Bazyl "
@@ -1249,9 +1248,8 @@ contact =
         , Html.h2 [ Attr.class "h2" ] [ Element.text "Got something worth breaking?" ]
         , Html.p [ Attr.class "contact-lede" ]
             [ Element.text
-                ("Forward deployed and applied AI roles, technical leadership, or a "
-                    ++ "deployment that will not stay up. Chicago-based, happy to be on "
-                    ++ "site with customers. I read all of it and I answer."
+                ("Hard applied AI problems, a deployment that will not stay up, or "
+                    ++ "a good argument about either. I read all of it and I answer."
                 )
             ]
         , Html.ul [ Attr.class "links" ]
