@@ -25,6 +25,7 @@ import Jorn.Attribute as Attr
 import Jorn.Effect as Effect exposing (Effect)
 import Jorn.Element as Element exposing (Element)
 import Jorn.Element.Html as Html
+import Jorn.Element.Svg as Svg
 import Jorn.Event as Events
 import PhantomZone
 
@@ -648,18 +649,19 @@ heroCopy =
 
 
 {-| Fig. 1 in the hero: the general architecture playbook, the one that
-usually starts on a napkin, drawn as SVG through Jorn's namespaced elements. Colors come from CSS classes, so it
-follows the theme like everything else, and it is prerendered with the page.
+usually starts on a napkin, drawn with Jorn's SVG elements. Colors come from
+CSS classes, so it follows the theme like everything else, and it is
+prerendered with the page.
 -}
 diagram : Element msg
 diagram =
-    svg "svg"
+    Svg.svg
         [ Attr.class "diagram"
         , Attr.attribute "viewBox" "0 0 400 480"
         , Attr.attribute "role" "img"
         , Attr.attribute "aria-labelledby" "dg-title"
         ]
-        ([ svg "title"
+        ([ Svg.title
             [ Attr.id "dg-title" ]
             [ Element.text
                 ("An example day-0 napkin: the customer's site feeds edge inference, "
@@ -680,16 +682,6 @@ diagram =
         )
 
 
-svgNs : String
-svgNs =
-    "http://www.w3.org/2000/svg"
-
-
-svg : String -> List (Attr.Attribute msg) -> List (Element msg) -> Element msg
-svg =
-    Element.namespaced svgNs
-
-
 num : Float -> String
 num =
     String.fromFloat
@@ -697,7 +689,7 @@ num =
 
 svgText : String -> Float -> Float -> String -> Element msg
 svgText cls x y label =
-    svg "text"
+    Svg.text
         [ Attr.class cls, Attr.attribute "x" (num x), Attr.attribute "y" (num y) ]
         [ Element.text label ]
 
@@ -721,16 +713,16 @@ span : Span -> Element msg
 span part =
     case part of
         Plain t ->
-            svg "tspan" [] [ Element.text t ]
+            Svg.tspan [] [ Element.text t ]
 
         Hot t ->
-            svg "tspan" [ Attr.class "dg-hot" ] [ Element.text t ]
+            Svg.tspan [ Attr.class "dg-hot" ] [ Element.text t ]
 
 
 {-| A box with a hard offset shadow, the same move as the work cards. -}
 dgNode : Float -> String -> List Span -> List (Element msg)
 dgNode y title sub =
-    [ svg "rect"
+    [ Svg.rect
         [ Attr.class "dg-shadow"
         , Attr.attribute "x" "6"
         , Attr.attribute "y" (num (y + 5))
@@ -738,7 +730,7 @@ dgNode y title sub =
         , Attr.attribute "height" "72"
         ]
         []
-    , svg "rect"
+    , Svg.rect
         [ Attr.class "dg-box"
         , Attr.attribute "x" "1.5"
         , Attr.attribute "y" (num y)
@@ -746,7 +738,7 @@ dgNode y title sub =
         , Attr.attribute "height" "72"
         ]
         []
-    , svg "rect"
+    , Svg.rect
         [ Attr.class "dg-tick"
         , Attr.attribute "x" "18"
         , Attr.attribute "y" (num (y + 21))
@@ -755,7 +747,7 @@ dgNode y title sub =
         ]
         []
     , svgText "dg-title" 34 (y + 30) title
-    , svg "text"
+    , Svg.text
         [ Attr.class "dg-sub", Attr.attribute "x" "18", Attr.attribute "y" (num (y + 54)) ]
         (List.map span sub)
     ]
@@ -764,7 +756,7 @@ dgNode y title sub =
 {-| A down arrow between two boxes, with what flows along it. -}
 dgEdge : Float -> String -> List (Element msg)
 dgEdge y label =
-    [ svg "line"
+    [ Svg.line
         [ Attr.class "dg-edge"
         , Attr.attribute "x1" "160"
         , Attr.attribute "y1" (num y)
@@ -772,7 +764,7 @@ dgEdge y label =
         , Attr.attribute "y2" (num (y + 40))
         ]
         []
-    , svg "path"
+    , Svg.path
         [ Attr.class "dg-head"
         , Attr.attribute "d" ("M154 " ++ num (y + 38) ++ " L160 " ++ num (y + 47) ++ " L166 " ++ num (y + 38) ++ " Z")
         ]
@@ -785,17 +777,17 @@ dgEdge y label =
 customer. Dashed and orange: the part that keeps it working. -}
 dgLoop : List (Element msg)
 dgLoop =
-    [ svg "path"
+    [ Svg.path
         [ Attr.class "dg-loop"
         , Attr.attribute "d" "M320 436 H366 V196 H331"
         ]
         []
-    , svg "path"
+    , Svg.path
         [ Attr.class "dg-loop-head"
         , Attr.attribute "d" "M333 190 L324 196 L333 202 Z"
         ]
         []
-    , svg "text"
+    , Svg.text
         [ Attr.class "dg-loop-label"
         , Attr.attribute "transform" "translate(386 316) rotate(-90)"
         , Attr.attribute "text-anchor" "middle"
