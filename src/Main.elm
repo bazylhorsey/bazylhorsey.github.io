@@ -328,8 +328,8 @@ roles =
                 ++ "has."
             , "Grew engineering from solo to nine across time zones. As CISO, "
                 ++ "built the ISMS from nothing to ISO 27001:2022 and SOC 2 Type I "
-                ++ "readiness. Sole engineer on a $1M+ DoD-funded MxD safety "
-                ++ "AI project."
+                ++ "readiness. Sole technical lead on a $1M+ DoD-funded MxD "
+                ++ "safety AI project."
             ]
       , figures = metrics
       }
