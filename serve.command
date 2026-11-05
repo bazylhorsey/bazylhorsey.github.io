@@ -3,8 +3,11 @@
 # Double-click in Finder, or run ./serve.command. Ctrl+C stops the server.
 cd "$(dirname "$0")" || exit 1
 
-if command -v elm >/dev/null 2>&1; then
-  bash ./build.sh || { echo "build failed, serving the last good build/"; }
+if [ ! -f jorn/cli/jorn.mjs ]; then
+  echo "no JORN checkout at jorn/, run: git submodule update --init"
+  echo "serving the existing build/ without rebuilding"
+elif command -v elm >/dev/null 2>&1 || [ -x node_modules/.bin/elm ]; then
+  node jorn/cli/jorn.mjs build || { echo "build failed, serving the last good build/"; }
 else
   echo "elm is not on PATH here, serving the existing build/ without rebuilding"
 fi

@@ -1,4 +1,4 @@
-port module Main exposing (main)
+port module Main exposing (Model, Msg, Page(..), init, main, pageName, view)
 
 {-| My portfolio.
 
@@ -9,6 +9,9 @@ what changed.
 
 Two pieces of real state so the patch pipeline has something to do: the theme,
 and the filter on the work list. Both are plain Elm values.
+
+`src/Site.elm` builds each page's HTML from `init` and `view`, with the same
+flags the page later starts this program with.
 
 -}
 
@@ -81,9 +84,10 @@ type Msg
     | ZoneMsg PhantomZone.Msg
 
 
-{-| The shell passes `{ "dark": true }` when the visitor picked night last
+{-| The page passes `{ "dark": true }` when the visitor picked night last
 time, or has never picked and their OS is in dark mode. Anything else, or no
-flags at all (the headless check), starts on paper.
+flags at all (the headless check), starts on paper. `"page"` says which page
+this is, by its `pageName`, and anything else starts on the home page.
 -}
 init : Value -> Model
 init flags =
@@ -111,6 +115,24 @@ init flags =
     , study = CaseStudy.init
     , zone = PhantomZone.init
     }
+
+
+{-| The `"page"` flag for each page, the way `init` reads it.
+-}
+pageName : Page -> String
+pageName page =
+    case page of
+        Home ->
+            "home"
+
+        EssayPage ->
+            "essay"
+
+        StudyPage ->
+            "study"
+
+        ZonePage ->
+            "zone"
 
 
 {-| Two things on this page belong to the browser, not the tree: the theme
@@ -216,9 +238,9 @@ jornStages =
     , { number = "v0.2", description = "Server components over a websocket, with reconnects", status = Done }
     , { number = "v0.2.1", description = "MathML, raw HTML, HTML strings, form submits", status = Done }
     , { number = "v0.3", description = "The rest of the view layer: memoized subtrees, per-event preventDefault", status = Done }
-    , { number = "v0.4", description = "Server-side rendering, hydration, URL routing", status = Next }
-    , { number = "v0.5", description = "Components as custom elements: shadow DOM, slots, forms", status = Planned }
-    , { number = "v0.6", description = "A dev server, a build command, and test utilities", status = Planned }
+    , { number = "v0.4", description = "URL routing, static site builds, messaging a running app", status = Done }
+    , { number = "v0.5", description = "Custom elements, server-side rendering with hydration, server calls", status = Next }
+    , { number = "v0.6", description = "A dev server, test utilities, the JavaScript in TypeScript", status = Planned }
     , { number = "v1.0", description = "The full feature set, on the Elm package registry", status = Planned }
     ]
 
@@ -239,7 +261,7 @@ metrics =
 work : List Item
 work =
     [ { name = "Jorn"
-      , tags = [ "elm", "v0.3" ]
+      , tags = [ "elm", "v0.4" ]
       , blurb =
             "Write your UI once in Elm and decide at deploy time where each "
                 ++ "piece runs: browser, server, or both. Pure Elm virtual DOM, a "
