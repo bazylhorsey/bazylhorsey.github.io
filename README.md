@@ -4,9 +4,11 @@ https://bazylhorsey.github.io/
 
 My portfolio. Written in Elm, rendered by [JORN](https://github.com/bazylhorsey/jorn).
 
-There is no HTML for the page in here. `src/Main.elm` returns a `Jorn.Element`,
-Jorn sends that tree to the browser once to mount, and sends only the diff
-every time state changes. `public/index.html` is a shell with one `<div>` in it.
+There is no HTML in here. `src/Main.elm` returns a `Jorn.Element`, Jorn sends
+that tree to the browser once to mount, and sends only the diff every time
+state changes. `src/Site.elm` describes the static site with `Jorn.Static`:
+every page is a whole document, `<head>` included, with the app's view already
+inside it, and `jorn build` writes them all to `build/`.
 
 ## Layout
 
@@ -15,13 +17,12 @@ every time state changes. `public/index.html` is a shell with one `<div>` in it.
 ├── elm.json          points at the JORN submodule in jorn/src
 ├── jorn/             JORN, as a git submodule pinned to one commit
 ├── src/
-│   ├── Main.elm      the home page: model, update, view, content
+│   ├── Main.elm      the app: model, update, view, content
+│   ├── Site.elm      the static site: every page's head and HTML, the sitemap
 │   ├── Essay.elm     /writing/distracted-forward-deployed-officer/
 │   ├── CaseStudy.elm /writing/escapes-multiply/
 │   └── PhantomZone.elm /writing/phantom-zone-for-ai/
-├── public/           the shell, stylesheet, font, icons and crawler files
-├── build.sh          elm make + collect everything into build/
-├── prerender.mjs     writes each page's HTML into build/ (run by build.sh)
+├── public/           the stylesheet, font, icons and crawler files, copied as is
 ├── run.mjs           headless check: mounts, fires events, inspects patches
 ├── serve.command     rebuild and preview on http://127.0.0.1:8080
 ├── TESTIMONIALS.md   the original quotes the site cuts down from
@@ -43,12 +44,28 @@ git submodule update --init
 Then:
 
 ```bash
-./build.sh
+node jorn/cli/jorn.mjs build
 ```
 
-That runs `elm make --optimize` and collects the result into `build/`, copying
-`client/jorn.js` from the same JORN commit into `build/vendor/`, so the Elm
-side and the patcher always match.
+That is `jorn build`, from the same JORN commit as the Elm side. It runs
+`src/Site.elm` in Node and writes `build/`:
+
+- each page, with the app's view already in its HTML, so crawlers and link
+  previews that never run JavaScript get the whole page
+- everything in `public/`
+- the app, compiled with `elm make --optimize`, as `main.js`
+- JORN's `client/jorn.js` as `jorn.js`, so the patcher and the Elm side always
+  match
+- `sitemap.xml`, made from the same list as the pages
+
+Every URL a page loads a script or the stylesheet from gets a hash of that
+file's contents. GitHub Pages caches files for ten minutes, so without it a
+returning visitor could get new HTML with an old `main.js`. It checks every
+path before it writes anything, and only replaces `build/` once the new one is
+whole.
+
+It compiles with the `elm` that npm installed in `node_modules`, or else the
+one on your PATH.
 
 ## Upgrade JORN
 
@@ -57,7 +74,7 @@ The submodule is pinned, so a new JORN release only lands when you move it:
 ```bash
 git -C jorn fetch origin
 git -C jorn checkout <tag or commit>
-./build.sh && node run.mjs
+node jorn/cli/jorn.mjs build && node run.mjs
 git add jorn && git commit -m "Bump Jorn"
 ```
 
@@ -82,13 +99,13 @@ nothing.
 ./serve.command
 ```
 
-Rebuilds when `elm` is on your PATH, then serves `build/` on
-http://127.0.0.1:8080. Double-clicking it in Finder does the same.
+Rebuilds when `elm` is on your PATH or in `node_modules`, then serves `build/`
+on http://127.0.0.1:8080. Double-clicking it in Finder does the same.
 
 ## Deploy
 
 Push to `main`. The `pages` workflow checks out the JORN submodule, runs
-`./build.sh` and `node run.mjs`, and deploys `build/` to GitHub Pages. Pull
+`jorn build` and `node run.mjs`, and deploys `build/` to GitHub Pages. Pull
 requests get the same build and check, without the deploy.
 
 `build/` is a static folder with no server requirements, so it can also be
@@ -98,17 +115,21 @@ anywhere.
 ## Rules for editing it
 
 1. **Content lives in `src/Main.elm`, not in markup.** The lists at the top of
-   the file (`metrics`, `work`, `roles`, `pieces`, `tracks`) are plain data.
-   Add a project, a role, a song there rather than building nodes by hand.
-2. **One font file, the rest system.** Big Shoulders Display (OFL, self-hosted,
+   the file (`metrics`, `work`, `roles`, `posts`, `podcasts`, `testimonials`,
+   `tracks`) are plain data. Add a project, a role, a song there rather than
+   building nodes by hand.
+2. **Pages live in `src/Site.elm`.** Each page's title, description, Open Graph
+   tags and JSON-LD are in `pages` there, and the sitemap is made from the same
+   list. A new page is a new entry in `pages` and a new `Main.Page`.
+3. **One font file, the rest system.** Big Shoulders Display (OFL, self-hosted,
    29 KB) for headlines and big figures only. `system-ui` for prose,
    `ui-monospace` for metadata, dates, statuses and labels.
-3. **No dependencies.** No npm packages, no CDN, no analytics. The only
+4. **No dependencies.** No npm packages, no CDN, no analytics. The only
    requests the deployed page makes are its own four files.
-4. **No em dashes.** Sentence breaks, colons, commas, or parentheses. This
+5. **No em dashes.** Sentence breaks, colons, commas, or parentheses. This
    applies to the copy in here too.
-5. **Use the element helpers.** Since Jorn v0.1, `Jorn.Element.Html` has a
+6. **Use the element helpers.** Since Jorn v0.1, `Jorn.Element.Html` has a
    function for every HTML element, so write `Html.blockquote`, not
    `Element.element "blockquote"`. Anything that belongs to the browser rather
    than the tree (the theme on `<html>`, scrolling the testimonial strip) goes
-   out as an `Effect.client` that the shell in `public/index.html` registers.
+   out as an `Effect.client` that the page script in `src/Site.elm` registers.

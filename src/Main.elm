@@ -1,4 +1,4 @@
-port module Main exposing (main)
+port module Main exposing (Model, Msg, Page(..), init, main, pageName, view)
 
 {-| My portfolio.
 
@@ -9,6 +9,9 @@ what changed.
 
 Two pieces of real state so the patch pipeline has something to do: the theme,
 and the filter on the work list. Both are plain Elm values.
+
+`src/Site.elm` builds each page's HTML from `init` and `view`, with the same
+flags the page later starts this program with.
 
 -}
 
@@ -22,6 +25,7 @@ import Jorn.Attribute as Attr
 import Jorn.Effect as Effect exposing (Effect)
 import Jorn.Element as Element exposing (Element)
 import Jorn.Element.Html as Html
+import Jorn.Element.Svg as Svg
 import Jorn.Event as Events
 import PhantomZone
 
@@ -81,9 +85,10 @@ type Msg
     | ZoneMsg PhantomZone.Msg
 
 
-{-| The shell passes `{ "dark": true }` when the visitor picked night last
+{-| The page passes `{ "dark": true }` when the visitor picked night last
 time, or has never picked and their OS is in dark mode. Anything else, or no
-flags at all (the headless check), starts on paper.
+flags at all (the headless check), starts on paper. `"page"` says which page
+this is, by its `pageName`, and anything else starts on the home page.
 -}
 init : Value -> Model
 init flags =
@@ -111,6 +116,24 @@ init flags =
     , study = CaseStudy.init
     , zone = PhantomZone.init
     }
+
+
+{-| The `"page"` flag for each page, the way `init` reads it.
+-}
+pageName : Page -> String
+pageName page =
+    case page of
+        Home ->
+            "home"
+
+        EssayPage ->
+            "essay"
+
+        StudyPage ->
+            "study"
+
+        ZonePage ->
+            "zone"
 
 
 {-| Two things on this page belong to the browser, not the tree: the theme
@@ -216,9 +239,9 @@ jornStages =
     , { number = "v0.2", description = "Server components over a websocket, with reconnects", status = Done }
     , { number = "v0.2.1", description = "MathML, raw HTML, HTML strings, form submits", status = Done }
     , { number = "v0.3", description = "The rest of the view layer: memoized subtrees, per-event preventDefault", status = Done }
-    , { number = "v0.4", description = "Server-side rendering, hydration, URL routing", status = Next }
-    , { number = "v0.5", description = "Components as custom elements: shadow DOM, slots, forms", status = Planned }
-    , { number = "v0.6", description = "A dev server, a build command, and test utilities", status = Planned }
+    , { number = "v0.4", description = "URL routing, static site builds, messaging a running app", status = Done }
+    , { number = "v0.5", description = "Custom elements, server-side rendering with hydration, server calls", status = Next }
+    , { number = "v0.6", description = "A dev server, test utilities, the JavaScript in TypeScript", status = Planned }
     , { number = "v1.0", description = "The full feature set, on the Elm package registry", status = Planned }
     ]
 
@@ -239,7 +262,7 @@ metrics =
 work : List Item
 work =
     [ { name = "Jorn"
-      , tags = [ "elm", "v0.3" ]
+      , tags = [ "elm", "v0.4" ]
       , blurb =
             "Write your UI once in Elm and decide at deploy time where each "
                 ++ "piece runs: browser, server, or both. Pure Elm virtual DOM, a "
@@ -328,8 +351,8 @@ roles =
                 ++ "has."
             , "Grew engineering from solo to nine across time zones. As CISO, "
                 ++ "built the ISMS from nothing to ISO 27001:2022 and SOC 2 Type I "
-                ++ "readiness. Sole engineer on a $1M+ DoD-funded MxD safety "
-                ++ "AI project."
+                ++ "readiness. Sole technical lead on a $1M+ DoD-funded MxD "
+                ++ "safety AI project."
             ]
       , figures = metrics
       }
@@ -507,7 +530,10 @@ view model =
                     , shipped model
                     , path
                     , writing
-                    , band
+
+                    -- Off hours is hidden for now. To bring it back, uncomment
+                    -- this and its link in the topbar, and number contact 06.
+                    -- , band
                     , contact
                     ]
 
@@ -553,7 +579,8 @@ topbar model =
                     , ( "#work", "work" )
                     , ( "#path", "path" )
                     , ( "#writing", "writing" )
-                    , ( "#band", "off hours" )
+
+                    -- , ( "#band", "off hours" )
                     , ( "#contact", "contact" )
                     ]
                 )
@@ -622,18 +649,19 @@ heroCopy =
 
 
 {-| Fig. 1 in the hero: the general architecture playbook, the one that
-usually starts on a napkin, drawn as SVG through Jorn's namespaced elements. Colors come from CSS classes, so it
-follows the theme like everything else, and it is prerendered with the page.
+usually starts on a napkin, drawn with Jorn's SVG elements. Colors come from
+CSS classes, so it follows the theme like everything else, and it is
+prerendered with the page.
 -}
 diagram : Element msg
 diagram =
-    svg "svg"
+    Svg.svg
         [ Attr.class "diagram"
         , Attr.attribute "viewBox" "0 0 400 480"
         , Attr.attribute "role" "img"
         , Attr.attribute "aria-labelledby" "dg-title"
         ]
-        ([ svg "title"
+        ([ Svg.title
             [ Attr.id "dg-title" ]
             [ Element.text
                 ("An example day-0 napkin: the customer's site feeds edge inference, "
@@ -654,16 +682,6 @@ diagram =
         )
 
 
-svgNs : String
-svgNs =
-    "http://www.w3.org/2000/svg"
-
-
-svg : String -> List (Attr.Attribute msg) -> List (Element msg) -> Element msg
-svg =
-    Element.namespaced svgNs
-
-
 num : Float -> String
 num =
     String.fromFloat
@@ -671,7 +689,7 @@ num =
 
 svgText : String -> Float -> Float -> String -> Element msg
 svgText cls x y label =
-    svg "text"
+    Svg.text
         [ Attr.class cls, Attr.attribute "x" (num x), Attr.attribute "y" (num y) ]
         [ Element.text label ]
 
@@ -695,16 +713,16 @@ span : Span -> Element msg
 span part =
     case part of
         Plain t ->
-            svg "tspan" [] [ Element.text t ]
+            Svg.tspan [] [ Element.text t ]
 
         Hot t ->
-            svg "tspan" [ Attr.class "dg-hot" ] [ Element.text t ]
+            Svg.tspan [ Attr.class "dg-hot" ] [ Element.text t ]
 
 
 {-| A box with a hard offset shadow, the same move as the work cards. -}
 dgNode : Float -> String -> List Span -> List (Element msg)
 dgNode y title sub =
-    [ svg "rect"
+    [ Svg.rect
         [ Attr.class "dg-shadow"
         , Attr.attribute "x" "6"
         , Attr.attribute "y" (num (y + 5))
@@ -712,7 +730,7 @@ dgNode y title sub =
         , Attr.attribute "height" "72"
         ]
         []
-    , svg "rect"
+    , Svg.rect
         [ Attr.class "dg-box"
         , Attr.attribute "x" "1.5"
         , Attr.attribute "y" (num y)
@@ -720,7 +738,7 @@ dgNode y title sub =
         , Attr.attribute "height" "72"
         ]
         []
-    , svg "rect"
+    , Svg.rect
         [ Attr.class "dg-tick"
         , Attr.attribute "x" "18"
         , Attr.attribute "y" (num (y + 21))
@@ -729,7 +747,7 @@ dgNode y title sub =
         ]
         []
     , svgText "dg-title" 34 (y + 30) title
-    , svg "text"
+    , Svg.text
         [ Attr.class "dg-sub", Attr.attribute "x" "18", Attr.attribute "y" (num (y + 54)) ]
         (List.map span sub)
     ]
@@ -738,7 +756,7 @@ dgNode y title sub =
 {-| A down arrow between two boxes, with what flows along it. -}
 dgEdge : Float -> String -> List (Element msg)
 dgEdge y label =
-    [ svg "line"
+    [ Svg.line
         [ Attr.class "dg-edge"
         , Attr.attribute "x1" "160"
         , Attr.attribute "y1" (num y)
@@ -746,7 +764,7 @@ dgEdge y label =
         , Attr.attribute "y2" (num (y + 40))
         ]
         []
-    , svg "path"
+    , Svg.path
         [ Attr.class "dg-head"
         , Attr.attribute "d" ("M154 " ++ num (y + 38) ++ " L160 " ++ num (y + 47) ++ " L166 " ++ num (y + 38) ++ " Z")
         ]
@@ -759,17 +777,17 @@ dgEdge y label =
 customer. Dashed and orange: the part that keeps it working. -}
 dgLoop : List (Element msg)
 dgLoop =
-    [ svg "path"
+    [ Svg.path
         [ Attr.class "dg-loop"
         , Attr.attribute "d" "M320 436 H366 V196 H331"
         ]
         []
-    , svg "path"
+    , Svg.path
         [ Attr.class "dg-loop-head"
         , Attr.attribute "d" "M333 190 L324 196 L333 202 Z"
         ]
         []
-    , svg "text"
+    , Svg.text
         [ Attr.class "dg-loop-label"
         , Attr.attribute "transform" "translate(386 316) rotate(-90)"
         , Attr.attribute "text-anchor" "middle"
@@ -1196,6 +1214,9 @@ piece item =
         ]
 
 
+{-| The band, off the clock. Commented out of `view` and the topbar for now,
+so it isn't on the page. The data and the styles are still here.
+-}
 band : Element msg
 band =
     Html.section [ Attr.class "band", Attr.id "band" ]
@@ -1244,7 +1265,7 @@ track index title =
 contact : Element msg
 contact =
     Html.section [ Attr.class "section wrap", Attr.id "contact" ]
-        [ Html.p [ Attr.class "eyebrow" ] [ Element.text "06 / contact" ]
+        [ Html.p [ Attr.class "eyebrow" ] [ Element.text "05 / contact" ]
         , Html.h2 [ Attr.class "h2" ] [ Element.text "Got something worth breaking?" ]
         , Html.p [ Attr.class "contact-lede" ]
             [ Element.text

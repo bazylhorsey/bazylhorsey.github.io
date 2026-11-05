@@ -1,8 +1,9 @@
 # Build the site and deploy it to GitHub Pages.
 #
-# Every push and pull request builds the site and runs the headless check.
-# Only a push to main deploys. Jorn comes from the submodule at jorn/, so the
-# deployed site is built against exactly the commit pinned there.
+# Every push and pull request builds the site with `jorn build` and runs the
+# headless check. Only a push to main deploys. Jorn comes from the submodule
+# at jorn/, so the deployed site is built against exactly the commit pinned
+# there, with that commit's build command and patcher.
 
 name: pages
 
@@ -34,8 +35,9 @@ jobs:
       - name: Install Elm
         run: npm install --no-save elm@0.19.1-6
 
+      # jorn build finds the elm that npm just installed in node_modules.
       - name: Build
-        run: PATH="$PWD/node_modules/.bin:$PATH" bash build.sh
+        run: node jorn/cli/jorn.mjs build
 
       - name: Check
         run: node run.mjs

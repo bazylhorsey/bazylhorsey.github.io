@@ -16,6 +16,7 @@ import Jorn.Attribute as Attr
 import Jorn.Element as Element exposing (Element)
 import Jorn.Element.Html as Html
 import Jorn.Element.MathMl as M
+import Jorn.Element.Svg as Svg
 import Jorn.Event as Events
 
 
@@ -1046,7 +1047,7 @@ ceiling model =
             1 - (layers model d (humanEscape d) (1 - humanRecall d)).escapes
 
         line cls f =
-            svg "path"
+            Svg.path
                 [ Attr.class cls
                 , Attr.attribute "d"
                     (samples
@@ -1076,7 +1077,7 @@ ceiling model =
                     clamp dMin dMax model.d0
 
         dot cls q =
-            svg "circle"
+            Svg.circle
                 [ Attr.class cls
                 , Attr.attribute "cx" (n (xOf focus))
                 , Attr.attribute "cy" (n (yOf q))
@@ -1085,7 +1086,7 @@ ceiling model =
                 []
 
         band =
-            svg "rect"
+            Svg.rect
                 [ Attr.class "ch-band"
                 , Attr.attribute "x" (n left)
                 , Attr.attribute "y" (n (yOf 0.996))
@@ -1097,7 +1098,7 @@ ceiling model =
         yTicks =
             List.concatMap
                 (\q ->
-                    [ svg "line"
+                    [ Svg.line
                         [ Attr.class "ch-grid"
                         , Attr.attribute "x1" (n left)
                         , Attr.attribute "x2" (n (chartW - right))
@@ -1122,7 +1123,7 @@ ceiling model =
             in
             List.indexedMap
                 (\i d ->
-                    svg "rect"
+                    Svg.rect
                         [ Attr.class "ch-hit"
                         , Attr.attribute "x" (n (xOf d - w / 2))
                         , Attr.attribute "y" (n top_)
@@ -1140,7 +1141,7 @@ ceiling model =
             , Html.li [] [ Html.span [ Attr.class "sw sw-both" ] [], Element.text "people plus the vision layer" ]
             , Html.li [] [ Html.span [ Attr.class "sw sw-band" ] [], Element.text "WERC typical picking accuracy, 99.0 to 99.6%" ]
             ]
-        , svg "svg"
+        , Svg.svg
             [ Attr.attribute "viewBox" ("0 0 " ++ n chartW ++ " " ++ n chartH)
             , Attr.attribute "role" "img"
             , Attr.attribute "aria-label" "Accuracy against upstream defect rate, people only and with the vision layer"
@@ -1150,7 +1151,7 @@ ceiling model =
                 ++ yTicks
                 ++ xTicks
                 ++ [ svgText "ch-axis" ((left + chartW - right) / 2) (chartH - 4) "middle" "upstream defect rate d₀ (log scale)"
-                   , svg "line"
+                   , Svg.line
                         [ Attr.class "ch-focus"
                         , Attr.attribute "x1" (n (xOf focus))
                         , Attr.attribute "x2" (n (xOf focus))
@@ -1179,19 +1180,9 @@ ceiling model =
         ]
 
 
-svgNs : String
-svgNs =
-    "http://www.w3.org/2000/svg"
-
-
-svg : String -> List (Attr.Attribute msg) -> List (Element msg) -> Element msg
-svg =
-    Element.namespaced svgNs
-
-
 svgText : String -> Float -> Float -> String -> String -> Element msg
 svgText cls x y anchor label =
-    svg "text"
+    Svg.text
         [ Attr.class cls
         , Attr.attribute "x" (n x)
         , Attr.attribute "y" (n y)
