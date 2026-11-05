@@ -507,7 +507,10 @@ view model =
                     , shipped model
                     , path
                     , writing
-                    , band
+
+                    -- Off hours is hidden for now. To bring it back, uncomment
+                    -- this and its link in the topbar, and number contact 06.
+                    -- , band
                     , contact
                     ]
 
@@ -553,7 +556,8 @@ topbar model =
                     , ( "#work", "work" )
                     , ( "#path", "path" )
                     , ( "#writing", "writing" )
-                    , ( "#band", "off hours" )
+
+                    -- , ( "#band", "off hours" )
                     , ( "#contact", "contact" )
                     ]
                 )
@@ -1196,6 +1200,9 @@ piece item =
         ]
 
 
+{-| The band, off the clock. Commented out of `view` and the topbar for now,
+so it isn't on the page. The data and the styles are still here.
+-}
 band : Element msg
 band =
     Html.section [ Attr.class "band", Attr.id "band" ]
@@ -1244,7 +1251,7 @@ track index title =
 contact : Element msg
 contact =
     Html.section [ Attr.class "section wrap", Attr.id "contact" ]
-        [ Html.p [ Attr.class "eyebrow" ] [ Element.text "06 / contact" ]
+        [ Html.p [ Attr.class "eyebrow" ] [ Element.text "05 / contact" ]
         , Html.h2 [ Attr.class "h2" ] [ Element.text "Got something worth breaking?" ]
         , Html.p [ Attr.class "contact-lede" ]
             [ Element.text
