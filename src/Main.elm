@@ -416,7 +416,19 @@ paper =
 
 podcasts : List Piece
 podcasts =
-    [ { kind = "software leaders uncensored / with steve taplin"
+    [ { kind = "bettertech / with colin mccarthy"
+      , heading = "Are junior developers obsolete?"
+      , body =
+            "Where AI actually pays back, from admin work to writing code, and "
+                ++ "the LLM unit economics most budgets miss. Open-weight and "
+                ++ "on-prem models, why a demo only becomes a product once the "
+                ++ "operators buy in, and what AI does to hiring junior developers "
+                ++ "over the next few years. Plus the bus test I run before "
+                ++ "handing AI more ownership."
+      , href = "https://youtu.be/EaAD5_CzLFk"
+      , label = "youtu.be/EaAD5_CzLFk"
+      }
+    , { kind = "software leaders uncensored / with steve taplin"
       , heading = "Doesn't sugarcoat it"
       , body =
             "Academic burnout through to running engineering at Arvist. Why "
